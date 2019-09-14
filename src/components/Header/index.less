@@ -1,0 +1,45 @@
+@import '../../global';
+
+.container {
+  display: flex;
+  background-color: @darkPrimaryColor;
+  height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: @textPrimaryColor;
+  justify-content: space-between;
+
+  div {
+    align-items: center;
+    display: flex;
+  }
+
+  .logo {
+    height: 36px;
+  }
+
+  a {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: @textPrimaryColor;
+    &:hover {
+      background-color: #bf360c;
+      color: @lightPrimaryColor;
+    }
+  }
+
+  .navItem {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  @size: 30px;
+  .avatar {
+    width: @size;
+    height: @size;
+    border-radius: @size / 2;
+  }
+}

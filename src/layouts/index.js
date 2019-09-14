@@ -1,10 +1,12 @@
-import styles from './index.css';
+import React from 'react';
+import styles from './index.less';
+import Header from '../components/Header';
 
-function BasicLayout(props) {
+function BasicLayout({ children }) {
   return (
     <div className={styles.normal}>
-      <h1 className={styles.title}>Yay! Welcome to umi!</h1>
-      {props.children}
+      <Header />
+      {children}
     </div>
   );
 }

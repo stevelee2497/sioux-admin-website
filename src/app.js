@@ -1,4 +1,4 @@
-export const dva = {
+const dva = {
   config: {
     onError(err) {
       err.preventDefault();
@@ -6,3 +6,4 @@ export const dva = {
     },
   },
 };
+export default dva;

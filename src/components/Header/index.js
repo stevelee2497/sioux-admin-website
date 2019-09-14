@@ -18,7 +18,7 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      avatarPopOverVisible: true
+      avatarPopOverVisible: true,
     };
   }
 
@@ -26,11 +26,12 @@ class Header extends Component {
     this.setState({ avatarPopOverVisible });
   };
 
-  renderNavItems = () => navItems.map((item) => (
-    <Link to={item.link} className={styles.navItem}>
-      {item.title}
-    </Link>
-  ))
+  renderNavItems = () =>
+    navItems.map((item) => (
+      <Link to={item.link} className={styles.navItem}>
+        {item.title}
+      </Link>
+    ));
 
   render() {
     const { avatarPopOverVisible } = this.state;
@@ -50,10 +51,14 @@ class Header extends Component {
             onVisibleChange={this.handleVisibleChange}
             placement="bottomRight"
             trigger="hover"
-            content={(<AvatarPopoverContent />)}
+            content={<AvatarPopoverContent />}
           >
             <Link to="/">
-              <img alt="avatar" src="http://media2.sieuhai.tv:8088/onbox/images/user_lead_image/20190408/84947430634_20190408001343.jpg" className={styles.avatar} />
+              <img
+                alt="avatar"
+                src="http://media2.sieuhai.tv:8088/onbox/images/user_lead_image/20190408/84947430634_20190408001343.jpg"
+                className={styles.avatar}
+              />
             </Link>
           </Popover>
         </div>
@@ -66,4 +71,7 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Header);

@@ -26,12 +26,11 @@ class AvatarPopoverContent extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({});
 
-});
+const mapDispatchToProps = {};
 
-const mapDispatchToProps = {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AvatarPopoverContent);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AvatarPopoverContent);

@@ -7,7 +7,7 @@ import images from '../../utils/images';
 import AvatarPopoverContent from '../AvatarPopoverContent';
 
 const navItems = [
-  { link: '/Home', title: 'HOME' },
+  { link: '/', title: 'HOME' },
   { link: '/People', title: 'PEOPLE' },
   { link: '/Leaves', title: 'LEAVES' },
   { link: '/Boards', title: 'BOARDS' },
@@ -18,20 +18,29 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      avatarPopOverVisible: true,
+      avatarPopOverVisible: false,
     };
   }
 
-  handleVisibleChange = (avatarPopOverVisible) => {
+  handleVisibleChange = avatarPopOverVisible => {
     this.setState({ avatarPopOverVisible });
   };
 
-  renderNavItems = () =>
-    navItems.map((item) => (
-      <Link to={item.link} className={styles.navItem}>
+  renderNavItems = () => {
+    const {
+      location: { pathname },
+    } = this.props;
+
+    return navItems.map(item => (
+      <Link
+        to={item.link}
+        className={pathname === item.link ? styles.navItemSelected : styles.navItem}
+        key={item.link}
+      >
         {item.title}
       </Link>
     ));
+  };
 
   render() {
     const { avatarPopOverVisible } = this.state;
@@ -53,13 +62,11 @@ class Header extends Component {
             trigger="hover"
             content={<AvatarPopoverContent />}
           >
-            <Link to="/">
-              <img
-                alt="avatar"
-                src="http://media2.sieuhai.tv:8088/onbox/images/user_lead_image/20190408/84947430634_20190408001343.jpg"
-                className={styles.avatar}
-              />
-            </Link>
+            <img
+              alt="avatar"
+              src="http://media2.sieuhai.tv:8088/onbox/images/user_lead_image/20190408/84947430634_20190408001343.jpg"
+              className={styles.avatar}
+            />
           </Popover>
         </div>
       </div>
@@ -67,7 +74,9 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({
+  location: state.router.location,
+});
 
 const mapDispatchToProps = {};
 

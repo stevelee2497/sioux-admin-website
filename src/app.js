@@ -5,5 +5,9 @@ const dva = {
       console.error(err.message);
     },
   },
+  initialState: {
+    authenticated: false,
+    token: '',
+  },
 };
 export default dva;

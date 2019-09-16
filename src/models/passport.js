@@ -4,7 +4,7 @@ import { login } from '../utils/api';
 export default {
   namespace: 'passport',
   state: {
-    authenticated: localStorage.getItem('authenticated'),
+    authenticated: localStorage.getItem('authenticated') === 'true',
     token: localStorage.getItem('token'),
     user: undefined,
   },

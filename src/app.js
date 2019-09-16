@@ -1,4 +1,6 @@
-export const dva = {
+import router from 'umi/router';
+
+const dva = {
   config: {
     onError(err) {
       err.preventDefault();
@@ -6,3 +8,14 @@ export const dva = {
     },
   },
 };
+
+export function render(oldRender) {
+  if (localStorage.getItem('authenticated') !== 'true') {
+    router.push('/login');
+    console.log('not authenticated');
+  }
+
+  oldRender();
+}
+
+export default dva;

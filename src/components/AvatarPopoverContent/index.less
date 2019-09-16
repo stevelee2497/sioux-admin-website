@@ -3,22 +3,28 @@
 .container {
   display: flex;
   flex-direction: column;
-  a {
+
+  .item {
+    all: unset;
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
     color: @secondaryTextColor;
+    cursor: pointer;
+
     &:hover {
       background-color: whitesmoke;
       color: @primaryTextColor;
       font-weight: 500;
     }
   }
+
   span {
     margin-left: 10px;
     margin-right: 10px;
   }
 }
+
 .divider {
   margin-top: 10px;
   margin-bottom: 10px;

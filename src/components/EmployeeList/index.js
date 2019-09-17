@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { List, Card, Button } from 'antd';
-import faker from 'faker';
+import { List, Card } from 'antd';
 import styles from './index.less';
 
 class EmployeeList extends Component {
   render() {
-    const data = Array.from({ length: 1 }).map(_ => ({
-      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-      avatar: `https://picsum.photos/id/${faker.random.number({ min: 1, max: 300 })}/500/500`,
-      position: faker.name.jobTitle(),
-      description: faker.random.words(30),
-    }));
+    const { employee } = this.props;
+
+    const { dataSource } = employee;
 
     return (
       <List
         grid={{ gutter: 16, column: 2 }}
-        dataSource={data}
+        dataSource={dataSource}
         renderItem={item => (
           <List.Item>
             <Card bodyStyle={{ display: 'flex' }}>
@@ -37,11 +33,10 @@ class EmployeeList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-
+  employee: state.employee
 });
 
-const mapDispatchToProps = {
-
-};
+const mapDispatchToProps = dispatch => ({
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeList);

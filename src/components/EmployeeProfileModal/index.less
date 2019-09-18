@@ -1,0 +1,42 @@
+@import '../../global.less';
+
+.left {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 250px;
+    height: 250px;
+  }
+
+  .skills {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .title {
+      display: flex;
+      align-items: center;
+      width: 250px;
+      overflow: hidden;
+
+      h3 {
+        color: @dividerColor;
+        margin-right: 20px;
+      }
+
+      .divider {
+        flex: 1;
+        background-color: @dividerColor;
+      }
+    }
+  }
+}
+
+.right {
+  flex: 6
+}

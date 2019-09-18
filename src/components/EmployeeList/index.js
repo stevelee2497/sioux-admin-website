@@ -5,9 +5,19 @@ import styles from './index.less';
 
 class EmployeeList extends Component {
   render() {
-    const { employee } = this.props;
+    const { people, handlePageChanged, handleViewProfile } = this.props;
 
-    const { dataSource } = employee;
+    const { dataSource, total, pageSize, page } = people;
+
+    const pagination = {
+      showSizeChanger: true,
+      showQuickJumper: true,
+      total,
+      onChange: handlePageChanged,
+      onShowSizeChange: handlePageChanged,
+      defaultPageSize: pageSize,
+      defaultCurrent: page,
+    };
 
     return (
       <List
@@ -16,27 +26,44 @@ class EmployeeList extends Component {
         renderItem={item => (
           <List.Item>
             <Card bodyStyle={{ display: 'flex' }}>
-              <img alt={`${item.name} profile`} src={item.avatar} />
+              <img
+                alt={`${item.name} profile`}
+                src={item.avatar}
+                onError={(e) => { e.target.onerror = null; e.target.src = '/assets/default_avatar.png'; }}
+              />
               <div className={styles.info}>
                 <h2>{item.name}</h2>
                 <h4>{item.position}</h4>
                 <h3>{item.description}</h3>
-                <button type="button">View Profile</button>
+                <button type="button" onClick={e => handleViewProfile(item)}>View Profile</button>
               </div>
             </Card>
           </List.Item>
         )}
         className={styles.container}
+        pagination={pagination}
       />
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  employee: state.employee
+  people: state.people
 });
 
 const mapDispatchToProps = dispatch => ({
+  handlePageChanged: (page, pageSize) => {
+    dispatch({
+      type: 'people/changePagination',
+      payload: { page, pageSize }
+    });
+  },
+  handleViewProfile: employee => {
+    dispatch({
+      type: 'people/selectEmployee',
+      payload: employee
+    });
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeList);

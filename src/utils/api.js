@@ -22,7 +22,9 @@ export const fetchEmployees = async (page = 1, pageSize = 10) => {
         avatar: `https://picsum.photos/id/${faker.random.number({ min: 1, max: 300 })}/500/500`,
         position: faker.name.jobTitle(),
         description: faker.random.words(30),
-      }))
+        skills: Array.from({ length: faker.random.number({ min: 1, max: 7 }) }).map(_ => faker.name.jobType())
+      })),
+      total: 100
     }
   };
   const { data } = response;

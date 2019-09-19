@@ -21,8 +21,15 @@ export const fetchEmployees = async (page = 1, pageSize = 10) => {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         avatar: `https://picsum.photos/id/${faker.random.number({ min: 1, max: 300 })}/500/500`,
         position: faker.name.jobTitle(),
+        location: `${faker.address.city()}, ${faker.address.countryCode()}`,
+        address: faker.address.streetAddress(),
         description: faker.random.words(30),
-        skills: Array.from({ length: faker.random.number({ min: 1, max: 7 }) }).map(_ => faker.name.jobType())
+        skills: Array.from({ length: faker.random.number({ min: 1, max: 7 }) }).map(_ => faker.name.jobType()),
+        phone: faker.phone.phoneNumber(),
+        email: faker.internet.email(),
+        socialLink: faker.internet.url(),
+        birthDate: faker.date.past(),
+        gender: faker.random.boolean() ? 'Male' : 'Female'
       })),
       total: 100
     }

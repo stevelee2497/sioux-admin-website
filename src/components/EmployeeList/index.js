@@ -33,8 +33,8 @@ class EmployeeList extends Component {
               />
               <div className={styles.info}>
                 <h2>{item.name}</h2>
-                <h4>{item.position}</h4>
-                <h3>{item.description}</h3>
+                <h4 className={styles.position}>{item.position}</h4>
+                <h4 className={styles.description}>{item.description}</h4>
                 <button type="button" onClick={e => handleViewProfile(item)}>View Profile</button>
               </div>
             </Card>

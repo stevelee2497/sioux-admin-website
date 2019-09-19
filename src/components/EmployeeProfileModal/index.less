@@ -1,18 +1,21 @@
 @import '../../global.less';
 
 .left {
-  flex: 4;
+  flex: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  @colWidth: 200px;
+
   img {
-    width: 250px;
-    height: 250px;
+    width: @colWidth;
+    height: @colWidth;
+    border-radius: 3px;
   }
 
   .skills {
-    width: 250px;
+    width: @colWidth;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -21,7 +24,7 @@
     .title {
       display: flex;
       align-items: center;
-      width: 250px;
+      width: @colWidth;
       overflow: hidden;
 
       h3 {
@@ -38,5 +41,50 @@
 }
 
 .right {
-  flex: 6
+  flex: 7;
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+
+  .name {
+    display: flex;
+    align-items: baseline;
+
+
+    img {
+      width: 15px;
+      height: 15px;
+      margin-left: 15px;
+      margin-right: 5px;
+    }
+
+    h2 {
+      margin: 0px;
+    }
+
+    h4{
+      color: @secondaryTextColor
+    }
+  }
+
+  .position {
+    color: @primaryColor;
+  }
+
+  .tabContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .blockTitle {
+      color: @secondaryTextColor;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+  }
+
+  .timeline {
+    padding-top: 20px;
+  }
 }

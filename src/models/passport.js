@@ -10,7 +10,6 @@ export default {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      console.log(payload);
       const response = yield call(login, payload);
       localStorage.setItem('authenticated', true);
       localStorage.setItem('token', response);
@@ -18,7 +17,6 @@ export default {
       router.push('/');
     },
     *logout({ payload }, { call, put }) {
-      console.log(payload);
       localStorage.setItem('authenticated', false);
       localStorage.setItem('token', '');
       yield put({ type: 'logoutSuccess' });

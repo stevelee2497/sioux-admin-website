@@ -29,7 +29,6 @@ export default {
     *fetch({ payload }, { call, put, select }) {
       const { page, pageSize } = yield select(state => state.people);
       const response = yield call(fetchEmployees, page, pageSize);
-      console.log(response);
       yield put({ type: 'fetchSuccess', payload: response });
     },
     *changePagination({ payload }, { call, put, select }) {

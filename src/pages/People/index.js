@@ -4,6 +4,7 @@ import { Input } from 'antd';
 import styles from './index.less';
 import EmployeeList from '../../components/EmployeeList';
 import EmployeeProfileModal from '../../components/EmployeeProfileModal';
+import FilterOptions from '../../components/FilterOptions';
 
 class People extends Component {
   render() {
@@ -21,6 +22,7 @@ class People extends Component {
           <h2>There are totally {people.total} employees in the company</h2>
         </div>
         <div className={styles.body}>
+          <FilterOptions />
           <EmployeeList />
         </div>
         <EmployeeProfileModal />

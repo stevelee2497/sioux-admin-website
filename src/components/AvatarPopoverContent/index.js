@@ -5,10 +5,10 @@ import styles from './index.less';
 
 class AvatarPopoverContent extends Component {
   render() {
-    const { logout } = this.props;
+    const { logout, showProfile, profile } = this.props;
     return (
       <div className={styles.container}>
-        <button type="button" className={styles.item}>
+        <button type="button" className={styles.item} onClick={() => { showProfile(profile) ;}}>
           <Icon type="user" />
           <span>Profile</span>
         </button>
@@ -26,10 +26,16 @@ class AvatarPopoverContent extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  profile: state.passport.profile
+});
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch({ type: 'passport/logout' })
+  logout: () => dispatch({ type: 'passport/logout' }),
+  showProfile: profile => dispatch({
+    type: 'people/selectEmployee',
+    payload: profile
+  })
 });
 
 export default connect(

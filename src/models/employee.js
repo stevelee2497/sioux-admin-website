@@ -8,7 +8,9 @@ export default {
     pageSize: 20,
     total: 100,
     selectedEmployee: undefined,
-    modalVisible: true
+    modalVisible: false,
+    selectedPosition: undefined,
+    selectedSkills: []
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -34,7 +36,15 @@ export default {
     *changePagination({ payload }, { call, put, select }) {
       yield put({ type: 'savePagination', payload });
       yield put({ type: 'fetch' });
-    }
+    },
+    *changePositionFilter({ payload }, { call, put, select }) {
+      yield put({ type: 'savePositionTag', payload });
+      yield put({ type: 'fetch' });
+    },
+    *changeSkillsFilter({ payload }, { call, put, select }) {
+      yield put({ type: 'saveSkillTags', payload });
+      yield put({ type: 'fetch' });
+    },
   },
   reducers: {
     fetchSuccess(state, { payload }) {
@@ -42,7 +52,6 @@ export default {
         ...state,
         dataSource: payload.data,
         total: payload.total,
-        selectedEmployee: payload.data[0]
       };
     },
     savePagination(state, { payload }) {
@@ -65,5 +74,18 @@ export default {
         selectedEmployee
       };
     },
+    savePositionTag(state, { payload }) {
+      return {
+        ...state,
+        selectedPosition: payload
+      };
+    },
+    saveSkillTags(state, { payload }) {
+      const { tag, checked } = payload;
+      return {
+        ...state,
+        selectedSkills: checked ? [...state.selectedSkills, tag] : state.selectedSkills.filter(t => t !== tag)
+      };
+    }
   },
 };

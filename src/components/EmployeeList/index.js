@@ -5,7 +5,7 @@ import styles from './index.less';
 
 class EmployeeList extends Component {
   render() {
-    const { people, handlePageChanged, handleViewProfile } = this.props;
+    const { people, handlePageChanged, handleViewProfile, loading } = this.props;
 
     const { dataSource, total, pageSize, page } = people;
 
@@ -23,6 +23,7 @@ class EmployeeList extends Component {
       <List
         grid={{ gutter: 16, column: 2 }}
         dataSource={dataSource}
+        loading={loading}
         renderItem={item => (
           <List.Item>
             <Card bodyStyle={{ display: 'flex' }}>
@@ -48,7 +49,8 @@ class EmployeeList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  people: state.people
+  people: state.people,
+  loading: state.loading.global
 });
 
 const mapDispatchToProps = dispatch => ({

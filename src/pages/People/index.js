@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Input } from 'antd';
 import styles from './index.less';
 import EmployeeList from '../../components/EmployeeList';
-import EmployeeProfileModal from '../../components/EmployeeProfileModal';
 import FilterOptions from '../../components/FilterOptions';
 
 class People extends Component {
@@ -25,7 +24,6 @@ class People extends Component {
           <FilterOptions />
           <EmployeeList />
         </div>
-        <EmployeeProfileModal />
       </div>
     );
   }

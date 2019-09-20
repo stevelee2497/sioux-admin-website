@@ -6,19 +6,22 @@ export default {
   state: {
     authenticated: localStorage.getItem('authenticated') === 'true',
     token: localStorage.getItem('token'),
-    user: undefined,
+    profile: JSON.parse(localStorage.getItem('profile')),
   },
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
+      const { token, profile } = response.data;
       localStorage.setItem('authenticated', true);
-      localStorage.setItem('token', response);
-      yield put({ type: 'loginSuccess', payload: response });
+      localStorage.setItem('token', token);
+      localStorage.setItem('profile', JSON.stringify(profile));
+      yield put({ type: 'loginSuccess', payload: response.data });
       router.push('/');
     },
     *logout({ payload }, { call, put }) {
       localStorage.setItem('authenticated', false);
       localStorage.setItem('token', '');
+      localStorage.setItem('profile', '');
       yield put({ type: 'logoutSuccess' });
       router.push('/login');
     },
@@ -28,7 +31,7 @@ export default {
       return {
         ...state,
         authenticated: true,
-        token: payload,
+        ...payload
       };
     },
     logoutSuccess(state, { payload }) {
@@ -36,6 +39,7 @@ export default {
         ...state,
         authenticated: false,
         token: '',
+        profile: ''
       };
     },
   },

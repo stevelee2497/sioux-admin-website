@@ -1,4 +1,5 @@
 import { fetchEmployees } from '../utils/api';
+import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
   namespace: 'people',
@@ -10,7 +11,8 @@ export default {
     selectedEmployee: undefined,
     modalVisible: false,
     selectedPosition: undefined,
-    selectedSkills: []
+    selectedSkills: [],
+    profileModalType: PROFILE_MODAL_TYPE.VIEW
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -20,8 +22,8 @@ export default {
             type: 'fetch',
             payload: {
               page: 1,
-              pageSize: 20
-            }
+              pageSize: 20,
+            },
           });
         }
       });
@@ -52,40 +54,51 @@ export default {
         ...state,
         dataSource: payload.data,
         total: payload.total,
+        selectedEmployee: payload.data[0],
+        modalVisible: true,
       };
     },
     savePagination(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     closeModal(state, { payload }) {
       return {
         ...state,
         modalVisible: false,
-        selectedEmployee: null
+        selectedEmployee: null,
       };
     },
     selectEmployee(state, { payload: selectedEmployee }) {
       return {
         ...state,
         modalVisible: true,
-        selectedEmployee
+        selectedEmployee,
+        profileModalType: PROFILE_MODAL_TYPE.VIEW
       };
     },
     savePositionTag(state, { payload }) {
       return {
         ...state,
-        selectedPosition: payload
+        selectedPosition: payload,
       };
     },
     saveSkillTags(state, { payload }) {
       const { tag, checked } = payload;
       return {
         ...state,
-        selectedSkills: checked ? [...state.selectedSkills, tag] : state.selectedSkills.filter(t => t !== tag)
+        selectedSkills: checked
+          ? [...state.selectedSkills, tag]
+          : state.selectedSkills.filter(t => t !== tag),
       };
-    }
+    },
+    changeViewType(state, { payload: profileModalType }) {
+      return {
+        ...state,
+        profileModalType
+      };
+    },
   },
 };

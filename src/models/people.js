@@ -1,4 +1,4 @@
-import { fetchEmployees } from '../utils/api';
+import { fetchEmployees, delay } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -47,6 +47,11 @@ export default {
       yield put({ type: 'saveSkillTags', payload });
       yield put({ type: 'fetch' });
     },
+    *updateEmployeeProfile({ payload }, { call, put, select }) {
+      yield call(delay, 1000);
+      yield put({ type: 'updateEmployeeProfileSuccess', payload });
+      yield put({ type: 'changeViewType', payload: PROFILE_MODAL_TYPE.VIEW });
+    }
   },
   reducers: {
     fetchSuccess(state, { payload }) {
@@ -98,6 +103,12 @@ export default {
       return {
         ...state,
         profileModalType
+      };
+    },
+    updateEmployeeProfileSuccess(state, { payload: profile }) {
+      return {
+        ...state,
+        selectedEmployee: { ...state.selectedEmployee, ...profile }
       };
     },
   },

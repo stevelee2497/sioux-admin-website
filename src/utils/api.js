@@ -1,7 +1,7 @@
 import faker from 'faker';
 import { ROLE } from './constants';
 
-const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 const fakeUser = () => ({
   id: faker.random.uuid(),

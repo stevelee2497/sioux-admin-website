@@ -14,6 +14,8 @@
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
     "redux-form": "^8.2.6"
   },
   "devDependencies": {
@@ -31,6 +33,7 @@
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
     "react-test-renderer": "^16.7.0",
+    "redux-devtools": "^3.5.0",
     "umi": "^2.7.7",
     "umi-plugin-react": "^1.8.4"
   },

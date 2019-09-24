@@ -1,4 +1,5 @@
 import faker from 'faker';
+import moment from 'moment';
 import { ROLE } from './constants';
 
 export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
@@ -18,6 +19,7 @@ const fakeUser = () => ({
   birthDate: faker.date.past(),
   gender: faker.random.boolean() ? 'Male' : 'Female',
   role: faker.random.boolean() ? ROLE.ADMIN : ROLE.EMPLOYEE,
+  timeline: Array.from({ length: faker.random.number({ min: 2, max: 4 }) }).map(_ => `${faker.random.words(4)} in ${moment(faker.date.past()).format('DD/MM/YYYY')}`),
 });
 
 // #region Authentication

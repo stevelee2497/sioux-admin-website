@@ -7,12 +7,8 @@ import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 
-const EmployeeSkills = ({ skills }) => skills.map(skill => (
-  <h4 key={skill}>{skill}</h4>
-));
-
-const FormItem = ({ value, initialValue, component, getFieldDecorator, }) => {
-  const rules = [{ required: true }];
+const FormItem = ({ value, initialValue, component, getFieldDecorator, required }) => {
+  const rules = [{ required: required || true }];
   return (
     <Form.Item style={{ margin: 0 }}>
       {getFieldDecorator(value, { rules, initialValue })(component)}
@@ -53,7 +49,12 @@ class EmployeeForm extends Component {
                 <h3 className={styles.skillTitle}>SKILLS</h3>
                 <Divider className={styles.divider} />
               </div>
-              <EmployeeSkills skills={selectedEmployee.skills} />
+              <FormItem
+                value="newSkills"
+                initialValue={selectedEmployee.skills.join('\n')}
+                component={<Input.TextArea autosize />}
+                getFieldDecorator={getFieldDecorator}
+              />
             </div>
           </div>
 
@@ -143,7 +144,7 @@ class EmployeeForm extends Component {
                     <FormItem
                       value="description"
                       initialValue={selectedEmployee.description}
-                      component={<Input.TextArea rows={7} />}
+                      component={<Input.TextArea autosize />}
                       getFieldDecorator={getFieldDecorator}
                     />
                   </CRow>
@@ -151,12 +152,12 @@ class EmployeeForm extends Component {
               </Tabs.TabPane>
 
               <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-                <Timeline className={styles.timeline}>
-                  <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-                  <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-                  <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-                  <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
-                </Timeline>
+                <FormItem
+                  value="newTimeline"
+                  initialValue={selectedEmployee.timeline.join('\n')}
+                  component={<Input.TextArea autosize />}
+                  getFieldDecorator={getFieldDecorator}
+                />
               </Tabs.TabPane>
             </Tabs>
           </div>

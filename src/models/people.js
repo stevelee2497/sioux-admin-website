@@ -12,7 +12,7 @@ export default {
     modalVisible: false,
     selectedPosition: undefined,
     selectedSkills: [],
-    profileModalType: PROFILE_MODAL_TYPE.VIEW
+    profileModalType: PROFILE_MODAL_TYPE.CREATE
   },
   subscriptions: {
     setup({ dispatch, history }) {

@@ -12,7 +12,7 @@ export default {
     modalVisible: false,
     selectedPosition: undefined,
     selectedSkills: [],
-    profileModalType: PROFILE_MODAL_TYPE.CREATE
+    profileModalType: PROFILE_MODAL_TYPE.VIEW
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -59,8 +59,6 @@ export default {
         ...state,
         dataSource: payload.data,
         total: payload.total,
-        selectedEmployee: payload.data[0],
-        modalVisible: true,
       };
     },
     savePagination(state, { payload }) {
@@ -111,5 +109,12 @@ export default {
         selectedEmployee: { ...state.selectedEmployee, ...profile }
       };
     },
+    openEmployeeForm(state, { payload }) {
+      return {
+        ...state,
+        profileModalType: PROFILE_MODAL_TYPE.CREATE,
+        modalVisible: true
+      };
+    }
   },
 };

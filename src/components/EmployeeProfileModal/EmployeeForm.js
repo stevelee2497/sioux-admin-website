@@ -8,7 +8,7 @@ import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 
 const FormItem = ({ value, initialValue, component, getFieldDecorator, required }) => {
-  const rules = [{ required: required || true }];
+  const rules = [{ required }];
   return (
     <Form.Item style={{ margin: 0 }}>
       {getFieldDecorator(value, { rules, initialValue })(component)}
@@ -28,10 +28,31 @@ const CRow = props => (
 );
 
 class EmployeeForm extends Component {
+  static defaultProps = {
+    profile: {
+      id: undefined,
+      name: undefined,
+      avatar: undefined,
+      position: undefined,
+      location: undefined,
+      address: undefined,
+      description: undefined,
+      skills: [],
+      phone: undefined,
+      email: undefined,
+      socialLink: undefined,
+      birthDate: moment(),
+      gender: undefined,
+      role: undefined,
+      timeline: [],
+    }
+  }
+
   render() {
     const {
-      people: { modalVisible, selectedEmployee, profileModalType },
+      people: { modalVisible },
       form: { getFieldDecorator },
+      profile,
       loading
     } = this.props;
 
@@ -43,7 +64,7 @@ class EmployeeForm extends Component {
       <Spin spinning={loading}>
         <Form className={styles.container}>
           <div className={styles.left}>
-            <Avatar name={selectedEmployee.name} src={selectedEmployee.avatar} />
+            <Avatar name={profile.name} src={profile.avatar} />
             <div className={styles.skills}>
               <div className={styles.skillTitleBlock}>
                 <h3 className={styles.skillTitle}>SKILLS</h3>
@@ -51,8 +72,8 @@ class EmployeeForm extends Component {
               </div>
               <FormItem
                 value="newSkills"
-                initialValue={selectedEmployee.skills.join('\n')}
-                component={<Input.TextArea autosize />}
+                initialValue={profile.skills.join('\n')}
+                component={<Input.TextArea autosize placeholder="Employee Skills" />}
                 getFieldDecorator={getFieldDecorator}
               />
             </div>
@@ -62,21 +83,21 @@ class EmployeeForm extends Component {
             <div className={styles.nameBlock}>
               <FormItem
                 value="name"
-                initialValue={selectedEmployee.name}
+                initialValue={profile.name}
                 component={<Input placeholder="Employee Name" />}
                 getFieldDecorator={getFieldDecorator}
               />
               <img alt="" src="/assets/location.svg" className={styles.locationIconEditMode} />
               <FormItem
                 value="location"
-                initialValue={selectedEmployee.location}
+                initialValue={profile.location}
                 component={<Input placeholder="Location" />}
                 getFieldDecorator={getFieldDecorator}
               />
             </div>
             <FormItem
               value="position"
-              initialValue={selectedEmployee.position}
+              initialValue={profile.position}
               component={<Input placeholder="Position" />}
               getFieldDecorator={getFieldDecorator}
               style={{ width: 300 }}
@@ -88,7 +109,7 @@ class EmployeeForm extends Component {
                   <CRow title="Phone">
                     <FormItem
                       value="phone"
-                      initialValue={selectedEmployee.phone}
+                      initialValue={profile.phone}
                       component={<Input placeholder="Phone" />}
                       getFieldDecorator={getFieldDecorator}
                     />
@@ -96,7 +117,7 @@ class EmployeeForm extends Component {
                   <CRow title="Address">
                     <FormItem
                       value="address"
-                      initialValue={selectedEmployee.address}
+                      initialValue={profile.address}
                       component={<Input placeholder="Address" />}
                       getFieldDecorator={getFieldDecorator}
                     />
@@ -104,7 +125,7 @@ class EmployeeForm extends Component {
                   <CRow title="Email">
                     <FormItem
                       value="email"
-                      initialValue={selectedEmployee.email}
+                      initialValue={profile.email}
                       component={<Input placeholder="Email" />}
                       getFieldDecorator={getFieldDecorator}
                     />
@@ -112,9 +133,10 @@ class EmployeeForm extends Component {
                   <CRow title="Social Link">
                     <FormItem
                       value="socialLink"
-                      initialValue={selectedEmployee.socialLink}
+                      initialValue={profile.socialLink}
                       component={<Input placeholder="Social Link" />}
                       getFieldDecorator={getFieldDecorator}
+                      required={false}
                     />
                   </CRow>
 
@@ -122,7 +144,7 @@ class EmployeeForm extends Component {
                   <CRow title="Birthdate">
                     <FormItem
                       value="birthDate"
-                      initialValue={moment(selectedEmployee.birthDate, 'DD/MM/YYYY')}
+                      initialValue={moment(profile.birthDate, 'DD/MM/YYYY')}
                       component={<DatePicker format="DD/MM/YYYY" />}
                       getFieldDecorator={getFieldDecorator}
                     />
@@ -130,11 +152,11 @@ class EmployeeForm extends Component {
                   <CRow title="Gender">
                     <FormItem
                       value="gender"
-                      initialValue={selectedEmployee.gender}
+                      initialValue={profile.gender}
                       component={(
                         <Select>
-                          <Select.Option value="Male">male</Select.Option>
-                          <Select.Option value="Female">female</Select.Option>
+                          <Select.Option value="Male">Male</Select.Option>
+                          <Select.Option value="Female">Female</Select.Option>
                         </Select>
                     )}
                       getFieldDecorator={getFieldDecorator}
@@ -143,7 +165,7 @@ class EmployeeForm extends Component {
                   <CRow title="Description">
                     <FormItem
                       value="description"
-                      initialValue={selectedEmployee.description}
+                      initialValue={profile.description}
                       component={<Input.TextArea autosize />}
                       getFieldDecorator={getFieldDecorator}
                     />
@@ -154,8 +176,8 @@ class EmployeeForm extends Component {
               <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
                 <FormItem
                   value="newTimeline"
-                  initialValue={selectedEmployee.timeline.join('\n')}
-                  component={<Input.TextArea autosize />}
+                  initialValue={profile.timeline.join('\n')}
+                  component={<Input.TextArea autosize placeholder="Employee Timeline" />}
                   getFieldDecorator={getFieldDecorator}
                 />
               </Tabs.TabPane>
@@ -169,6 +191,7 @@ class EmployeeForm extends Component {
 
 const mapStateToProps = state => ({
   people: state.people,
+  profile: state.people.selectedEmployee,
   loading: state.loading.global
 });
 

@@ -5,7 +5,7 @@ const Avatar = ({ name, src }) => (
   <img
     className={styles.avatar}
     alt={`${name} profile`}
-    src={src}
+    src={src || '/assets/default_avatar.png'}
     onError={e => {
       e.target.onerror = null;
       e.target.src = '/assets/default_avatar.png';

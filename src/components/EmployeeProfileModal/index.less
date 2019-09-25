@@ -1,0 +1,100 @@
+@import '../../global.less';
+@colWidth: 200px;
+
+.container {
+  display: flex;
+}
+
+.left {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  padding-left: 25px;
+}
+
+.avatar {
+  width: @colWidth;
+  height: @colWidth;
+  border-radius: 3px;
+}
+
+.skills {
+  width: @colWidth;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.skillTitleBlock {
+  display: flex;
+  align-items: center;
+  width: @colWidth;
+  overflow: hidden;
+}
+
+.skillTitle {
+  color: @dividerColor;
+  margin-right: 20px;
+}
+
+.divider {
+  flex: 1;
+  background-color: @dividerColor;
+}
+
+.right {
+  flex: 7;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+}
+
+.nameBlock {
+  display: flex;
+  align-items: baseline;
+}
+
+.locationIcon {
+  width: 15px;
+  height: 15px;
+  margin-left: 15px;
+  margin-right: 5px;
+  align-self: flex-start;
+  margin-top: 11px;
+}
+
+.locationIconEditMode {
+  .locationIcon();
+}
+
+.name {
+  margin: 0px;
+}
+
+.location {
+  color: @secondaryTextColor;
+  margin: 0px;
+}
+
+.position {
+  color: @primaryColor;
+  margin-top: 5px;
+}
+
+.tabContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.blockTitle {
+  color: @secondaryTextColor;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.timeline {
+  padding-top: 20px;
+}

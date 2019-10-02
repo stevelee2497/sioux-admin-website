@@ -28,8 +28,19 @@ const CRow = props => (
 );
 
 class EmployeeForm extends Component {
-  static defaultProps = {
-    profile: {
+  render() {
+    const {
+      people: { modalVisible },
+      form: { getFieldDecorator },
+      selectedEmployee,
+      loading
+    } = this.props;
+
+    if (!modalVisible) {
+      return null;
+    }
+
+    const profile = selectedEmployee || {
       id: undefined,
       name: undefined,
       avatar: undefined,
@@ -45,20 +56,7 @@ class EmployeeForm extends Component {
       gender: undefined,
       role: undefined,
       timeline: [],
-    }
-  }
-
-  render() {
-    const {
-      people: { modalVisible },
-      form: { getFieldDecorator },
-      profile,
-      loading
-    } = this.props;
-
-    if (!modalVisible) {
-      return null;
-    }
+    };
 
     return (
       <Spin spinning={loading}>
@@ -191,7 +189,7 @@ class EmployeeForm extends Component {
 
 const mapStateToProps = state => ({
   people: state.people,
-  profile: state.people.selectedEmployee,
+  selectedEmployee: state.people.selectedEmployee,
   loading: state.loading.global
 });
 

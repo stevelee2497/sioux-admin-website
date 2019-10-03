@@ -1,8 +1,17 @@
 import faker from 'faker';
 import moment from 'moment';
+import axios from 'axios';
 import { ROLE } from './constants';
 
 export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api/',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 const fakeUser = () => ({
   id: faker.random.uuid(),
@@ -24,16 +33,9 @@ const fakeUser = () => ({
 
 // #region Authentication
 
-export const login = async () => {
-  const response = {
-    data: {
-      data: {
-        token: 'success',
-        profile: { ...fakeUser(), role: ROLE.ADMIN }
-      },
-    }
-  };
-  await delay(1000);
+export const login = async (authDto) => {
+  console.log(authDto);
+  const response = await api.post('/users/login', authDto);
   const { data } = response;
   return data;
 };

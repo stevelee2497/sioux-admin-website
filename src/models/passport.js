@@ -19,9 +19,9 @@ export default {
       router.push('/');
     },
     *logout({ payload }, { call, put }) {
-      localStorage.setItem('authenticated', false);
-      localStorage.setItem('token', '');
-      localStorage.setItem('profile', '');
+      localStorage.removeItem('authenticated');
+      localStorage.removeItem('token');
+      localStorage.removeItem('profile');
       yield put({ type: 'logoutSuccess' });
       router.push('/login');
     },

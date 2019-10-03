@@ -25,11 +25,11 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit} className={styles.loginForm}>
             <h1>Login</h1>
             <Form.Item className={styles.input}>
-              {getFieldDecorator('email', {
+              {getFieldDecorator('userName', {
                 rules: [{ required: true, message: 'Please input your username!' }],
               })(
                 <Input
-                  placeholder="email"
+                  placeholder="userName"
                   size="large"
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 />,

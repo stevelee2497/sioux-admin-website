@@ -1,11 +1,15 @@
 import router from 'umi/router';
 
-const dva = {
+export const dva = {
   config: {
     onError(err) {
       err.preventDefault();
-      console.error(err.message);
-    },
+      if (err.response) {
+        console.log(err.response.data.errorMessage);
+      } else {
+        console.log(err.message);
+      }
+    }
   },
 };
 
@@ -17,5 +21,3 @@ export function render(oldRender) {
 
   oldRender();
 }
-
-export default dva;

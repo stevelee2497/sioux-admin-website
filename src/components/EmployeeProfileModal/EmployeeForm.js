@@ -8,7 +8,7 @@ import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 
 const FormItem = ({ value, initialValue, component, getFieldDecorator, required }) => {
-  const rules = [{ required }];
+  const rules = [{ required: required || false }];
   return (
     <Form.Item style={{ margin: 0 }}>
       {getFieldDecorator(value, { rules, initialValue })(component)}
@@ -53,7 +53,7 @@ class EmployeeForm extends Component {
       email: undefined,
       socialLink: undefined,
       birthDate: moment(),
-      gender: undefined,
+      gender: 'Male',
       role: undefined,
       timeline: [],
     };
@@ -84,6 +84,7 @@ class EmployeeForm extends Component {
                 initialValue={profile.name}
                 component={<Input placeholder="Employee Name" />}
                 getFieldDecorator={getFieldDecorator}
+                required
               />
               <img alt="" src="/assets/location.svg" className={styles.locationIconEditMode} />
               <FormItem
@@ -91,6 +92,7 @@ class EmployeeForm extends Component {
                 initialValue={profile.location}
                 component={<Input placeholder="Location" />}
                 getFieldDecorator={getFieldDecorator}
+                required
               />
             </div>
             <FormItem
@@ -99,6 +101,7 @@ class EmployeeForm extends Component {
               component={<Input placeholder="Position" />}
               getFieldDecorator={getFieldDecorator}
               style={{ width: 300 }}
+              required
             />
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab={<TabIcon icon="user" title="About" />} key="1">
@@ -110,6 +113,7 @@ class EmployeeForm extends Component {
                       initialValue={profile.phone}
                       component={<Input placeholder="Phone" />}
                       getFieldDecorator={getFieldDecorator}
+                      required
                     />
                   </CRow>
                   <CRow title="Address">
@@ -118,6 +122,7 @@ class EmployeeForm extends Component {
                       initialValue={profile.address}
                       component={<Input placeholder="Address" />}
                       getFieldDecorator={getFieldDecorator}
+                      required
                     />
                   </CRow>
                   <CRow title="Email">
@@ -126,6 +131,7 @@ class EmployeeForm extends Component {
                       initialValue={profile.email}
                       component={<Input placeholder="Email" />}
                       getFieldDecorator={getFieldDecorator}
+                      required
                     />
                   </CRow>
                   <CRow title="Social Link">
@@ -134,7 +140,6 @@ class EmployeeForm extends Component {
                       initialValue={profile.socialLink}
                       component={<Input placeholder="Social Link" />}
                       getFieldDecorator={getFieldDecorator}
-                      required={false}
                     />
                   </CRow>
 
@@ -156,7 +161,7 @@ class EmployeeForm extends Component {
                           <Select.Option value="Male">Male</Select.Option>
                           <Select.Option value="Female">Female</Select.Option>
                         </Select>
-                    )}
+                      )}
                       getFieldDecorator={getFieldDecorator}
                     />
                   </CRow>
@@ -164,7 +169,7 @@ class EmployeeForm extends Component {
                     <FormItem
                       value="description"
                       initialValue={profile.description}
-                      component={<Input.TextArea autosize />}
+                      component={<Input.TextArea autosize placeholder="Description" />}
                       getFieldDecorator={getFieldDecorator}
                     />
                   </CRow>

@@ -1,4 +1,4 @@
-import { fetchEmployees, delay } from '../utils/api';
+import { fetchEmployees, delay, updateEmployee } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -48,9 +48,13 @@ export default {
       yield put({ type: 'fetch' });
     },
     *updateEmployeeProfile({ payload }, { call, put, select }) {
-      yield call(delay, 1000);
-      yield put({ type: 'updateEmployeeProfileSuccess', payload });
+      const { data } = yield call(updateEmployee, payload);
+      yield put({ type: 'updateEmployeeProfileSuccess', payload: data });
       yield put({ type: 'changeViewType', payload: PROFILE_MODAL_TYPE.VIEW });
+      const { profile } = yield select(state => state.passport);
+      if (payload.id === profile.id) {
+        yield put({ type: 'passport/updateProile', payload: data });
+      }
     }
   },
   reducers: {

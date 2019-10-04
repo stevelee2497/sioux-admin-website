@@ -6,16 +6,17 @@ import { ROLE } from './constants';
 export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api/',
+  baseURL: 'https://localhost:5001/api/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`
   },
 });
 
 const fakeUser = () => ({
   id: faker.random.uuid(),
-  name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
   avatar: `https://picsum.photos/id/${faker.random.number({ min: 1, max: 300 })}/500/500`,
   position: faker.name.jobTitle(),
   location: `${faker.address.city()}, ${faker.address.countryCode()}`,
@@ -34,7 +35,6 @@ const fakeUser = () => ({
 // #region Authentication
 
 export const login = async (authDto) => {
-  console.log(authDto);
   const response = await api.post('/users/login', authDto);
   const { data } = response;
   return data;
@@ -56,4 +56,12 @@ export const fetchEmployees = async (page = 1, pageSize = 10) => {
   const { data } = response;
   return data;
 };
+
+export const updateEmployee = async (employee) => {
+  console.log(employee);
+  const response = await api.put(`/users/${employee.id}`, employee);
+  const { data } = response;
+  return data;
+};
+
 // #endregion

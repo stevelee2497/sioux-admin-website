@@ -42,7 +42,7 @@ class EmployeeForm extends Component {
 
     const profile = selectedEmployee || {
       id: undefined,
-      name: undefined,
+      fullName: undefined,
       avatar: undefined,
       position: undefined,
       location: undefined,
@@ -62,26 +62,26 @@ class EmployeeForm extends Component {
       <Spin spinning={loading}>
         <Form className={styles.container}>
           <div className={styles.left}>
-            <Avatar name={profile.name} src={profile.avatar} />
+            <Avatar name={profile.fullName} src={profile.avatar} />
             <div className={styles.skills}>
               <div className={styles.skillTitleBlock}>
                 <h3 className={styles.skillTitle}>SKILLS</h3>
                 <Divider className={styles.divider} />
               </div>
-              <FormItem
+              {/* <FormItem
                 value="newSkills"
                 initialValue={profile.skills.join('\n')}
                 component={<Input.TextArea autosize placeholder="Employee Skills" />}
                 getFieldDecorator={getFieldDecorator}
-              />
+              /> */}
             </div>
           </div>
 
           <div className={styles.right}>
             <div className={styles.nameBlock}>
               <FormItem
-                value="name"
-                initialValue={profile.name}
+                value="fullName"
+                initialValue={profile.fullName}
                 component={<Input placeholder="Employee Name" />}
                 getFieldDecorator={getFieldDecorator}
                 required
@@ -147,7 +147,7 @@ class EmployeeForm extends Component {
                   <CRow title="Birthdate">
                     <FormItem
                       value="birthDate"
-                      initialValue={moment(profile.birthDate, 'DD/MM/YYYY')}
+                      initialValue={moment(profile.birthDate)}
                       component={<DatePicker format="DD/MM/YYYY" />}
                       getFieldDecorator={getFieldDecorator}
                     />
@@ -177,12 +177,12 @@ class EmployeeForm extends Component {
               </Tabs.TabPane>
 
               <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-                <FormItem
+                {/* <FormItem
                   value="newTimeline"
                   initialValue={profile.timeline.join('\n')}
                   component={<Input.TextArea autosize placeholder="Employee Timeline" />}
                   getFieldDecorator={getFieldDecorator}
-                />
+                /> */}
               </Tabs.TabPane>
             </Tabs>
           </div>

@@ -42,5 +42,11 @@ export default {
         profile: ''
       };
     },
+    updateProile(state, { payload: profile }) {
+      return {
+        ...state,
+        profile: { ...state.profile, ...profile }
+      };
+    },
   },
 };

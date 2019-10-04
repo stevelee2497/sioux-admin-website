@@ -7,9 +7,15 @@ import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 
-const EmployeeSkills = ({ skills }) => skills.map(skill => (
-  <h4 key={skill}>{skill}</h4>
-));
+const EmployeeSkills = ({ skills }) => {
+  if (!skills) {
+    return null;
+  }
+
+  return skills.map(skill => (
+    <h4 key={skill}>{skill}</h4>
+  ));
+};
 
 const CRow = ({ title, value }) => (
   <Row>
@@ -17,7 +23,7 @@ const CRow = ({ title, value }) => (
       <h4>{title}:</h4>
     </Col>
     <Col span={18}>
-      <h4>{value}</h4>
+      <h4 style={{ whiteSpace: 'pre-wrap' }}>{value}</h4>
     </Col>
   </Row>
 );
@@ -47,7 +53,7 @@ class EmployeeInformation extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.left}>
-          <Avatar name={selectedEmployee.name} src={selectedEmployee.avatar} />
+          <Avatar name={selectedEmployee.fullName} src={selectedEmployee.avatar} />
           <div className={styles.skills}>
             <div className={styles.skillTitleBlock}>
               <h3 className={styles.skillTitle}>SKILLS</h3>
@@ -59,7 +65,7 @@ class EmployeeInformation extends Component {
 
         <div className={styles.right}>
           <div className={styles.nameBlock}>
-            <h2 className={styles.name}>{selectedEmployee.name}</h2>
+            <h2 className={styles.name}>{selectedEmployee.fullName}</h2>
             <img alt="" src="/assets/location.svg" className={styles.locationIcon} />
             <h4 className={styles.location}>{selectedEmployee.location}</h4>
           </div>

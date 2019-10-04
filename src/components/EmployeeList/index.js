@@ -28,12 +28,12 @@ class EmployeeList extends Component {
           <List.Item>
             <Card bodyStyle={{ display: 'flex' }}>
               <img
-                alt={`${item.name} profile`}
+                alt={`${item.fullName} profile`}
                 src={item.avatar}
                 onError={(e) => { e.target.onerror = null; e.target.src = '/assets/default_avatar.png'; }}
               />
               <div className={styles.info}>
-                <h2>{item.name}</h2>
+                <h2>{item.fullName}</h2>
                 <h4 className={styles.position}>{item.position}</h4>
                 <h4 className={styles.description}>{item.description}</h4>
                 <button type="button" onClick={e => handleViewProfile(item)}>View Profile</button>

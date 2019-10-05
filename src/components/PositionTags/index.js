@@ -4,20 +4,18 @@ import { Tag } from 'antd';
 
 const { CheckableTag } = Tag;
 
-const tagsFromServer = ['Manager Director', 'Technical Leader', 'HR Manager', 'Developer'];
-
 class PositionTags extends Component {
   render() {
-    const { selectedTag, changePositionFilter } = this.props;
+    const { selectedPosition, changePositionFilter, positions } = this.props;
     return (
       <>
-        {tagsFromServer.map(tag => (
+        {positions.map(tag => (
           <CheckableTag
-            key={tag}
-            checked={tag === selectedTag}
+            key={tag.id}
+            checked={tag === selectedPosition}
             onChange={checked => changePositionFilter(tag, checked)}
           >
-            {tag}
+            {tag.name}
           </CheckableTag>
         ))}
       </>
@@ -26,7 +24,8 @@ class PositionTags extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  selectedTag: state.people.selectedPosition
+  selectedPosition: state.people.selectedPosition,
+  positions: state.positions
 });
 
 const mapDispatchToProps = dispatch => ({

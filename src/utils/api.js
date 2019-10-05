@@ -65,3 +65,23 @@ export const updateEmployee = async (employee) => {
 };
 
 // #endregion
+
+// #region Position
+
+export const fetchPositions = async () => {
+  const response = await api.get('/positions');
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
+// #region Skill
+
+export const fetchSkills = async () => {
+  const response = await api.get('/skills');
+  const { data } = response;
+  return data;
+};
+
+// #endregion

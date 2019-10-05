@@ -48,7 +48,7 @@ class EmployeeInformation extends Component {
       return null;
     }
 
-    const editable = (profile.role === ROLE.ADMIN || profile.id === selectedEmployee.id) && profileModalType === PROFILE_MODAL_TYPE.VIEW;
+    const editable = (profile.roles.includes(ROLE.ADMIN) || profile.id === selectedEmployee.id) && profileModalType === PROFILE_MODAL_TYPE.VIEW;
 
     return (
       <div className={styles.container}>
@@ -69,7 +69,7 @@ class EmployeeInformation extends Component {
             <img alt="" src="/assets/location.svg" className={styles.locationIcon} />
             <h4 className={styles.location}>{selectedEmployee.location}</h4>
           </div>
-          <h4 className={styles.position}>{selectedEmployee.position}</h4>
+          <h4 className={styles.position}>{selectedEmployee.position.name}</h4>
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab={<TabIcon icon="user" title="About" />} key="1">
               <div className={styles.tabContainer}>

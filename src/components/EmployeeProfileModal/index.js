@@ -6,11 +6,6 @@ import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 import EmployeeForm from './EmployeeForm';
 
 class EmployeeProfileModal extends Component {
-  constructor(props) {
-    super(props);
-    this.employeeForm = createRef();
-  }
-
   handleOk = () => {
     const { closeModal, profileModalType, updateEmployeeProfile, selectedEmployee } = this.props;
     if (profileModalType === PROFILE_MODAL_TYPE.VIEW) {
@@ -19,7 +14,8 @@ class EmployeeProfileModal extends Component {
       const { form } = this.formRef.props;
       form.validateFields((err, values) => {
         if (!err) {
-          updateEmployeeProfile({ ...selectedEmployee, ...values });
+          console.log(values);
+          // updateEmployeeProfile({ ...selectedEmployee, ...values });
         }
     });
     }

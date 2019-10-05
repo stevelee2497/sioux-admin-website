@@ -4,21 +4,19 @@ import { Tag } from 'antd';
 
 const { CheckableTag } = Tag;
 
-const tagsFromServer = ['Java', 'Python', 'Xamarin', 'React Js'];
-
 class SkillTags extends Component {
   render() {
-    const { selectedSkills, changeSkillsFilter } = this.props;
+    const { selectedSkills, changeSkillsFilter, skills } = this.props;
 
     return (
       <>
-        {tagsFromServer.map(tag => (
+        {skills.map(skill => (
           <CheckableTag
-            key={tag}
-            checked={selectedSkills.indexOf(tag) > -1}
-            onChange={checked => changeSkillsFilter(tag, checked)}
+            key={skill.id}
+            checked={selectedSkills.indexOf(skill) > -1}
+            onChange={checked => changeSkillsFilter(skill, checked)}
           >
-            {tag}
+            {skill.name}
           </CheckableTag>
         ))}
       </>
@@ -28,6 +26,7 @@ class SkillTags extends Component {
 
 const mapStateToProps = state => ({
   selectedSkills: state.people.selectedSkills,
+  skills: state.skills
 });
 
 const mapDispatchToProps = dispatch => ({

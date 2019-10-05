@@ -8,11 +8,11 @@ export default {
     page: 1,
     pageSize: 20,
     total: 100,
-    selectedEmployee: undefined,
-    modalVisible: false,
+    selectedEmployee: JSON.parse(localStorage.getItem('profile')),
+    modalVisible: true,
     selectedPosition: undefined,
     selectedSkills: [],
-    profileModalType: PROFILE_MODAL_TYPE.VIEW
+    profileModalType: PROFILE_MODAL_TYPE.EDIT
   },
   subscriptions: {
     setup({ dispatch, history }) {

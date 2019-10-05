@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Divider, Tabs, Row, Col, Timeline, Button, Form, Input, DatePicker, Select, Spin } from 'antd';
+import { Divider, Tabs, Row, Col, Timeline, Button, Form, Input, DatePicker, Select, Spin, AutoComplete } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
 import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
@@ -28,13 +28,38 @@ const CRow = props => (
 );
 
 class EmployeeForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      newPosition: '',
+      positions: props.positions
+    };
+  }
+
+  onSearch = searchText => {
+    const { positions } = this.props;
+    this.setState({
+      positions: !searchText ? positions : positions.filter(value => value.name.toUpperCase().includes(searchText.toUpperCase())),
+    });
+    if (!this.state.positions) {
+      this.setState({ newPosition: searchText });
+    }
+  };
+
+  onSelect = (value) => {
+    console.log(value);
+  }
+
   render() {
     const {
       people: { modalVisible },
       form: { getFieldDecorator },
       selectedEmployee,
-      loading
+      loading,
     } = this.props;
+
+    const { positions } = this.state;
 
     if (!modalVisible) {
       return null;
@@ -44,7 +69,7 @@ class EmployeeForm extends Component {
       id: undefined,
       fullName: undefined,
       avatar: undefined,
-      position: undefined,
+      position: { name: undefined },
       location: undefined,
       address: undefined,
       description: undefined,
@@ -95,14 +120,23 @@ class EmployeeForm extends Component {
                 required
               />
             </div>
+
             <FormItem
-              value="position"
-              initialValue={profile.position}
-              component={<Input placeholder="Position" />}
+              value="newPosition"
+              initialValue={profile.position.name}
+              component={(
+                <AutoComplete
+                  dataSource={positions.map(value => value.name)}
+                  style={{ width: 300 }}
+                  onSelect={this.onSelect}
+                  onSearch={this.onSearch}
+                  placeholder="Position"
+                />
+              )}
               getFieldDecorator={getFieldDecorator}
-              style={{ width: 300 }}
               required
             />
+
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab={<TabIcon icon="user" title="About" />} key="1">
                 <div className={styles.tabContainer}>
@@ -195,7 +229,8 @@ class EmployeeForm extends Component {
 const mapStateToProps = state => ({
   people: state.people,
   selectedEmployee: state.people.selectedEmployee,
-  loading: state.loading.global
+  loading: state.loading.global,
+  positions: state.positions
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -15,7 +15,7 @@ class EmployeeProfileModal extends Component {
       form.validateFields((err, values) => {
         if (!err) {
           console.log(values);
-          // updateEmployeeProfile({ ...selectedEmployee, ...values });
+          updateEmployeeProfile({ ...selectedEmployee, ...values });
         }
     });
     }

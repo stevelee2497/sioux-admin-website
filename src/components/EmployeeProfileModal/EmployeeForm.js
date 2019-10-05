@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Divider, Tabs, Row, Col, Timeline, Button, Form, Input, DatePicker, Select, Spin, AutoComplete } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
-import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
+import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 
@@ -27,39 +27,16 @@ const CRow = props => (
   </Row>
 );
 
+
 class EmployeeForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      newPosition: '',
-      positions: props.positions
-    };
-  }
-
-  onSearch = searchText => {
-    const { positions } = this.props;
-    this.setState({
-      positions: !searchText ? positions : positions.filter(value => value.name.toUpperCase().includes(searchText.toUpperCase())),
-    });
-    if (!this.state.positions) {
-      this.setState({ newPosition: searchText });
-    }
-  };
-
-  onSelect = (value) => {
-    console.log(value);
-  }
-
   render() {
     const {
       people: { modalVisible },
       form: { getFieldDecorator },
       selectedEmployee,
       loading,
+      positions
     } = this.props;
-
-    const { positions } = this.state;
 
     if (!modalVisible) {
       return null;
@@ -69,7 +46,8 @@ class EmployeeForm extends Component {
       id: undefined,
       fullName: undefined,
       avatar: undefined,
-      position: { name: undefined },
+      positionId: undefined,
+      position: { id: undefined, name: undefined },
       location: undefined,
       address: undefined,
       description: undefined,
@@ -93,12 +71,6 @@ class EmployeeForm extends Component {
                 <h3 className={styles.skillTitle}>SKILLS</h3>
                 <Divider className={styles.divider} />
               </div>
-              {/* <FormItem
-                value="newSkills"
-                initialValue={profile.skills.join('\n')}
-                component={<Input.TextArea autosize placeholder="Employee Skills" />}
-                getFieldDecorator={getFieldDecorator}
-              /> */}
             </div>
           </div>
 
@@ -122,16 +94,18 @@ class EmployeeForm extends Component {
             </div>
 
             <FormItem
-              value="newPosition"
-              initialValue={profile.position.name}
+              value="positionId"
+              initialValue={profile.position.id}
               component={(
-                <AutoComplete
-                  dataSource={positions.map(value => value.name)}
+                <Select
+                  showSearch
                   style={{ width: 300 }}
-                  onSelect={this.onSelect}
-                  onSearch={this.onSearch}
                   placeholder="Position"
-                />
+                  optionFilterProp="children"
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  {positions.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+                </Select>
               )}
               getFieldDecorator={getFieldDecorator}
               required

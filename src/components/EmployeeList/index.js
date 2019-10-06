@@ -62,8 +62,8 @@ const mapDispatchToProps = dispatch => ({
   },
   handleViewProfile: employee => {
     dispatch({
-      type: 'people/selectEmployee',
-      payload: employee
+      type: 'people/showProfile',
+      payload: employee.id
     });
   }
 });

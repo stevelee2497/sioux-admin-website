@@ -57,6 +57,12 @@ export const fetchEmployees = async (page = 1, pageSize = 10) => {
   return data;
 };
 
+export const fetchEmployee = async (id) => {
+  const response = await api.get(`/users/${id}`);
+  const { data } = response;
+  return data;
+};
+
 export const updateEmployee = async (employee) => {
   console.log(employee);
   const response = await api.put(`/users/${employee.id}`, employee);

@@ -8,7 +8,7 @@ class AvatarPopoverContent extends Component {
     const { logout, showProfile, profile } = this.props;
     return (
       <div className={styles.container}>
-        <button type="button" className={styles.item} onClick={() => { showProfile(profile) ;}}>
+        <button type="button" className={styles.item} onClick={() => { showProfile(profile); }}>
           <Icon type="user" />
           <span>Profile</span>
         </button>
@@ -33,8 +33,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch({ type: 'passport/logout' }),
   showProfile: profile => dispatch({
-    type: 'people/selectEmployee',
-    payload: profile
+    type: 'people/showProfile',
+    payload: profile.id
   })
 });
 

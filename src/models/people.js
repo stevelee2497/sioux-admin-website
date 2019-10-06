@@ -1,4 +1,4 @@
-import { fetchEmployees, delay, updateEmployee } from '../utils/api';
+import { fetchEmployees, delay, updateEmployee, fetchEmployee } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -49,13 +49,16 @@ export default {
     },
     *updateEmployeeProfile({ payload }, { call, put, select }) {
       const { data } = yield call(updateEmployee, payload);
-      yield put({ type: 'updateEmployeeProfileSuccess', payload: data });
-      yield put({ type: 'changeViewType', payload: PROFILE_MODAL_TYPE.VIEW });
+      yield put({ type: 'closeModal' });
       const { profile } = yield select(state => state.passport);
       if (payload.id === profile.id) {
-        yield put({ type: 'passport/updateProile', payload: data });
+        yield put({ type: 'passport/updateProfile', payload: profile.id });
       }
-    }
+    },
+    *showProfile({ payload: id }, { call, put, select }) {
+      const { data } = yield call(fetchEmployee, id);
+      yield put({ type: 'selectEmployee', payload: data });
+    },
   },
   reducers: {
     fetchSuccess(state, { payload }) {
@@ -105,12 +108,6 @@ export default {
       return {
         ...state,
         profileModalType
-      };
-    },
-    updateEmployeeProfileSuccess(state, { payload: profile }) {
-      return {
-        ...state,
-        selectedEmployee: { ...state.selectedEmployee, ...profile }
       };
     },
     openEmployeeForm(state, { payload }) {

@@ -1,4 +1,4 @@
-import { fetchEmployees, delay, updateEmployee, fetchEmployee } from '../utils/api';
+import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -58,6 +58,9 @@ export default {
     *showProfile({ payload: id }, { call, put, select }) {
       const { data } = yield call(fetchEmployee, id);
       yield put({ type: 'selectEmployee', payload: data });
+    },
+    *addUserSkill({ payload }, { call, put, select }) {
+      yield call(addUserSkill, payload);
     },
   },
   reducers: {

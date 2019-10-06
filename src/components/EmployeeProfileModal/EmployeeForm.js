@@ -6,6 +6,7 @@ import styles from './index.less';
 import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
+import SkillSelect from '../SkillSelect';
 
 const FormItem = ({ value, initialValue, component, getFieldDecorator, required }) => {
   const rules = [{ required: required || false }];
@@ -35,7 +36,8 @@ class EmployeeForm extends Component {
       form: { getFieldDecorator },
       selectedEmployee,
       loading,
-      positions
+      positions,
+      skills
     } = this.props;
 
     if (!modalVisible) {
@@ -71,6 +73,7 @@ class EmployeeForm extends Component {
                 <h3 className={styles.skillTitle}>SKILLS</h3>
                 <Divider className={styles.divider} />
               </div>
+              <SkillSelect userId={profile.id} />
             </div>
           </div>
 
@@ -204,7 +207,8 @@ const mapStateToProps = state => ({
   people: state.people,
   selectedEmployee: state.people.selectedEmployee,
   loading: state.loading.global,
-  positions: state.positions
+  positions: state.positions,
+  skills: state.skills
 });
 
 const mapDispatchToProps = dispatch => ({

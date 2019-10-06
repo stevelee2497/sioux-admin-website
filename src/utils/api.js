@@ -70,6 +70,12 @@ export const updateEmployee = async (employee) => {
   return data;
 };
 
+export const addUserSkill = async (userSkill) => {
+  const response = await api.post('/userSkills', userSkill);
+  const { data } = response;
+  return data;
+};
+
 // #endregion
 
 // #region Position

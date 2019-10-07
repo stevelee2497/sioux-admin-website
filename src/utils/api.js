@@ -70,12 +70,6 @@ export const updateEmployee = async (employee) => {
   return data;
 };
 
-export const addUserSkill = async (userSkill) => {
-  const response = await api.post('/userSkills', userSkill);
-  const { data } = response;
-  return data;
-};
-
 // #endregion
 
 // #region Position
@@ -92,6 +86,58 @@ export const fetchPositions = async () => {
 
 export const fetchSkills = async () => {
   const response = await api.get('/skills');
+  const { data } = response;
+  return data;
+};
+
+export const createNewSkill = async (name) => {
+  const response = await api.post('/skills', { name });
+  const { data } = response;
+  return data;
+};
+
+export const addUserSkill = async (userSkill) => {
+  const response = await api.post('/userSkills', userSkill);
+  const { data } = response;
+  return data;
+};
+
+export const getUserSkills = async (id) => {
+  const response = await api.get(`/userSkills?userId=${id}`);
+  const { data } = response;
+  return data;
+};
+
+export const removeUserSkills = async (id) => {
+  const response = await api.delete(`/userSkills/${id}`);
+  const { data } = response;
+  return data;
+};
+
+export const deleteSkill = async (id) => {
+  const response = await api.delete(`/skills/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
+// #region TimeLineEvent
+
+export const addTimeLineEvent = async (event) => {
+  const response = await api.post('/timeLineEvents', event);
+  const { data } = response;
+  return data;
+};
+
+export const getTimeLineEvents = async (userId) => {
+  const response = await api.get(`/timeLineEvents?userId=${userId}`);
+  const { data } = response;
+  return data;
+};
+
+export const removeTimeLineEvents = async (id) => {
+  const response = await api.delete(`/timeLineEvents/${id}`);
   const { data } = response;
   return data;
 };

@@ -1,13 +1,20 @@
 import router from 'umi/router';
+import { notification } from 'antd';
 
 export const dva = {
   config: {
     onError(err) {
       err.preventDefault();
       if (err.response) {
-        console.log(err.response.data.errorMessage);
+        notification.error({
+          message: err.response.statusText,
+          description: err.response.data.errorMessage,
+        });
       } else {
-        console.log(err.message);
+        notification.error({
+          message: 'Ops',
+          description: err.message,
+        });
       }
     }
   },

@@ -1,4 +1,4 @@
-import { fetchSkills } from '../utils/api';
+import { fetchSkills, deleteSkill } from '../utils/api';
 
 export default {
   namespace: 'skills',
@@ -18,6 +18,10 @@ export default {
     *fetchAll({ payload }, { call, put }) {
       const { data } = yield call(fetchSkills);
       yield put({ type: 'fetchAlluccess', payload: data });
+    },
+    *deleteSkill({ payload: id }, { call, put }) {
+      yield call(deleteSkill, id);
+      yield put({ type: 'fetchAll' });
     },
   },
   reducers: {

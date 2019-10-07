@@ -1,4 +1,4 @@
-import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill } from '../utils/api';
+import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill, getUserSkills, removeUserSkills, getTimeLineEvents, addTimeLineEvent, removeTimeLineEvents, createNewSkill } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -48,7 +48,7 @@ export default {
       yield put({ type: 'fetch' });
     },
     *updateEmployeeProfile({ payload }, { call, put, select }) {
-      const { data } = yield call(updateEmployee, payload);
+      yield call(updateEmployee, payload);
       yield put({ type: 'closeModal' });
       const { profile } = yield select(state => state.passport);
       if (payload.id === profile.id) {
@@ -58,9 +58,41 @@ export default {
     *showProfile({ payload: id }, { call, put, select }) {
       const { data } = yield call(fetchEmployee, id);
       yield put({ type: 'selectEmployee', payload: data });
+      const selectedEmployee = yield select(state => state.people.selectedEmployee);
+      yield put({ type: 'getTimeLineEvents', payload: selectedEmployee.id });
     },
     *addUserSkill({ payload }, { call, put, select }) {
-      yield call(addUserSkill, payload);
+      const { newSkillName, skillId, userId } = payload;
+      if (newSkillName) {
+        const { data: { id } } = yield call(createNewSkill, newSkillName);
+        yield call(addUserSkill, { userId, skillId: id });
+      } else {
+        yield call(addUserSkill, { userId, skillId });
+      }
+      yield put({ type: 'getUserSkills' });
+    },
+    *getUserSkills({ payload }, { call, put, select }) {
+      const { id } = yield select(state => state.people.selectedEmployee);
+      const { data } = yield call(getUserSkills, id);
+      yield put({ type: 'getUserSkillsSuccess', payload: data });
+    },
+    *removeUserSkills({ payload: id }, { call, put, select }) {
+      yield call(removeUserSkills, id);
+      yield put({ type: 'getUserSkills' });
+    },
+    *addTimeLineEvent({ payload }, { call, put, select }) {
+      yield call(addTimeLineEvent, payload);
+      const { id } = yield select(state => state.people.selectedEmployee);
+      yield put({ type: 'getTimeLineEvents', payload: id });
+    },
+    *getTimeLineEvents({ payload: userId }, { call, put, select }) {
+      const { data } = yield call(getTimeLineEvents, userId);
+      yield put({ type: 'getTimeLineEventsSuccess', payload: data });
+    },
+    *removeTimeLineEvents({ payload: id }, { call, put, select }) {
+      yield call(removeTimeLineEvents, id);
+      const { id: userId } = yield select(state => state.people.selectedEmployee);
+      yield put({ type: 'getTimeLineEvents', payload: userId });
     },
   },
   reducers: {
@@ -119,6 +151,24 @@ export default {
         profileModalType: PROFILE_MODAL_TYPE.CREATE,
         modalVisible: true
       };
-    }
+    },
+    getUserSkillsSuccess(state, { payload: skills }) {
+      return {
+        ...state,
+        selectedEmployee: {
+          ...state.selectedEmployee,
+          skills
+        }
+      };
+    },
+    getTimeLineEventsSuccess(state, { payload: timeLineEvents }) {
+      return {
+        ...state,
+        selectedEmployee: {
+          ...state.selectedEmployee,
+          timeLineEvents
+        }
+      };
+    },
   },
 };

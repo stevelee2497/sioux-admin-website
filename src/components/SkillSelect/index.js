@@ -23,14 +23,21 @@ class SkillSelect extends Component {
   };
 
   onClick = () => {
-    console.log(this.state);
+    const { userId, addUserSkill, skills } = this.props;
+    const { value } = this.state;
+    if (skills.find(item => item.name === value) > 0) {
+      addUserSkill({ userId, skillId: value });
+    } else {
+      addUserSkill({ userId, newSkillName: value });
+    }
+    this.setState({ value: '' });
   }
 
   render() {
     const { dataSource, value } = this.state;
 
     return (
-      <div>
+      <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between' }}>
         <AutoComplete
           dataSource={dataSource}
           style={{ width: 150 }}
@@ -38,6 +45,7 @@ class SkillSelect extends Component {
           onSearch={this.onSearch}
           onChange={this.onChange}
           placeholder="Skill"
+          value={value}
         />
         <Button type="primary" shape="circle" icon="plus" style={{ marginLeft: 10 }} onClick={this.onClick} />
       </div>
@@ -49,8 +57,11 @@ const mapStateToProps = (state) => ({
   skills: state.skills
 });
 
-const mapDispatchToProps = {
-  
-};
+const mapDispatchToProps = dispatch => ({
+  addUserSkill: userSkill => dispatch({
+    type: 'people/addUserSkill',
+    payload: userSkill
+  })
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SkillSelect);

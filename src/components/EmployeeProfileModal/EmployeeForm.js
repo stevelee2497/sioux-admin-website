@@ -7,6 +7,8 @@ import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 import SkillSelect from '../SkillSelect';
+import EmployeeSkills from '../EmployeeSkills';
+import EmployeeTimeline from '../EmployeeTimeline';
 
 const FormItem = ({ value, initialValue, component, getFieldDecorator, required }) => {
   const rules = [{ required: required || false }];
@@ -37,7 +39,8 @@ class EmployeeForm extends Component {
       selectedEmployee,
       loading,
       positions,
-      skills
+      skills,
+      removeUserSkills
     } = this.props;
 
     if (!modalVisible) {
@@ -73,6 +76,7 @@ class EmployeeForm extends Component {
                 <h3 className={styles.skillTitle}>SKILLS</h3>
                 <Divider className={styles.divider} />
               </div>
+              <EmployeeSkills skills={profile.skills} edit onRemove={removeUserSkills} />
               <SkillSelect userId={profile.id} />
             </div>
           </div>
@@ -188,12 +192,7 @@ class EmployeeForm extends Component {
               </Tabs.TabPane>
 
               <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-                {/* <FormItem
-                  value="newTimeline"
-                  initialValue={profile.timeline.join('\n')}
-                  component={<Input.TextArea autosize placeholder="Employee Timeline" />}
-                  getFieldDecorator={getFieldDecorator}
-                /> */}
+                <EmployeeTimeline />
               </Tabs.TabPane>
             </Tabs>
           </div>
@@ -215,6 +214,10 @@ const mapDispatchToProps = dispatch => ({
   editProfile: () => dispatch({
     type: 'people/changeViewType',
     payload: PROFILE_MODAL_TYPE.EDIT,
+  }),
+  removeUserSkills: (id) => dispatch({
+    type: 'people/removeUserSkills',
+    payload: id,
   }),
 });
 

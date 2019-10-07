@@ -6,16 +6,8 @@ import styles from './index.less';
 import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
-
-const EmployeeSkills = ({ skills }) => {
-  if (!skills) {
-    return null;
-  }
-
-  return skills.map(skill => (
-    <h4 key={skill}>{skill}</h4>
-  ));
-};
+import EmployeeSkills from '../EmployeeSkills';
+import EmployeeTimeline from '../EmployeeTimeline';
 
 const CRow = ({ title, value }) => (
   <Row>
@@ -87,12 +79,7 @@ class EmployeeInformation extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-              <Timeline className={styles.timeline}>
-                <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-                <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-                <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-                <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
-              </Timeline>
+              <EmployeeTimeline />
             </Tabs.TabPane>
           </Tabs>
         </div>

@@ -96,8 +96,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   editProfile: () => dispatch({
-    type: 'people/changeViewType',
-    payload: PROFILE_MODAL_TYPE.EDIT,
+    type: 'people/editProfile'
   }),
 });
 

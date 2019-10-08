@@ -61,6 +61,11 @@ export default {
       const selectedEmployee = yield select(state => state.people.selectedEmployee);
       yield put({ type: 'getTimeLineEvents', payload: selectedEmployee.id });
     },
+    *editProfile({ payload }, { call, put, select }) {
+      yield put({ type: 'positions/fetchAll' });
+      yield put({ type: 'skills/fetchAll' });
+      yield put({ type: 'changeViewType', payload: PROFILE_MODAL_TYPE.EDIT });
+    },
     *addUserSkill({ payload }, { call, put, select }) {
       const { newSkillName, skillId, userId } = payload;
       if (newSkillName) {

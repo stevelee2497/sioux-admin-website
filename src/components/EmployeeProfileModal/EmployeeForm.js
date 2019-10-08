@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Divider, Tabs, Row, Col, Timeline, Button, Form, Input, DatePicker, Select, Spin, AutoComplete } from 'antd';
+import { Divider, Tabs, Row, Col, Form, Input, DatePicker, Select, Spin, AutoComplete } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
-import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 import SkillSelect from '../SkillSelect';
@@ -212,8 +211,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   editProfile: () => dispatch({
-    type: 'people/changeViewType',
-    payload: PROFILE_MODAL_TYPE.EDIT,
+    type: 'people/editProfile'
   }),
   removeUserSkills: (id) => dispatch({
     type: 'people/removeUserSkills',

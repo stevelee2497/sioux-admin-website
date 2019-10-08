@@ -15,17 +15,6 @@ const navItems = [
 ];
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      avatarPopOverVisible: false,
-    };
-  }
-
-  handleVisibleChange = avatarPopOverVisible => {
-    this.setState({ avatarPopOverVisible });
-  };
-
   renderNavItems = () => {
     const {
       location: { pathname },
@@ -43,7 +32,7 @@ class Header extends Component {
   };
 
   render() {
-    const { avatarPopOverVisible } = this.state;
+    const { profile } = this.props;
     return (
       <div className={styles.container}>
         <div>
@@ -54,18 +43,17 @@ class Header extends Component {
         </div>
         <div>
           Hello,
-          <Link to="/">Quoc Tran</Link>
+          <Link to="/">{profile.fullName}</Link>
           <Popover
-            visible={avatarPopOverVisible}
-            onVisibleChange={this.handleVisibleChange}
             placement="bottomRight"
             trigger="hover"
             content={<AvatarPopoverContent />}
           >
             <img
               alt="avatar"
-              src="http://media2.sieuhai.tv:8088/onbox/images/user_lead_image/20190408/84947430634_20190408001343.jpg"
+              src={profile.avatarUrl}
               className={styles.avatar}
+              onError={(e) => { e.target.onerror = null; e.target.src = '/assets/default_avatar.png'; }}
             />
           </Popover>
         </div>
@@ -76,6 +64,7 @@ class Header extends Component {
 
 const mapStateToProps = state => ({
   location: state.router.location,
+  profile: state.passport.profile
 });
 
 const mapDispatchToProps = {};

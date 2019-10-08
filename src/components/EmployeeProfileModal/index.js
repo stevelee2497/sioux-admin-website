@@ -6,21 +6,16 @@ import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 import EmployeeForm from './EmployeeForm';
 
 class EmployeeProfileModal extends Component {
-  constructor(props) {
-    super(props);
-    this.employeeForm = createRef();
-  }
-
   handleOk = () => {
-    const { closeModal, profileModalType, updateEmployeeProfile } = this.props;
+    const { closeModal, profileModalType, updateEmployeeProfile, selectedEmployee } = this.props;
     if (profileModalType === PROFILE_MODAL_TYPE.VIEW) {
       closeModal();
     } else {
       const { form } = this.formRef.props;
       form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
-          updateEmployeeProfile(values);
+          console.log(values);
+          updateEmployeeProfile({ ...selectedEmployee, ...values });
         }
     });
     }
@@ -31,7 +26,7 @@ class EmployeeProfileModal extends Component {
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
-  
+
   render() {
     const { modalVisible, closeModal, profileModalType } = this.props;
 
@@ -52,6 +47,7 @@ class EmployeeProfileModal extends Component {
 const mapStateToProps = state => ({
   modalVisible: state.people.modalVisible,
   profileModalType: state.people.profileModalType,
+  selectedEmployee: state.people.selectedEmployee,
   profile: state.passport.profile,
 });
 

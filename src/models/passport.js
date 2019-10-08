@@ -1,5 +1,5 @@
 import router from 'umi/router';
-import { login } from '../utils/api';
+import { login, fetchEmployee } from '../utils/api';
 
 export default {
   namespace: 'passport',
@@ -25,6 +25,11 @@ export default {
       yield put({ type: 'logoutSuccess' });
       router.push('/login');
     },
+    *updateProfile({ payload: id }, { call, put }) {
+      const { data } = yield call(fetchEmployee, id);
+      localStorage.setItem('profile', JSON.stringify(data));
+      yield put({ type: 'updateProfileSuccess', payload: data });
+    },
   },
   reducers: {
     loginSuccess(state, { payload }) {
@@ -40,6 +45,12 @@ export default {
         authenticated: false,
         token: '',
         profile: ''
+      };
+    },
+    updateProfileSuccess(state, { payload: profile }) {
+      return {
+        ...state,
+        profile
       };
     },
   },

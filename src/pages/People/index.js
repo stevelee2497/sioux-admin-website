@@ -34,7 +34,7 @@ class People extends Component {
         <div className={styles.body}>
           <FilterOptions />
           <EmployeeList />
-          <CreateProfileButton visible={profile.role === ROLE.ADMIN} onClick={openEmployeeForm} />
+          <CreateProfileButton visible={profile.roles.some(role => role.roleName === ROLE.ADMIN)} onClick={openEmployeeForm} />
         </div>
 
       </div>

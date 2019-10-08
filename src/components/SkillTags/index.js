@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Tag } from 'antd';
+import { Tag, Popover, Button } from 'antd';
+import { ROLE } from '../../utils/constants';
 
 const { CheckableTag } = Tag;
 
-const tagsFromServer = ['Java', 'Python', 'Xamarin', 'React Js'];
-
 class SkillTags extends Component {
   render() {
-    const { selectedSkills, changeSkillsFilter } = this.props;
+    const { selectedSkills, changeSkillsFilter, skills, profile, deleteSkill } = this.props;
+
+    const popoverVisible = !profile.roles.some(role => role.roleName === ROLE.ADMIN) ? { visible: false } : null;
 
     return (
       <>
-        {tagsFromServer.map(tag => (
-          <CheckableTag
-            key={tag}
-            checked={selectedSkills.indexOf(tag) > -1}
-            onChange={checked => changeSkillsFilter(tag, checked)}
-          >
-            {tag}
-          </CheckableTag>
+        {skills.map(skill => (
+          <Popover key={skill.id} content={<Button type="link" onClick={() => deleteSkill(skill.id)}>Delete</Button>} {...popoverVisible}>
+            <CheckableTag
+              checked={selectedSkills.indexOf(skill) > -1}
+              onChange={checked => changeSkillsFilter(skill, checked)}
+            >
+              {skill.name}
+            </CheckableTag>
+          </Popover>
         ))}
       </>
     );
@@ -28,12 +30,18 @@ class SkillTags extends Component {
 
 const mapStateToProps = state => ({
   selectedSkills: state.people.selectedSkills,
+  skills: state.skills,
+  profile: state.passport.profile,
 });
 
 const mapDispatchToProps = dispatch => ({
   changeSkillsFilter: (tag, checked) => dispatch({
     type: 'people/changeSkillsFilter',
     payload: { tag, checked }
+  }),
+  deleteSkill: id => dispatch({
+    type: 'skills/deleteSkill',
+    payload: id
   }),
 });
 

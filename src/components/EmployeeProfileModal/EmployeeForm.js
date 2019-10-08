@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Divider, Tabs, Row, Col, Timeline, Button, Form, Input, DatePicker, Select, Spin } from 'antd';
+import { Divider, Tabs, Row, Col, Form, Input, DatePicker, Select, Spin, AutoComplete } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
-import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
+import SkillSelect from '../SkillSelect';
+import EmployeeSkills from '../EmployeeSkills';
+import EmployeeTimeline from '../EmployeeTimeline';
 
 const FormItem = ({ value, initialValue, component, getFieldDecorator, required }) => {
   const rules = [{ required: required || false }];
@@ -27,13 +29,17 @@ const CRow = props => (
   </Row>
 );
 
+
 class EmployeeForm extends Component {
   render() {
     const {
       people: { modalVisible },
       form: { getFieldDecorator },
       selectedEmployee,
-      loading
+      loading,
+      positions,
+      skills,
+      removeUserSkills
     } = this.props;
 
     if (!modalVisible) {
@@ -42,9 +48,10 @@ class EmployeeForm extends Component {
 
     const profile = selectedEmployee || {
       id: undefined,
-      name: undefined,
+      fullName: undefined,
       avatar: undefined,
-      position: undefined,
+      positionId: undefined,
+      position: { id: undefined, name: undefined },
       location: undefined,
       address: undefined,
       description: undefined,
@@ -55,33 +62,29 @@ class EmployeeForm extends Component {
       birthDate: moment(),
       gender: 'Male',
       role: undefined,
-      timeline: [],
+      timeLineEvents: [],
     };
 
     return (
       <Spin spinning={loading}>
         <Form className={styles.container}>
           <div className={styles.left}>
-            <Avatar name={profile.name} src={profile.avatar} />
+            <Avatar name={profile.fullName} src={profile.avatar} />
             <div className={styles.skills}>
               <div className={styles.skillTitleBlock}>
                 <h3 className={styles.skillTitle}>SKILLS</h3>
                 <Divider className={styles.divider} />
               </div>
-              <FormItem
-                value="newSkills"
-                initialValue={profile.skills.join('\n')}
-                component={<Input.TextArea autosize placeholder="Employee Skills" />}
-                getFieldDecorator={getFieldDecorator}
-              />
+              <EmployeeSkills skills={profile.skills} edit onRemove={removeUserSkills} />
+              <SkillSelect userId={profile.id} />
             </div>
           </div>
 
           <div className={styles.right}>
             <div className={styles.nameBlock}>
               <FormItem
-                value="name"
-                initialValue={profile.name}
+                value="fullName"
+                initialValue={profile.fullName}
                 component={<Input placeholder="Employee Name" />}
                 getFieldDecorator={getFieldDecorator}
                 required
@@ -95,14 +98,25 @@ class EmployeeForm extends Component {
                 required
               />
             </div>
+
             <FormItem
-              value="position"
-              initialValue={profile.position}
-              component={<Input placeholder="Position" />}
+              value="positionId"
+              initialValue={profile.position.id}
+              component={(
+                <Select
+                  showSearch
+                  style={{ width: 300 }}
+                  placeholder="Position"
+                  optionFilterProp="children"
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  {positions.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+                </Select>
+              )}
               getFieldDecorator={getFieldDecorator}
-              style={{ width: 300 }}
               required
             />
+
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab={<TabIcon icon="user" title="About" />} key="1">
                 <div className={styles.tabContainer}>
@@ -147,7 +161,7 @@ class EmployeeForm extends Component {
                   <CRow title="Birthdate">
                     <FormItem
                       value="birthDate"
-                      initialValue={moment(profile.birthDate, 'DD/MM/YYYY')}
+                      initialValue={moment(profile.birthDate)}
                       component={<DatePicker format="DD/MM/YYYY" />}
                       getFieldDecorator={getFieldDecorator}
                     />
@@ -177,12 +191,7 @@ class EmployeeForm extends Component {
               </Tabs.TabPane>
 
               <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-                <FormItem
-                  value="newTimeline"
-                  initialValue={profile.timeline.join('\n')}
-                  component={<Input.TextArea autosize placeholder="Employee Timeline" />}
-                  getFieldDecorator={getFieldDecorator}
-                />
+                <EmployeeTimeline timeLineEvents={profile.timeLineEvents} />
               </Tabs.TabPane>
             </Tabs>
           </div>
@@ -195,13 +204,18 @@ class EmployeeForm extends Component {
 const mapStateToProps = state => ({
   people: state.people,
   selectedEmployee: state.people.selectedEmployee,
-  loading: state.loading.global
+  loading: state.loading.global,
+  positions: state.positions,
+  skills: state.skills
 });
 
 const mapDispatchToProps = dispatch => ({
   editProfile: () => dispatch({
-    type: 'people/changeViewType',
-    payload: PROFILE_MODAL_TYPE.EDIT,
+    type: 'people/editProfile'
+  }),
+  removeUserSkills: (id) => dispatch({
+    type: 'people/removeUserSkills',
+    payload: id,
   }),
 });
 

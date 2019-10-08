@@ -6,10 +6,8 @@ import styles from './index.less';
 import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
 import Avatar from './Avatar';
 import TabIcon from './TabIcon';
-
-const EmployeeSkills = ({ skills }) => skills.map(skill => (
-  <h4 key={skill}>{skill}</h4>
-));
+import EmployeeSkills from '../EmployeeSkills';
+import EmployeeTimeline from '../EmployeeTimeline';
 
 const CRow = ({ title, value }) => (
   <Row>
@@ -17,7 +15,7 @@ const CRow = ({ title, value }) => (
       <h4>{title}:</h4>
     </Col>
     <Col span={18}>
-      <h4>{value}</h4>
+      <h4 style={{ whiteSpace: 'pre-wrap' }}>{value}</h4>
     </Col>
   </Row>
 );
@@ -42,12 +40,12 @@ class EmployeeInformation extends Component {
       return null;
     }
 
-    const editable = (profile.role === ROLE.ADMIN || profile.id === selectedEmployee.id) && profileModalType === PROFILE_MODAL_TYPE.VIEW;
+    const editable = (profile.roles.includes(ROLE.ADMIN) || profile.id === selectedEmployee.id) && profileModalType === PROFILE_MODAL_TYPE.VIEW;
 
     return (
       <div className={styles.container}>
         <div className={styles.left}>
-          <Avatar name={selectedEmployee.name} src={selectedEmployee.avatar} />
+          <Avatar name={selectedEmployee.fullName} src={selectedEmployee.avatar} />
           <div className={styles.skills}>
             <div className={styles.skillTitleBlock}>
               <h3 className={styles.skillTitle}>SKILLS</h3>
@@ -59,11 +57,11 @@ class EmployeeInformation extends Component {
 
         <div className={styles.right}>
           <div className={styles.nameBlock}>
-            <h2 className={styles.name}>{selectedEmployee.name}</h2>
+            <h2 className={styles.name}>{selectedEmployee.fullName}</h2>
             <img alt="" src="/assets/location.svg" className={styles.locationIcon} />
             <h4 className={styles.location}>{selectedEmployee.location}</h4>
           </div>
-          <h4 className={styles.position}>{selectedEmployee.position}</h4>
+          <h4 className={styles.position}>{selectedEmployee.position.name}</h4>
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab={<TabIcon icon="user" title="About" />} key="1">
               <div className={styles.tabContainer}>
@@ -81,12 +79,7 @@ class EmployeeInformation extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-              <Timeline className={styles.timeline}>
-                <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-                <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-                <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-                <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
-              </Timeline>
+              <EmployeeTimeline timeLineEvents={selectedEmployee.timeLineEvents} />
             </Tabs.TabPane>
           </Tabs>
         </div>
@@ -103,8 +96,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   editProfile: () => dispatch({
-    type: 'people/changeViewType',
-    payload: PROFILE_MODAL_TYPE.EDIT,
+    type: 'people/editProfile'
   }),
 });
 

@@ -1,4 +1,4 @@
-import { fetchEmployees, delay } from '../utils/api';
+import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill, getUserSkills, removeUserSkills, getTimeLineEvents, addTimeLineEvent, removeTimeLineEvents, createNewSkill } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -12,7 +12,7 @@ export default {
     modalVisible: false,
     selectedPosition: undefined,
     selectedSkills: [],
-    profileModalType: PROFILE_MODAL_TYPE.VIEW
+    profileModalType: PROFILE_MODAL_TYPE.EDIT
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -48,10 +48,57 @@ export default {
       yield put({ type: 'fetch' });
     },
     *updateEmployeeProfile({ payload }, { call, put, select }) {
-      yield call(delay, 1000);
-      yield put({ type: 'updateEmployeeProfileSuccess', payload });
-      yield put({ type: 'changeViewType', payload: PROFILE_MODAL_TYPE.VIEW });
-    }
+      yield call(updateEmployee, payload);
+      yield put({ type: 'closeModal' });
+      const { profile } = yield select(state => state.passport);
+      if (payload.id === profile.id) {
+        yield put({ type: 'passport/updateProfile', payload: profile.id });
+      }
+    },
+    *showProfile({ payload: id }, { call, put, select }) {
+      const { data } = yield call(fetchEmployee, id);
+      yield put({ type: 'selectEmployee', payload: data });
+      const selectedEmployee = yield select(state => state.people.selectedEmployee);
+      yield put({ type: 'getTimeLineEvents', payload: selectedEmployee.id });
+    },
+    *editProfile({ payload }, { call, put, select }) {
+      yield put({ type: 'positions/fetchAll' });
+      yield put({ type: 'skills/fetchAll' });
+      yield put({ type: 'changeViewType', payload: PROFILE_MODAL_TYPE.EDIT });
+    },
+    *addUserSkill({ payload }, { call, put, select }) {
+      const { newSkillName, skillId, userId } = payload;
+      if (newSkillName) {
+        const { data: { id } } = yield call(createNewSkill, newSkillName);
+        yield call(addUserSkill, { userId, skillId: id });
+      } else {
+        yield call(addUserSkill, { userId, skillId });
+      }
+      yield put({ type: 'getUserSkills' });
+    },
+    *getUserSkills({ payload }, { call, put, select }) {
+      const { id } = yield select(state => state.people.selectedEmployee);
+      const { data } = yield call(getUserSkills, id);
+      yield put({ type: 'getUserSkillsSuccess', payload: data });
+    },
+    *removeUserSkills({ payload: id }, { call, put, select }) {
+      yield call(removeUserSkills, id);
+      yield put({ type: 'getUserSkills' });
+    },
+    *addTimeLineEvent({ payload }, { call, put, select }) {
+      yield call(addTimeLineEvent, payload);
+      const { id } = yield select(state => state.people.selectedEmployee);
+      yield put({ type: 'getTimeLineEvents', payload: id });
+    },
+    *getTimeLineEvents({ payload: userId }, { call, put, select }) {
+      const { data } = yield call(getTimeLineEvents, userId);
+      yield put({ type: 'getTimeLineEventsSuccess', payload: data });
+    },
+    *removeTimeLineEvents({ payload: id }, { call, put, select }) {
+      yield call(removeTimeLineEvents, id);
+      const { id: userId } = yield select(state => state.people.selectedEmployee);
+      yield put({ type: 'getTimeLineEvents', payload: userId });
+    },
   },
   reducers: {
     fetchSuccess(state, { payload }) {
@@ -103,18 +150,30 @@ export default {
         profileModalType
       };
     },
-    updateEmployeeProfileSuccess(state, { payload: profile }) {
-      return {
-        ...state,
-        selectedEmployee: { ...state.selectedEmployee, ...profile }
-      };
-    },
     openEmployeeForm(state, { payload }) {
       return {
         ...state,
         profileModalType: PROFILE_MODAL_TYPE.CREATE,
         modalVisible: true
       };
-    }
+    },
+    getUserSkillsSuccess(state, { payload: skills }) {
+      return {
+        ...state,
+        selectedEmployee: {
+          ...state.selectedEmployee,
+          skills
+        }
+      };
+    },
+    getTimeLineEventsSuccess(state, { payload: timeLineEvents }) {
+      return {
+        ...state,
+        selectedEmployee: {
+          ...state.selectedEmployee,
+          timeLineEvents
+        }
+      };
+    },
   },
 };

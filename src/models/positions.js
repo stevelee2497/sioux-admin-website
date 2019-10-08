@@ -1,4 +1,4 @@
-import { fetchPositions } from '../utils/api';
+import { fetchPositions, deletePosition } from '../utils/api';
 
 export default {
   namespace: 'positions',
@@ -18,6 +18,10 @@ export default {
     *fetchAll({ payload }, { call, put }) {
       const { data } = yield call(fetchPositions);
       yield put({ type: 'fetchAlluccess', payload: data });
+    },
+    *deletePosition({ payload: id }, { call, put }) {
+      yield call(deletePosition, id);
+      yield put({ type: 'fetchAll' });
     },
   },
   reducers: {

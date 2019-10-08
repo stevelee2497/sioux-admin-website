@@ -1,12 +1,12 @@
 import faker from 'faker';
 import moment from 'moment';
 import axios from 'axios';
-import { ROLE } from './constants';
+import { ROLE, APP_CONSTANTS } from './constants';
 
 export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 const api = axios.create({
-  baseURL: 'https://localhost:5001/api/',
+  baseURL: APP_CONSTANTS.API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -76,6 +76,12 @@ export const updateEmployee = async (employee) => {
 
 export const fetchPositions = async () => {
   const response = await api.get('/positions');
+  const { data } = response;
+  return data;
+};
+
+export const deletePosition = async (id) => {
+  const response = await api.delete(`/positions/${id}`);
   const { data } = response;
   return data;
 };

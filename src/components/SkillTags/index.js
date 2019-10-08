@@ -14,9 +14,8 @@ class SkillTags extends Component {
     return (
       <>
         {skills.map(skill => (
-          <Popover content={<Button type="link" onClick={() => deleteSkill(skill.id)}>Delete</Button>} {...popoverVisible}>
+          <Popover key={skill.id} content={<Button type="link" onClick={() => deleteSkill(skill.id)}>Delete</Button>} {...popoverVisible}>
             <CheckableTag
-              key={skill.id}
               checked={selectedSkills.indexOf(skill) > -1}
               onChange={checked => changeSkillsFilter(skill, checked)}
             >

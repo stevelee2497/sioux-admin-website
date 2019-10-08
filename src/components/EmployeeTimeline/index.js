@@ -22,7 +22,7 @@ class EmployeeTimeline extends Component {
   }
 
   render() {
-    const { selectedEmployee: { timeLineEvents }, removeTimeLineEvents, profileModalType } = this.props;
+    const { timeLineEvents, removeTimeLineEvents, profileModalType } = this.props;
     const edit = profileModalType !== PROFILE_MODAL_TYPE.VIEW;
     return (
       <Timeline style={{ marginTop: 10 }}>

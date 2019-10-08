@@ -79,7 +79,7 @@ class EmployeeInformation extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-              <EmployeeTimeline />
+              <EmployeeTimeline timeLineEvents={selectedEmployee.timeLineEvents} />
             </Tabs.TabPane>
           </Tabs>
         </div>

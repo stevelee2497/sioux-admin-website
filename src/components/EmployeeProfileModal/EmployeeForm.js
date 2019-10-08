@@ -63,7 +63,7 @@ class EmployeeForm extends Component {
       birthDate: moment(),
       gender: 'Male',
       role: undefined,
-      timeline: [],
+      timeLineEvents: [],
     };
 
     return (
@@ -192,7 +192,7 @@ class EmployeeForm extends Component {
               </Tabs.TabPane>
 
               <Tabs.TabPane tab={<TabIcon icon="eye" title="Timeline" />} key="2">
-                <EmployeeTimeline />
+                <EmployeeTimeline timeLineEvents={profile.timeLineEvents} />
               </Tabs.TabPane>
             </Tabs>
           </div>

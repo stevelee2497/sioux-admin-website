@@ -8,8 +8,8 @@ export default {
     page: 1,
     pageSize: 20,
     total: 100,
-    selectedEmployee: JSON.parse(localStorage.getItem('profile')),
-    modalVisible: true,
+    selectedEmployee: undefined,
+    modalVisible: false,
     selectedPosition: undefined,
     selectedSkills: [],
     profileModalType: PROFILE_MODAL_TYPE.EDIT

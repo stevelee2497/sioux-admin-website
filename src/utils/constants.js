@@ -24,6 +24,7 @@ export const ROLE = {
 
 export const APP_CONSTANTS = {
   API_BASE_URL: 'https://quoc.azurewebsites.net/api/',
+  // API_BASE_URL: 'https://localhost:5001/api/',
 };
 
 // #endregion

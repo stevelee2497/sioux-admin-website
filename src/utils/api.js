@@ -80,6 +80,12 @@ export const fetchPositions = async () => {
   return data;
 };
 
+export const createNewPosition = async (name) => {
+  const response = await api.post('/positions', { name });
+  const { data } = response;
+  return data;
+};
+
 export const deletePosition = async (id) => {
   const response = await api.delete(`/positions/${id}`);
   const { data } = response;

@@ -1,4 +1,4 @@
-import { fetchPositions, deletePosition } from '../utils/api';
+import { fetchPositions, deletePosition, createNewPosition } from '../utils/api';
 
 export default {
   namespace: 'positions',
@@ -21,6 +21,10 @@ export default {
     },
     *deletePosition({ payload: id }, { call, put }) {
       yield call(deletePosition, id);
+      yield put({ type: 'fetchAll' });
+    },
+    *createNewPosition({ payload: name }, { call, put }) {
+      yield call(createNewPosition, name);
       yield put({ type: 'fetchAll' });
     },
   },

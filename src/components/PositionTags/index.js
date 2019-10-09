@@ -25,7 +25,7 @@ class PositionTags extends Component {
 
   handleInputConfirm = () => {
     const { inputValue } = this.state;
-    console.log(inputValue);
+    this.props.createNewPosition(inputValue);
     this.setState({
       inputVisible: false,
       inputValue: '',
@@ -84,7 +84,11 @@ const mapDispatchToProps = dispatch => ({
   deletePosition: id => dispatch({
     type: 'positions/deletePosition',
     payload: id
-  })
+  }),
+  createNewPosition: (name) => dispatch({
+    type: 'positions/createNewPosition',
+    payload: name
+  }),
 });
 
 export default connect(

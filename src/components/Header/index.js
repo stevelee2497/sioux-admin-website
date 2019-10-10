@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import Link from 'umi/link';
 import { Popover } from 'antd';
 import styles from './index.less';
-import images from '../../utils/images';
+import images, { parseImage } from '../../utils/images';
 import AvatarPopoverContent from '../AvatarPopoverContent';
 
 const navItems = [
@@ -51,7 +51,7 @@ class Header extends Component {
           >
             <img
               alt="avatar"
-              src={profile.avatarUrl}
+              src={parseImage(profile.avatarUrl)}
               className={styles.avatar}
               onError={(e) => { e.target.onerror = null; e.target.src = '/assets/default_avatar.png'; }}
             />

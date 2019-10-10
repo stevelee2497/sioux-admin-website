@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Divider, Tabs, Row, Col, Form, Input, DatePicker, Select, Spin, AutoComplete } from 'antd';
+import { Divider, Tabs, Row, Col, Form, Input, DatePicker, Select, Spin, AutoComplete, Upload } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
 import Avatar from './Avatar';
@@ -13,7 +13,7 @@ const FormItem = ({ value, initialValue, component, getFieldDecorator, required 
   const rules = [{ required: required || false }];
   return (
     <Form.Item style={{ margin: 0 }}>
-      {getFieldDecorator(value, { rules, initialValue })(component)}
+      {getFieldDecorator(value, { rules, initialValue })({ ...component })}
     </Form.Item>
   );
 };
@@ -38,7 +38,6 @@ class EmployeeForm extends Component {
       selectedEmployee,
       loading,
       positions,
-      skills,
       removeUserSkills
     } = this.props;
 
@@ -49,7 +48,7 @@ class EmployeeForm extends Component {
     const profile = selectedEmployee || {
       id: undefined,
       fullName: undefined,
-      avatar: undefined,
+      avatarUrl: undefined,
       positionId: undefined,
       position: { id: undefined, name: undefined },
       location: undefined,
@@ -69,7 +68,12 @@ class EmployeeForm extends Component {
       <Spin spinning={loading}>
         <Form className={styles.container}>
           <div className={styles.left}>
-            <Avatar name={profile.fullName} src={profile.avatar} />
+            <FormItem
+              value="avatarUrl"
+              initialValue={profile.avatarUrl}
+              component={(<Avatar name={profile.fullName} />)}
+              getFieldDecorator={getFieldDecorator}
+            />
             <div className={styles.skills}>
               <div className={styles.skillTitleBlock}>
                 <h3 className={styles.skillTitle}>SKILLS</h3>

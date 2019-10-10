@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal } from 'antd';
 import EmployeeInformation from './EmployeeInformation';
@@ -6,18 +6,31 @@ import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 import EmployeeForm from './EmployeeForm';
 
 class EmployeeProfileModal extends Component {
-  handleOk = () => {
-    const { closeModal, profileModalType, updateEmployeeProfile, selectedEmployee } = this.props;
-    if (profileModalType === PROFILE_MODAL_TYPE.VIEW) {
-      closeModal();
-    } else {
-      const { form } = this.formRef.props;
-      form.validateFields((err, values) => {
-        if (!err) {
-          console.log(values);
-          updateEmployeeProfile({ ...selectedEmployee, ...values });
-        }
+  submitForm = (action) => {
+    const { selectedEmployee } = this.props;
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        console.log(values);
+        action({ ...selectedEmployee, ...values });
+      }
     });
+  }
+
+  handleOk = () => {
+    const { closeModal, profileModalType, updateEmployeeProfile, createEmployee } = this.props;
+    switch (profileModalType) {
+      case PROFILE_MODAL_TYPE.VIEW:
+        closeModal();
+        break;
+      case PROFILE_MODAL_TYPE.EDIT:
+        this.submitForm(updateEmployeeProfile);
+        break;
+      case PROFILE_MODAL_TYPE.CREATE:
+        this.submitForm(createEmployee);
+        break;
+      default:
+        break;
     }
   }
 
@@ -56,6 +69,10 @@ const mapDispatchToProps = dispatch => ({
     type: 'people/closeModal',
   }),
   updateEmployeeProfile: values => dispatch({
+    type: 'people/updateEmployeeProfile',
+    payload: values
+  }),
+  createEmployee: values => dispatch({
     type: 'people/updateEmployeeProfile',
     payload: values
   }),

@@ -1,4 +1,4 @@
-import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill, getUserSkills, removeUserSkills, getTimeLineEvents, addTimeLineEvent, removeTimeLineEvents, createNewSkill } from '../utils/api';
+import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill, getUserSkills, removeUserSkills, getTimeLineEvents, addTimeLineEvent, removeTimeLineEvents, createNewSkill, createEmployee } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -45,6 +45,11 @@ export default {
     },
     *changeSkillsFilter({ payload }, { call, put, select }) {
       yield put({ type: 'saveSkillTags', payload });
+      yield put({ type: 'fetch' });
+    },
+    *createEmployee({ payload }, { call, put, select }) {
+      yield call(createEmployee, payload);
+      yield put({ type: 'closeModal' });
       yield put({ type: 'fetch' });
     },
     *updateEmployeeProfile({ payload }, { call, put, select }) {

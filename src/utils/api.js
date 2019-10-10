@@ -63,8 +63,13 @@ export const fetchEmployee = async (id) => {
   return data;
 };
 
+export const createEmployee = async (employee) => {
+  const response = await api.post('/users', employee);
+  const { data } = response;
+  return data;
+};
+
 export const updateEmployee = async (employee) => {
-  console.log(employee);
   const response = await api.put(`/users/${employee.id}`, employee);
   const { data } = response;
   return data;

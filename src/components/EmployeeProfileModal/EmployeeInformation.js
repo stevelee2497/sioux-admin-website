@@ -45,7 +45,7 @@ class EmployeeInformation extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.left}>
-          <Avatar name={selectedEmployee.fullName} src={selectedEmployee.avatar} />
+          <Avatar name={selectedEmployee.fullName} value={selectedEmployee.avatarUrl} />
           <div className={styles.skills}>
             <div className={styles.skillTitleBlock}>
               <h3 className={styles.skillTitle}>SKILLS</h3>

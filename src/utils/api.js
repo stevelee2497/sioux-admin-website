@@ -46,13 +46,7 @@ export const login = async (authDto) => {
 
 export const fetchEmployees = async (page = 1, pageSize = 10) => {
   // const response = await api.get(`/employees?page=${page}&limit=${pageSize}`);
-  const response = {
-    data: {
-      data: Array.from({ length: pageSize }).map(_ => fakeUser()),
-      total: 100
-    }
-  };
-  await delay(1000);
+  const response = await api.get('/users');
   const { data } = response;
   return data;
 };

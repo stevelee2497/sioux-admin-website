@@ -25,7 +25,7 @@ class SkillSelect extends Component {
   onClick = () => {
     const { userId, addUserSkill, skills } = this.props;
     const { value } = this.state;
-    if (skills.find(item => item.name === value) > 0) {
+    if (skills.some(item => item.id === value)) {
       addUserSkill({ userId, skillId: value });
     } else {
       addUserSkill({ userId, newSkillName: value });

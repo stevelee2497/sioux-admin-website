@@ -40,7 +40,7 @@ class EmployeeInformation extends Component {
       return null;
     }
 
-    const editable = (profile.roles.includes(ROLE.ADMIN) || profile.id === selectedEmployee.id) && profileModalType === PROFILE_MODAL_TYPE.VIEW;
+    const editable = (profile.roles.some(role => role.roleName === ROLE.ADMIN) || profile.id === selectedEmployee.id) && profileModalType === PROFILE_MODAL_TYPE.VIEW;
 
     return (
       <div className={styles.container}>

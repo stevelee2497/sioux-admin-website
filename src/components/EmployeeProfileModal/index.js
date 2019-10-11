@@ -73,7 +73,7 @@ const mapDispatchToProps = dispatch => ({
     payload: values
   }),
   createEmployee: values => dispatch({
-    type: 'people/updateEmployeeProfile',
+    type: 'people/createEmployee',
     payload: values
   }),
 });

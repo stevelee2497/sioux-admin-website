@@ -47,14 +47,14 @@ class Column extends Component {
             >
               <h3 {...provided.dragHandleProps}>{column.title}</h3>
               <Droppable droppableId={column.id} type="task">
-                {(provided) => (
+                {(colProvided) => (
                   <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
                     style={{ minHeight: 100 }}
+                    ref={colProvided.innerRef}
+                    {...colProvided.droppableProps}
                   >
-                    {tasks.map((task, index) => <Task key={task.id} task={task} index={index} />)}
-                    {provided.placeholder}
+                    {tasks.map((task, taskIndex) => <Task key={task.id} task={task} index={taskIndex} />)}
+                    {colProvided.placeholder}
                   </div>
                 )}
               </Droppable>

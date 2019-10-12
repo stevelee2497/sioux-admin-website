@@ -1,68 +1,15 @@
 /* eslint-disable max-classes-per-file */
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'antd';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import initialData from './data';
+import Column from '../../components/Column';
 
-class Task extends Component {
-  render() {
-    const { task, index } = this.props;
-    return (
-      <Draggable draggableId={task.id} index={index}>
-        {(provided) => (
-          <div
-            {...provided.dragHandleProps}
-            {...provided.draggableProps}
-            ref={provided.innerRef}
-          >
-            <Card
-              style={{ marginBottom: 5 }}
-              hoverable
-              size="small"
-            >
-              <h4>{task.title}</h4>
-              {task.content}
-            </Card>
-          </div>
-        )}
-      </Draggable>
-    );
-  }
-}
-
-class Column extends Component {
+class ColumnsContainer extends PureComponent {
   render() {
     const { column, tasks, index } = this.props;
-    return (
-      <Draggable draggableId={column.id} index={index}>
-        {provided => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-          >
-            <Card
-              style={{ margin: 10, borderRadius: 10, overflow: 'hidden', backgroundColor: 'whitesmoke', display: 'table', width: 300 }}
-              bodyStyle={{ display: 'flex', flexDirection: 'column', padding: 10 }}
-            >
-              <h3 {...provided.dragHandleProps}>{column.title}</h3>
-              <Droppable droppableId={column.id} type="task">
-                {(colProvided) => (
-                  <div
-                    style={{ minHeight: 100 }}
-                    ref={colProvided.innerRef}
-                    {...colProvided.droppableProps}
-                  >
-                    {tasks.map((task, taskIndex) => <Task key={task.id} task={task} index={taskIndex} />)}
-                    {colProvided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </Card>
-          </div>
-        )}
-      </Draggable>
-    );
+    const colTasks = column.taskIds.map(taskId => tasks[taskId]);
+    return (<Column column={column} tasks={colTasks} index={index} />);
   }
 }
 
@@ -127,19 +74,18 @@ class Boards extends Component {
   render() {
     const { columns, columnOrder, tasks } = this.state;
     return (
-      <div style={{ backgroundColor: 'white', overflowY: 'hidden' }}>
+      <div style={{ backgroundColor: 'white', overflowY: 'hidden', flex: 1, display: 'flex' }}>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="table-id" direction="horizontal" type="column">
             {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                style={{ display: 'flex', flex: 1, flexDirection: 'row' }}
+                style={{ display: 'flex', flex: 1, flexDirection: 'row', height: '100%', alignItems: 'flex-start' }}
               >
                 {columnOrder.map((id, index) => {
                   const column = columns[id];
-                  const colTasks = column.taskIds.map(taskId => tasks[taskId]);
-                  return <Column key={id} column={column} tasks={colTasks} index={index} />;
+                  return <ColumnsContainer key={id} column={column} tasks={tasks} index={index} />;
                 })}
                 {provided.placeholder}
               </div>

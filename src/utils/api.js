@@ -45,7 +45,6 @@ export const login = async (authDto) => {
 // #region Employee
 
 export const fetchEmployees = async (page = 1, pageSize = 10) => {
-  // const response = await api.get(`/employees?page=${page}&limit=${pageSize}`);
   const response = await api.get('/users');
   const { data } = response;
   return data;

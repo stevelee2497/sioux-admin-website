@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React, { Component, PureComponent } from 'react';
-import { Card } from 'antd';
+import { Card, Button } from 'antd';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from './index.less';
 import Task from '../Task';
@@ -24,7 +24,7 @@ class Column extends Component {
             className={styles['col-wrapper']}
           >
             <Card
-              style={{ borderRadius: 10, margin: 10, backgroundColor: 'whitesmoke', width: 300, display: 'flex', maxHeight: '100%' }}
+              style={{ borderRadius: 10, margin: 10, backgroundColor: '#ECECEC', width: 300, display: 'flex', maxHeight: '100%' }}
               bodyStyle={{ display: 'flex', flexDirection: 'column', padding: 10, width: '100%' }}
             >
               <h3 {...provided.dragHandleProps}>{column.title}</h3>
@@ -33,10 +33,11 @@ class Column extends Component {
                   <div
                     ref={colProvided.innerRef}
                     {...colProvided.droppableProps}
-                    style={{ minHeight: 50, overflowY: 'auto', marginBottom: 10, display: 'flex', flexDirection: 'column' }}
+                    style={{ minHeight: 50, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}
                   >
                     <TasksContainer tasks={tasks} />
                     {colProvided.placeholder}
+                    <Button icon="plus" shape="circle" size="large" style={{ alignSelf: 'center', marginTop: 10 }} />
                   </div>
                 )}
               </Droppable>

@@ -2,8 +2,10 @@
 import React, { Component, PureComponent } from 'react';
 import { Card, Button } from 'antd';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { connect } from 'dva';
 import styles from './index.less';
 import Task from '../Task';
+import { MODAL_TYPE } from '../../utils/constants';
 
 class TasksContainer extends PureComponent {
   render() {
@@ -14,7 +16,7 @@ class TasksContainer extends PureComponent {
 
 class Column extends Component {
   render() {
-    const { column, tasks, index } = this.props;
+    const { column, tasks, index, changeProjectModalState } = this.props;
     return (
       <Draggable draggableId={column.id} index={index}>
         {provided => (
@@ -37,7 +39,14 @@ class Column extends Component {
                   >
                     <TasksContainer tasks={tasks} />
                     {colProvided.placeholder}
-                    <Button icon="plus" shape="circle" size="large" style={{ alignSelf: 'center', marginTop: 10 }} />
+                    <div style={{ alignSelf: 'center' }}>
+                      <Button 
+                        icon="plus"
+                        shape="circle"
+                        size="large"
+                        onClick={() => changeProjectModalState(MODAL_TYPE.CREATE)}
+                      />
+                    </div>
                   </div>
                 )}
               </Droppable>
@@ -49,4 +58,13 @@ class Column extends Component {
   }
 }
 
-export default Column;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = dispatch => ({
+  changeProjectModalState: (modalType) => dispatch({
+    type: 'modals/changeProjectModalState',
+    payload: modalType
+  })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Column);

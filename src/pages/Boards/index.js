@@ -7,6 +7,8 @@ import initialData from './data';
 import Column from '../../components/Column';
 import ProjectMenu from '../../components/ProjectMenu';
 import BoardHeader from '../../components/BoardHeader';
+import TaskModal from '../../components/TaskModal';
+import ProjectForm from '../../components/ProjectForm';
 
 class ColumnsContainer extends PureComponent {
   render() {
@@ -107,6 +109,10 @@ class Boards extends Component {
             </DragDropContext>
           </div>
         </div>
+
+        {/* Register Modals */}
+        <ProjectForm />
+        <TaskModal />
       </div>
     );
   }

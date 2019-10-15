@@ -4,6 +4,7 @@ export default {
   namespace: 'modals',
   state: {
     projectModalVisible: false,
+    taskModalVisible: false,
     modalType: MODAL_TYPE.CLOSED
   },
   subscriptions: {
@@ -19,6 +20,13 @@ export default {
         modalType,
         projectModalVisible: modalType !== MODAL_TYPE.CLOSED
       };
-    }
+    },
+    changeTaskModalState(state, { payload: modalType }) {
+      return {
+        ...state,
+        modalType,
+        taskModalVisible: modalType !== MODAL_TYPE.CLOSED
+      };
+    },
   }
 };

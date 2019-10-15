@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Menu, Icon, Layout, Button, Avatar } from 'antd';
-import ProjectForm from '../ProjectForm';
+import { Menu, Layout, Button, Avatar } from 'antd';
+import { connect } from 'dva';
 import { MODAL_TYPE } from '../../utils/constants';
 
 class ProjectMenu extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       collapsed: false,
     };
@@ -30,7 +28,7 @@ class ProjectMenu extends Component {
     </Menu.Item>
   )
 
-  renderMenuItems = () => projects.map(item => (
+  renderMenuItems = () => this.props.projects.map(item => (
     <Menu.Item key={item.id} style={{ marginTop: 0, padding: '0px!important', alignSelf: 'center' }}>
       <Avatar style={{ marginRight: this.state.collapsed ? 0 : 10, marginBottom: 3 }}>{item.name.match(/\b\w/g).join('')}</Avatar>
       {!this.state.collapsed && item.name}
@@ -40,7 +38,6 @@ class ProjectMenu extends Component {
   render() {
     const { projects } = this.props;
     const defaultSelectedKeys = projects[0] ? [projects[0].id] : [];
-
     return (
       <Layout.Sider
         collapsible
@@ -55,9 +52,8 @@ class ProjectMenu extends Component {
           style={{ height: '100%', backgroundColor: '#ECECEC', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
         >
           {this.renderCreateProjectButton()}
-          {projects && this.renderMenuItems()}
+          {this.renderMenuItems()}
         </Menu>
-        <ProjectForm />
       </Layout.Sider>
     );
   }

@@ -2,9 +2,18 @@
 const EDIT = 'EDIT';
 const VIEW = 'VIEW';
 const CREATE = 'CREATE';
+const CLOSED = 'CLOSED';
 
 export const PROFILE_MODAL_TYPE = {
   EDIT, VIEW, CREATE
+};
+
+// #endregion
+
+// #endregion MODAL_TYPE
+
+export const MODAL_TYPE = {
+  EDIT, VIEW, CREATE, CLOSED
 };
 
 // #endregion

@@ -5,7 +5,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Button } from 'antd';
 import initialData from './data';
 import Column from '../../components/Column';
-import { ProjectMenu } from '../../components/ProjectMenu';
+import ProjectMenu from '../../components/ProjectMenu';
 import BoardHeader from '../../components/BoardHeader';
 
 class ColumnsContainer extends PureComponent {
@@ -79,31 +79,33 @@ class Boards extends Component {
     return (
       <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
         <ProjectMenu />
-        <div style={{ backgroundColor: 'white', flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <BoardHeader />
-          <DragDropContext onDragEnd={this.onDragEnd}>
-            <Droppable droppableId="table-id" direction="horizontal" type="column">
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={{ display: 'flex', flex: 1, flexDirection: 'row', height: '100%', alignItems: 'flex-start' }}
-                >
-                  {columnOrder.map((id, index) => {
-                  const column = columns[id];
-                  return <ColumnsContainer key={id} column={column} tasks={tasks} index={index} />;
-                })}
-                  {provided.placeholder}
-                  <Button
-                    type="dashed"
-                    style={{ borderRadius: 10, margin: 10, backgroundColor: '#ECECEC', width: 300, height: 50, fontSize: 18, fontWeight: 500, borderWidth: 2 }}
+        <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
+          <div style={{ backgroundColor: 'white', flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <BoardHeader />
+            <DragDropContext onDragEnd={this.onDragEnd}>
+              <Droppable droppableId="table-id" direction="horizontal" type="column">
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    style={{ display: 'flex', flex: 1, flexDirection: 'row', height: '100%', alignItems: 'flex-start' }}
                   >
-                    Create another column
-                  </Button>
-                </div>
-            )}
-            </Droppable>
-          </DragDropContext>
+                    {columnOrder.map((id, index) => {
+                      const column = columns[id];
+                      return <ColumnsContainer key={id} column={column} tasks={tasks} index={index} />;
+                    })}
+                    {provided.placeholder}
+                    <Button
+                      type="dashed"
+                      style={{ borderRadius: 10, margin: 10, backgroundColor: '#ECECEC', width: 300, height: 50, fontSize: 18, fontWeight: 500, borderWidth: 2 }}
+                    >
+                      Create another column
+                    </Button>
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </div>
         </div>
       </div>
     );

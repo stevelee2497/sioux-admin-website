@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Form, Input } from 'antd';
+import { Modal, Form, Input, Spin } from 'antd';
 import { MODAL_TYPE } from '../../utils/constants';
 import UploadImage from '../UploadImage';
 import FormItem from '../FormItem';
 
 class ProjectFormModal extends Component {
   handleSubmit = () => {
-    this.props.changeProjectModalState(MODAL_TYPE.CLOSED);
+    const { form: { validateFields }, createBoard } = this.props;
+    validateFields((err, values) => {
+      if (!err) {
+        createBoard(values);
+      }
+    });
   }
 
   handleCancel = () => {
@@ -15,7 +20,7 @@ class ProjectFormModal extends Component {
   }
 
   render() {
-    const { visible, modalType, form: { getFieldDecorator } } = this.props;
+    const { visible, modalType, loading, form: { getFieldDecorator } } = this.props;
     return (
       <Modal
         visible={visible}
@@ -24,30 +29,33 @@ class ProjectFormModal extends Component {
         onCancel={this.handleCancel}
         onOk={this.handleSubmit}
         width={600}
+        confirmLoading={loading}
       >
-        <Form hideRequiredMark style={{ display: 'flex', paddingLeft: 20, paddingRight: 20 }}>
-          <FormItem
-            value="imageUrl"
-            initialValue=""
-            component={<UploadImage size={145} modalType={modalType} />}
-            getFieldDecorator={getFieldDecorator}
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, marginTop: -4 }}>
+        <Spin spinning={loading}>
+          <Form hideRequiredMark style={{ display: 'flex', paddingLeft: 20, paddingRight: 20 }}>
             <FormItem
-              getFieldDecorator={getFieldDecorator}
-              value="name"
+              value="imageUrl"
               initialValue=""
-              component={<Input placeholder="Board Name" />}
-              required
-            />
-            <FormItem
+              component={<UploadImage size={145} modalType={modalType} category="board" />}
               getFieldDecorator={getFieldDecorator}
-              value="description"
-              initialValue=""
-              component={<Input.TextArea placeholder="Description" type="textarea" rows={7} />}
             />
-          </div>
-        </Form>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, marginTop: -4 }}>
+              <FormItem
+                getFieldDecorator={getFieldDecorator}
+                value="name"
+                initialValue=""
+                component={<Input placeholder="Board Name" />}
+                required
+              />
+              <FormItem
+                getFieldDecorator={getFieldDecorator}
+                value="description"
+                initialValue=""
+                component={<Input.TextArea placeholder="Description" type="textarea" rows={7} />}
+              />
+            </div>
+          </Form>
+        </Spin>
       </Modal>
     );
   }
@@ -56,16 +64,22 @@ class ProjectFormModal extends Component {
 const WrappedProjectForm = Form.create({ name: 'project_form' })(ProjectFormModal);
 
 const mapStateToProps = ({
-  modals: { projectModalVisible, modalType }
+  modals: { projectModalVisible, modalType },
+  loading: { global }
 }) => ({
   visible: projectModalVisible,
-  modalType
+  modalType,
+  loading: global
 });
 
 const mapDispatchToProps = dispatch => ({
   changeProjectModalState: (modalType) => dispatch({
     type: 'modals/changeProjectModalState',
     payload: modalType
+  }),
+  createBoard: (board) => dispatch({
+    type: 'projects/createBoard',
+    payload: board
   })
 });
 

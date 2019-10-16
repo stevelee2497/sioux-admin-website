@@ -28,7 +28,7 @@ class UploadImage extends Component {
   }
 
   render() {
-    const { alt, value, modalType, size } = this.props;
+    const { value, modalType, size, category } = this.props;
 
     const uploadEnabled = modalType !== MODAL_TYPE.VIEW;
 
@@ -36,7 +36,7 @@ class UploadImage extends Component {
       <ImgCrop>
         <Upload
           name="file"
-          action={`${APP_CONSTANTS.API_BASE_URL}files/avatar`}
+          action={`${APP_CONSTANTS.API_BASE_URL}files/${category}`}
           listType="picture-card"
           onChange={this.onAvatarChange}
           showUploadList={false}
@@ -45,7 +45,7 @@ class UploadImage extends Component {
           <Spin spinning={this.state.loading}>
             <img
               style={{ width: size || 184, height: size || 184 }}
-              alt={alt}
+              alt={category}
               src={parseImage(value) || '/assets/default_avatar.png'}
               onError={e => {
                 e.target.onerror = null;

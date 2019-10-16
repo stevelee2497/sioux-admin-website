@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Layout, Button, Avatar } from 'antd';
 import { connect } from 'dva';
 import { MODAL_TYPE } from '../../utils/constants';
+import { parseImage } from '../../utils/images';
 
 class ProjectMenu extends Component {
   constructor(props) {
@@ -29,14 +30,19 @@ class ProjectMenu extends Component {
 
   renderMenuItems = () => this.props.projects.map(item => (
     <Menu.Item key={item.id} style={{ marginTop: 0, padding: '0px!important', alignSelf: 'center' }}>
-      <Avatar style={{ marginRight: this.state.collapsed ? 0 : 10, marginBottom: 3 }}>{item.name.match(/\b\w/g).join('')}</Avatar>
+      <Avatar src={parseImage(item.imageUrl)} style={{ marginRight: this.state.collapsed ? 0 : 10, marginBottom: 3 }}>{item.name.match(/\b\w/g).join('')}</Avatar>
       {!this.state.collapsed && item.name}
     </Menu.Item>
   ));
 
+  handleOnSelectMenuItem = ({ key }) => {
+    console.log(key);
+    this.props.fetchProject(key);
+  }
+
   render() {
-    const { projects } = this.props;
-    const defaultSelectedKeys = projects[0] ? [projects[0].id] : [];
+    const { selectedProject } = this.props;
+
     return (
       <Layout.Sider
         collapsible
@@ -46,9 +52,10 @@ class ProjectMenu extends Component {
         style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: '#ECECEC', overflow: 'hidden' }}
       >
         <Menu
-          defaultSelectedKeys={defaultSelectedKeys}
           mode="inline"
           style={{ height: '100%', backgroundColor: '#ECECEC', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+          selectedKeys={[selectedProject && selectedProject.id]}
+          onSelect={this.handleOnSelectMenuItem}
         >
           {this.renderCreateProjectButton()}
           {this.renderMenuItems()}
@@ -59,16 +66,21 @@ class ProjectMenu extends Component {
 }
 
 const mapStateToProps = ({
-  projects
+  projects: { involvedProjects, selectedProject }
 }) => ({
-  projects
+  projects: involvedProjects,
+  selectedProject
 });
 
 const mapDispatchToProps = dispatch => ({
   changeProjectModalState: (modalType) => dispatch({
     type: 'modals/changeProjectModalState',
     payload: modalType
-  })
+  }),
+  fetchProject: (id) => dispatch({
+    type: 'projects/fetchProject',
+    payload: id
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectMenu);

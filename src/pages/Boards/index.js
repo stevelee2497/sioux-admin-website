@@ -2,7 +2,7 @@
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import initialData from './data';
 import Column from '../../components/Column';
 import ProjectMenu from '../../components/ProjectMenu';
@@ -78,44 +78,49 @@ class Boards extends Component {
   }
 
   render() {
+    const { loading } = this.props;
     const { columns, columnOrder, tasks } = this.state;
     return (
-      <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
-        <ProjectMenu />
+      <Spin spinning={loading}>
         <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
-          <div style={{ backgroundColor: 'white', flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <BoardHeader />
-            <DragDropContext onDragEnd={this.onDragEnd}>
-              <Droppable droppableId="table-id" direction="horizontal" type="column">
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{ display: 'flex', flex: 1, flexDirection: 'row', height: '100%', alignItems: 'flex-start' }}
-                  >
-                    {columnOrder.map((id, index) => {
+          <ProjectMenu />
+          <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
+            <div style={{ backgroundColor: 'white', flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <BoardHeader />
+              <DragDropContext onDragEnd={this.onDragEnd}>
+                <Droppable droppableId="table-id" direction="horizontal" type="column">
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      style={{ display: 'flex', flex: 1, flexDirection: 'row', height: '100%', alignItems: 'flex-start' }}
+                    >
+                      {columnOrder.map((id, index) => {
                       const column = columns[id];
                       return <ColumnsContainer key={id} column={column} tasks={tasks} index={index} />;
                     })}
-                    {provided.placeholder}
-                    <CreateColumnButton />
-                  </div>
+                      {provided.placeholder}
+                      <CreateColumnButton />
+                    </div>
                 )}
-              </Droppable>
-            </DragDropContext>
+                </Droppable>
+              </DragDropContext>
+            </div>
           </div>
-        </div>
 
-        {/* Register Modals */}
-        <ProjectForm />
-        <TaskModal />
-      </div>
+          {/* Register Modals */}
+          <ProjectForm />
+          <TaskModal />
+        </div>
+      </Spin>
     );
   }
 }
 
-const mapStateToProps = () => ({
-
+const mapStateToProps = ({
+  loading: { models: { projects } }
+}) => ({
+  loading: projects
 });
 
 const mapDispatchToProps = {

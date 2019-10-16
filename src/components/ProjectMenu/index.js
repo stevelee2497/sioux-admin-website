@@ -12,7 +12,6 @@ class ProjectMenu extends Component {
   }
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
   };
 
@@ -59,7 +58,9 @@ class ProjectMenu extends Component {
   }
 }
 
-const mapStateToProps = ({ projects }) => ({
+const mapStateToProps = ({
+  projects
+}) => ({
   projects
 });
 

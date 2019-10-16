@@ -6,7 +6,7 @@ import { MODAL_TYPE } from '../../utils/constants';
 
 class Task extends Component {
   render() {
-    const { task, index, changeProjectModalState } = this.props;
+    const { task, index, changeTaskModalState } = this.props;
     return (
       <Draggable draggableId={task.id} index={index}>
         {(provided) => (
@@ -19,7 +19,7 @@ class Task extends Component {
               style={{ marginBottom: 5 }}
               hoverable
               size="small"
-              onClick={() => changeProjectModalState(MODAL_TYPE.CREATE)}
+              onClick={() => changeTaskModalState(MODAL_TYPE.CREATE)}
             >
               <h4>{task.title}</h4>
               {task.content}
@@ -34,8 +34,8 @@ class Task extends Component {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-  changeProjectModalState: (modalType) => dispatch({
-    type: 'modals/changeProjectModalState',
+  changeTaskModalState: (modalType) => dispatch({
+    type: 'modals/changeTaskModalState',
     payload: modalType
   })
 });

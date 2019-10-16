@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { Upload, Spin } from 'antd';
-import { connect } from 'dva';
+import { Upload, Spin, Icon } from 'antd';
 import ImgCrop from 'antd-img-crop/src';
-import styles from './index.less';
-import { APP_CONSTANTS, PROFILE_MODAL_TYPE } from '../../utils/constants';
+import { APP_CONSTANTS, MODAL_TYPE } from '../../utils/constants';
 import { parseImage } from '../../utils/images';
 
-class Avatar extends Component {
+class UploadImage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       loading: false
+      loading: false
     };
   }
 
@@ -30,9 +28,9 @@ class Avatar extends Component {
   }
 
   render() {
-    const { name, value, people: { profileModalType } } = this.props;
+    const { alt, value, modalType, size } = this.props;
 
-    const uploadDisabled = profileModalType !== PROFILE_MODAL_TYPE.VIEW;
+    const uploadEnabled = modalType !== MODAL_TYPE.VIEW;
 
     return (
       <ImgCrop>
@@ -42,18 +40,24 @@ class Avatar extends Component {
           listType="picture-card"
           onChange={this.onAvatarChange}
           showUploadList={false}
-          openFileDialogOnClick={uploadDisabled}
+          openFileDialogOnClick={uploadEnabled}
         >
           <Spin spinning={this.state.loading}>
             <img
-              className={styles.avatar}
-              alt={`${name} profile`}
+              style={{ width: size || 184, height: size || 184 }}
+              alt={alt}
               src={parseImage(value) || '/assets/default_avatar.png'}
               onError={e => {
-            e.target.onerror = null;
-            e.target.src = '/assets/default_avatar.png';
-          }}
+                e.target.onerror = null;
+                e.target.src = '/assets/default_avatar.png';
+              }}
             />
+            {uploadEnabled && (
+              <div style={{ height: 25, fontSize: 15, marginTop: 5 }}>
+                <Icon type="upload" style={{ fontSize: 25, marginRight: 10 }} />
+                Upload
+              </div>
+            )}
           </Spin>
         </Upload>
       </ImgCrop>
@@ -61,14 +65,4 @@ class Avatar extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  people: state.people
-});
-
-const mapDispatchToProps = {
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Avatar);
+export default UploadImage;

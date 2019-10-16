@@ -5,11 +5,11 @@ import { MODAL_TYPE } from '../../utils/constants';
 
 class TaskModal extends Component {
   handleSubmit = () => {
-    this.props.changeProjectModalState(MODAL_TYPE.CLOSED);
+    this.props.changeTaskModalState(MODAL_TYPE.CLOSED);
   }
 
   handleCancel = () => {
-    this.props.changeProjectModalState(MODAL_TYPE.CLOSED);
+    this.props.changeTaskModalState(MODAL_TYPE.CLOSED);
   }
 
   renderForm = () => {
@@ -53,8 +53,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeProjectModalState: (modalType) => dispatch({
-    type: 'modals/changeProjectModalState',
+  changeTaskModalState: (modalType) => dispatch({
+    type: 'modals/changeTaskModalState',
     payload: modalType
   })
 });

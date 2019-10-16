@@ -9,6 +9,7 @@ import ProjectMenu from '../../components/ProjectMenu';
 import BoardHeader from '../../components/BoardHeader';
 import TaskModal from '../../components/TaskModal';
 import ProjectForm from '../../components/ProjectForm';
+import CreateColumnButton from '../../components/CreateColumnButton';
 
 class ColumnsContainer extends PureComponent {
   render() {
@@ -97,12 +98,7 @@ class Boards extends Component {
                       return <ColumnsContainer key={id} column={column} tasks={tasks} index={index} />;
                     })}
                     {provided.placeholder}
-                    <Button
-                      type="dashed"
-                      style={{ borderRadius: 10, margin: 10, backgroundColor: '#ECECEC', width: 300, height: 50, fontSize: 18, fontWeight: 500, borderWidth: 2 }}
-                    >
-                      Create another column
-                    </Button>
+                    <CreateColumnButton />
                   </div>
                 )}
               </Droppable>

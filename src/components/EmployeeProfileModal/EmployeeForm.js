@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Divider, Tabs, Row, Col, Form, Input, DatePicker, Select, Spin, AutoComplete, Upload } from 'antd';
+import { Divider, Tabs, Row, Col, Form, Input, DatePicker, Select, Spin } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
-import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 import SkillSelect from '../SkillSelect';
 import EmployeeSkills from '../EmployeeSkills';
 import EmployeeTimeline from '../EmployeeTimeline';
+import UploadImage from '../UploadImage';
 
 const FormItem = ({ value, initialValue, component, getFieldDecorator, required }) => {
   const rules = [{ required: required || false }];
@@ -71,7 +71,7 @@ class EmployeeForm extends Component {
             <FormItem
               value="avatarUrl"
               initialValue={profile.avatarUrl}
-              component={(<Avatar name={profile.fullName} />)}
+              component={(<UploadImage name={profile.fullName} />)}
               getFieldDecorator={getFieldDecorator}
             />
             <div className={styles.skills}>

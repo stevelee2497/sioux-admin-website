@@ -16,7 +16,7 @@ class TasksContainer extends PureComponent {
 
 class Column extends Component {
   render() {
-    const { column, tasks, index, changeProjectModalState } = this.props;
+    const { column, tasks, index, changeTaskModalState } = this.props;
     return (
       <Draggable draggableId={column.id} index={index}>
         {provided => (
@@ -40,11 +40,11 @@ class Column extends Component {
                     <TasksContainer tasks={tasks} />
                     {colProvided.placeholder}
                     <div style={{ alignSelf: 'center' }}>
-                      <Button 
+                      <Button
                         icon="plus"
                         shape="circle"
                         size="large"
-                        onClick={() => changeProjectModalState(MODAL_TYPE.CREATE)}
+                        onClick={() => changeTaskModalState(MODAL_TYPE.CREATE)}
                       />
                     </div>
                   </div>
@@ -61,8 +61,8 @@ class Column extends Component {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-  changeProjectModalState: (modalType) => dispatch({
-    type: 'modals/changeProjectModalState',
+  changeTaskModalState: (modalType) => dispatch({
+    type: 'modals/changeTaskModalState',
     payload: modalType
   })
 });

@@ -30,7 +30,7 @@ class Boards extends Component {
   }
 
   onDragEnd = result => {
-    const { columns, columnOrder } = this.state;
+    const { columns, selectedProject, updateProject } = this.props;
     const { draggableId, source, destination, type } = result;
 
     // users drag the task outside the columns
@@ -45,10 +45,10 @@ class Boards extends Component {
 
     // if users drag and drop the columns, set columnOrder to new state and return
     if (type === 'column') {
-      const newColOrder = [...columnOrder];
+      const newColOrder = [...selectedProject.phaseOrder];
       newColOrder.splice(source.index, 1);
       newColOrder.splice(destination.index, 0, draggableId);
-      this.setState({ columnOrder: newColOrder });
+      updateProject({ ...selectedProject, phaseOrder: newColOrder });
       return;
     }
 
@@ -85,8 +85,7 @@ class Boards extends Component {
     const { columns, selectedProject: { phaseOrder: columnOrder }, tasks } = this.props;
     return (
       <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
-        <div style={{ backgroundColor: 'white', flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <BoardHeader />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <DragDropContext onDragEnd={this.onDragEnd}>
             <Droppable droppableId="table-id" direction="horizontal" type="column">
               {(provided) => (
@@ -115,9 +114,12 @@ class Boards extends Component {
   render() {
     const { loading, selectedProject } = this.props;
     return (
-      <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
+      <div style={{ display: 'flex', flex: 1, backgroundColor: 'white', overflowY: 'hidden' }}>
         <ProjectMenu />
-        {loading || !selectedProject ? this.renderSpin() : this.renderBoard()}
+        <div style={{ display: 'flex', flex: 1, flexDirection: 'column', overflowY: 'hidden' }}>
+          <BoardHeader />
+          {loading || !selectedProject ? this.renderSpin() : this.renderBoard()}
+        </div>
         {/* Register Modals */}
         <ProjectForm />
         <TaskModal />
@@ -138,8 +140,11 @@ const mapStateToProps = ({
   selectedProject,
 });
 
-const mapDispatchToProps = {
-
-};
+const mapDispatchToProps = dispatch => ({
+  updateProject: (project) => dispatch({
+    type: 'projects/updateProject',
+    payload: project
+  })
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Boards);

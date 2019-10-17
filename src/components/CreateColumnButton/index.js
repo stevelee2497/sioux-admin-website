@@ -26,6 +26,7 @@ class CreateColumnButton extends Component {
   }
 
   handleCreateColumn = () => {
+    this.props.createPhase(this.state.inputValue);
     this.setState({ inputValue: '' });
   }
 
@@ -76,13 +77,16 @@ class CreateColumnButton extends Component {
 }
 
 const mapStateToProps = ({
-  loading: { global }
+  loading: { effects },
 }) => ({
-  loading: global
+  loading: effects['phases/createPhase'] === true
 });
 
-const mapDispatchToProps = {
-
-};
+const mapDispatchToProps = dispatch => ({
+  createPhase: (name) => dispatch({
+    type: 'phases/createPhase',
+    payload: name
+  })
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateColumnButton);

@@ -1,4 +1,4 @@
-import { fetchBoards, deleteBoard, createBoard, fetchBoard } from '../utils/api';
+import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard } from '../utils/api';
 import { MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -28,12 +28,17 @@ export default {
     *fetchProject({ payload: id }, { call, put }) {
       const { data } = yield call(fetchBoard, id);
       yield put({ type: 'fetchProjectSuccess', payload: data });
+      yield put({ type: 'phases/fetchPhases', payload: id });
     },
     *fetchProjects({ payload }, { call, put, select }) {
       const { id } = yield select(state => state.passport.profile);
       const { data } = yield call(fetchBoards, id);
       yield put({ type: 'fetchProjectsSuccess', payload: data });
       yield put({ type: 'fetchProject', payload: data[0].id });
+    },
+    *updateProject({ payload }, { call, put }) {
+      yield put({ type: 'fetchProjectSuccess', payload });
+      yield call(updateBoard, payload);
     },
     *deleteBoard({ payload: id }, { call, put }) {
       yield call(deleteBoard, id);

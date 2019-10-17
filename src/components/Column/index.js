@@ -29,7 +29,7 @@ class Column extends Component {
               style={{ borderRadius: 10, margin: 10, backgroundColor: '#ECECEC', width: 300, display: 'flex', maxHeight: '100%' }}
               bodyStyle={{ display: 'flex', flexDirection: 'column', padding: 10, width: '100%' }}
             >
-              <h3 {...provided.dragHandleProps}>{column.title}</h3>
+              <h3 {...provided.dragHandleProps}>{column.name}</h3>
               <Droppable droppableId={column.id} type="task">
                 {(colProvided) => (
                   <div

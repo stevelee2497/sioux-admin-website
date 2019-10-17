@@ -2,7 +2,7 @@
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Button, Spin } from 'antd';
+import { Spin } from 'antd';
 import initialData from './data';
 import Column from '../../components/Column';
 import ProjectMenu from '../../components/ProjectMenu';
@@ -11,10 +11,14 @@ import TaskModal from '../../components/TaskModal';
 import ProjectForm from '../../components/ProjectForm';
 import CreateColumnButton from '../../components/CreateColumnButton';
 
-class ColumnsContainer extends PureComponent {
+class ColumnContainer extends PureComponent {
   render() {
     const { column, tasks, index } = this.props;
-    const colTasks = column.taskIds.map(taskId => tasks[taskId]);
+    if (!column) {
+      return null;
+    }
+
+    const colTasks = column.taskOrder.map(taskId => tasks[taskId]);
     return (<Column column={column} tasks={colTasks} index={index} />);
   }
 }
@@ -50,7 +54,7 @@ class Boards extends Component {
 
     // remove the id of the dragged task from the source column
     const sourceCol = columns[source.droppableId];
-    const newSourceColTaskIds = [...sourceCol.taskIds];
+    const newSourceColTaskIds = [...sourceCol.taskOrder];
     newSourceColTaskIds.splice(source.index, 1);
     const newSourceCol = {
       ...sourceCol,
@@ -59,7 +63,7 @@ class Boards extends Component {
 
     // add the dragged task to the destination column
     const destinationCol = source.droppableId === destination.droppableId ? newSourceCol : columns[destination.droppableId];
-    const newDestinationColTaskIds = [...destinationCol.taskIds];
+    const newDestinationColTaskIds = [...destinationCol.taskOrder];
     newDestinationColTaskIds.splice(destination.index, 0, draggableId);
     const newDestinationCol = {
       ...destinationCol,
@@ -77,50 +81,61 @@ class Boards extends Component {
     }));
   }
 
-  render() {
-    const { loading } = this.props;
-    const { columns, columnOrder, tasks } = this.state;
+  renderBoard = () => {
+    const { columns, selectedProject: { phaseOrder: columnOrder }, tasks } = this.props;
     return (
-      <Spin spinning={loading}>
-        <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
-          <ProjectMenu />
-          <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
-            <div style={{ backgroundColor: 'white', flex: 1, display: 'flex', flexDirection: 'column' }}>
-              <BoardHeader />
-              <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="table-id" direction="horizontal" type="column">
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      style={{ display: 'flex', flex: 1, flexDirection: 'row', height: '100%', alignItems: 'flex-start' }}
-                    >
-                      {columnOrder.map((id, index) => {
-                      const column = columns[id];
-                      return <ColumnsContainer key={id} column={column} tasks={tasks} index={index} />;
-                    })}
-                      {provided.placeholder}
-                      <CreateColumnButton />
-                    </div>
-                )}
-                </Droppable>
-              </DragDropContext>
-            </div>
-          </div>
-
-          {/* Register Modals */}
-          <ProjectForm />
-          <TaskModal />
+      <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
+        <div style={{ backgroundColor: 'white', flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <BoardHeader />
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            <Droppable droppableId="table-id" direction="horizontal" type="column">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  style={{ display: 'flex', flex: 1, flexDirection: 'row', height: '100%', alignItems: 'flex-start' }}
+                >
+                  {columnOrder.map((id, index) => {
+                    const column = columns[id];
+                    return <ColumnContainer key={id} column={column} tasks={tasks} index={index} />;
+                  })}
+                  {provided.placeholder}
+                  <CreateColumnButton />
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
-      </Spin>
+      </div>
+    );
+  }
+
+  renderSpin = () => (<Spin style={{ backgroundColor: 'white', flex: 1, paddingTop: 300 }} size="large" />);
+
+  render() {
+    const { loading, selectedProject } = this.props;
+    return (
+      <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
+        <ProjectMenu />
+        {loading || !selectedProject ? this.renderSpin() : this.renderBoard()}
+        {/* Register Modals */}
+        <ProjectForm />
+        <TaskModal />
+      </div>
     );
   }
 }
 
 const mapStateToProps = ({
-  loading: { models: { projects } }
+  loading: { effects },
+  tasks,
+  phases,
+  projects: { selectedProject }
 }) => ({
-  loading: projects
+  loading: effects['projects/fetchProject'],
+  tasks,
+  columns: phases,
+  selectedProject,
 });
 
 const mapDispatchToProps = {

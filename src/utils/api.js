@@ -186,4 +186,36 @@ export const deleteBoard = async (id) => {
   return data;
 };
 
-// #region
+// #region Phase
+
+export const createPhase = async (phase) => {
+  const response = await api.post('/phases', phase);
+  const { data } = response;
+  return data;
+};
+
+export const fetchPhase = async (id) => {
+  const response = await api.get(`/phases/${id}`);
+  const { data } = response;
+  return data;
+};
+
+export const fetchPhases = async (boardId) => {
+  const response = await api.get(`/phases?boardId=${boardId}`);
+  const { data } = response;
+  return data;
+};
+
+export const updatePhase = async (board) => {
+  const response = await api.put(`/phases/${board.id}`, board);
+  const { data } = response;
+  return data;
+};
+
+export const deletePhase = async (id) => {
+  const response = await api.delete(`/phases/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion

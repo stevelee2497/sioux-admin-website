@@ -13,9 +13,11 @@
     "cross-env": "^6.0.3",
     "dva": "^2.6.0-beta.6",
     "faker": "^4.1.0",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-beautiful-dnd": "^11.0.5",
     "react-dom": "^16.8.6",
     "react-image-crop": "^8.3.1",
     "redux-form": "^8.2.6"

@@ -45,7 +45,6 @@ export const login = async (authDto) => {
 // #region Employee
 
 export const fetchEmployees = async (page = 1, pageSize = 10) => {
-  // const response = await api.get(`/employees?page=${page}&limit=${pageSize}`);
   const response = await api.get('/users');
   const { data } = response;
   return data;
@@ -154,3 +153,37 @@ export const removeTimeLineEvents = async (id) => {
 };
 
 // #endregion
+
+// #endregion Project (Board table)
+
+export const createBoard = async (board) => {
+  const response = await api.post('/boards', board);
+  const { data } = response;
+  return data;
+};
+
+export const fetchBoard = async (id) => {
+  const response = await api.get(`/boards/${id}`);
+  const { data } = response;
+  return data;
+};
+
+export const fetchBoards = async (userId) => {
+  const response = await api.get(`/boards?userId=${userId}`);
+  const { data } = response;
+  return data;
+};
+
+export const updateBoard = async (board) => {
+  const response = await api.put(`/boards/${board.id}`, board);
+  const { data } = response;
+  return data;
+};
+
+export const deleteBoard = async (id) => {
+  const response = await api.delete(`/boards/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #region

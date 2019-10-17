@@ -4,10 +4,10 @@ import { Divider, Tabs, Row, Col, Timeline, Button } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
 import { ROLE, PROFILE_MODAL_TYPE } from '../../utils/constants';
-import Avatar from './Avatar';
 import TabIcon from './TabIcon';
 import EmployeeSkills from '../EmployeeSkills';
 import EmployeeTimeline from '../EmployeeTimeline';
+import UploadImage from '../UploadImage';
 
 const CRow = ({ title, value }) => (
   <Row>
@@ -45,7 +45,7 @@ class EmployeeInformation extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.left}>
-          <Avatar name={selectedEmployee.fullName} value={selectedEmployee.avatarUrl} />
+          <UploadImage name={selectedEmployee.fullName} value={selectedEmployee.avatarUrl} modalType={profileModalType} />
           <div className={styles.skills}>
             <div className={styles.skillTitleBlock}>
               <h3 className={styles.skillTitle}>SKILLS</h3>

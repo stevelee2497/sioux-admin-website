@@ -6,6 +6,7 @@ import { connect } from 'dva';
 import styles from './index.less';
 import Task from '../Task';
 import { MODAL_TYPE } from '../../utils/constants';
+import ColumnHeader from '../ColumnHeader';
 
 class TasksContainer extends PureComponent {
   render() {
@@ -27,9 +28,17 @@ class Column extends Component {
           >
             <Card
               style={{ borderRadius: 10, margin: 10, backgroundColor: '#ECECEC', width: 300, display: 'flex', maxHeight: '100%' }}
-              bodyStyle={{ display: 'flex', flexDirection: 'column', padding: 10, width: '100%' }}
+              bodyStyle={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: 0,
+                width: '100%'
+              }}
             >
-              <h3 {...provided.dragHandleProps}>{column.name}</h3>
+              <ColumnHeader
+                dragHandleProps={provided.dragHandleProps}
+                name={column.name}
+              />
               <Droppable droppableId={column.id} type="task">
                 {(colProvided) => (
                   <div

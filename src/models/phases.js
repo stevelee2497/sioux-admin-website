@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchPhases, createPhase, deletePhase } from '../utils/api';
+import { fetchPhases, createPhase, deletePhase, updatePhase } from '../utils/api';
 
 export default {
   namespace: 'phases',
@@ -17,6 +17,10 @@ export default {
       const { data } = yield call(fetchPhases, boardId);
       yield put({ type: 'fetchPhasesSuccess', payload: data });
     },
+    *updatePhase({ payload: phase }, { call, put, select }) {
+      yield call(updatePhase, phase);
+      yield put({ type: 'updatePhaseSuccess', payload: phase });
+    },
     *deletePhase({ payload: id }, { call, put, select }) {
       yield call(deletePhase, id);
       yield put({ type: 'deletePhaseSuccess', payload: id });
@@ -30,6 +34,12 @@ export default {
   reducers: {
     fetchPhasesSuccess(state, { payload }) {
       return _.keyBy(payload, 'id');
+    },
+    updatePhaseSuccess(state, { payload }) {
+      return {
+        ...state,
+        [payload.id]: payload
+      };
     },
     deletePhaseSuccess(state, { payload: id }) {
       return _.omit(state, id);

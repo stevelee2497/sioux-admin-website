@@ -37,7 +37,7 @@ class Column extends Component {
             >
               <ColumnHeader
                 dragHandleProps={provided.dragHandleProps}
-                name={column.name}
+                column={column}
               />
               <Droppable droppableId={column.id} type="task">
                 {(colProvided) => (

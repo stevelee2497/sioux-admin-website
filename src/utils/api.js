@@ -40,7 +40,7 @@ export const login = async (authDto) => {
   return data;
 };
 
-// #region
+// #endregion
 
 // #region Employee
 
@@ -154,7 +154,7 @@ export const removeTimeLineEvents = async (id) => {
 
 // #endregion
 
-// #endregion Project (Board table)
+// #region Project (Board table)
 
 export const createBoard = async (board) => {
   const response = await api.post('/boards', board);
@@ -186,6 +186,8 @@ export const deleteBoard = async (id) => {
   return data;
 };
 
+// #endregion
+
 // #region Phase
 
 export const createPhase = async (phase) => {
@@ -214,6 +216,40 @@ export const updatePhase = async (board) => {
 
 export const deletePhase = async (id) => {
   const response = await api.delete(`/phases/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
+// #region Task
+
+export const createTask = async (task) => {
+  const response = await api.post('/tasks', task);
+  const { data } = response;
+  return data;
+};
+
+export const fetchTask = async (id) => {
+  const response = await api.get(`/tasks/${id}`);
+  const { data } = response;
+  return data;
+};
+
+export const fetchTasks = async (boardId) => {
+  const response = await api.get(`/tasks?boardId=${boardId}`);
+  const { data } = response;
+  return data;
+};
+
+export const updateTask = async (board) => {
+  const response = await api.put(`/tasks/${board.id}`, board);
+  const { data } = response;
+  return data;
+};
+
+export const deleteTask = async (id) => {
+  const response = await api.delete(`/tasks/${id}`);
   const { data } = response;
   return data;
 };

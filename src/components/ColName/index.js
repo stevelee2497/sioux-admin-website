@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Input, Button } from 'antd';
 
-const ColName = ({ editting, name, onChange, onSubmit }) => {
-  if (!editting) {
-    return <h3>{name}</h3>;
-  }
+class ColName extends Component {
+  render() {
+    const { editting, name, onChange, onSubmit, onBlur } = this.props;
 
-  return (
-    <>
-      <div><Input value={name} onChange={onChange} size="small" /></div>
-      <Button onClick={onSubmit} type="primary" size="small">Update</Button>
-    </>
-  );
-};
+    if (!editting) {
+      return <h3>{name}</h3>;
+    }
+
+    return (
+      <>
+        <div style={{ marginBottom: 8 }}><Input value={name} onChange={onChange} size="small" autoFocus onBlur={onBlur} /></div>
+        <Button style={{ marginBottom: 8 }} onClick={onSubmit} type="primary" size="small">Update</Button>
+      </>
+    );
+  }
+}
 
 export default ColName;

@@ -30,7 +30,7 @@ class Boards extends Component {
   }
 
   onDragEnd = result => {
-    const { columns, selectedProject, updateProject } = this.props;
+    const { columns, selectedProject, updateProject, updatePhase } = this.props;
     const { draggableId, source, destination, type } = result;
 
     // users drag the task outside the columns
@@ -58,7 +58,7 @@ class Boards extends Component {
     newSourceColTaskIds.splice(source.index, 1);
     const newSourceCol = {
       ...sourceCol,
-      taskIds: newSourceColTaskIds
+      taskOrder: newSourceColTaskIds
     };
 
     // add the dragged task to the destination column
@@ -67,18 +67,14 @@ class Boards extends Component {
     newDestinationColTaskIds.splice(destination.index, 0, draggableId);
     const newDestinationCol = {
       ...destinationCol,
-      taskIds: newDestinationColTaskIds
+      taskOrder: newDestinationColTaskIds
     };
 
-    // update state
-    this.setState((state) => ({
-      ...state,
-      columns: {
-        ...state.columns,
-        [newSourceCol.id]: newSourceCol,
-        [newDestinationCol.id]: newDestinationCol
-      }
-    }));
+    // update phase
+    if (newSourceCol.id !== newDestinationCol.id) {
+      updatePhase(newSourceCol);
+    }
+    updatePhase(newDestinationCol);
   }
 
   renderBoard = () => {
@@ -144,7 +140,11 @@ const mapDispatchToProps = dispatch => ({
   updateProject: (project) => dispatch({
     type: 'projects/updateProject',
     payload: project
-  })
+  }),
+  updatePhase: (phase) => dispatch({
+    type: 'phases/updatePhase',
+    payload: phase
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Boards);

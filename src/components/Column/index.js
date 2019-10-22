@@ -11,6 +11,7 @@ import ColumnHeader from '../ColumnHeader';
 class TasksContainer extends PureComponent {
   render() {
     const { tasks } = this.props;
+    console.log(tasks);
     return tasks.map((task, taskIndex) => <Task key={task.id} task={task} index={taskIndex} />);
   }
 }
@@ -27,11 +28,21 @@ class Column extends Component {
             className={styles['col-wrapper']}
           >
             <Card
-              style={{ borderRadius: 10, margin: 10, backgroundColor: '#ECECEC', width: 300, display: 'flex', maxHeight: '100%' }}
+              style={{
+                borderRadius: 10,
+                margin: 10,
+                backgroundColor: '#ECECEC',
+                width: 300,
+                display: 'flex',
+                maxHeight: '100%'
+              }}
               bodyStyle={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: 0,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 0,
+                paddingBottom: 10,
                 width: '100%'
               }}
             >

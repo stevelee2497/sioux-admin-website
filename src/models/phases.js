@@ -18,8 +18,8 @@ export default {
       yield put({ type: 'fetchPhasesSuccess', payload: data });
     },
     *updatePhase({ payload: phase }, { call, put, select }) {
-      yield call(updatePhase, phase);
       yield put({ type: 'updatePhaseSuccess', payload: phase });
+      yield call(updatePhase, phase);
     },
     *deletePhase({ payload: id }, { call, put, select }) {
       yield call(deletePhase, id);

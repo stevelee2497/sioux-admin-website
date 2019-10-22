@@ -24,6 +24,13 @@ class ColumnHeader extends Component {
     this.setState({ name: e.target.value });
   }
 
+  handleOnBlur = () => {
+    // wait for a moment to ensure that if user click the Create button, the click button is fired
+    setTimeout(() => {
+      this.setState({ editting: false });
+    }, 100);
+  }
+
   handleMenuItemClick = ({ key }) => {
     const { deletePhase, column: { id } } = this.props;
     switch (key) {
@@ -52,8 +59,6 @@ class ColumnHeader extends Component {
     return (
       <div
         style={{
-          paddingLeft: 10,
-          paddingRight: 10,
           paddingTop: 5,
           display: 'flex',
           alignItems: 'center',
@@ -61,7 +66,13 @@ class ColumnHeader extends Component {
         }}
         {...dragHandleProps}
       >
-        <ColName editting={editting} name={name} onChange={this.handleNameChange} onSubmit={this.handleSubmitNameUpdate} />
+        <ColName
+          editting={editting}
+          name={name}
+          onChange={this.handleNameChange}
+          onSubmit={this.handleSubmitNameUpdate}
+          onBlur={this.handleOnBlur}
+        />
         <Dropdown overlay={CardMenu} trigger={['click']} placement="bottomRight">
           <button type="button" style={{ all: 'unset', cursor: 'pointer' }}>
             <Icon type="setting" theme="filled" />

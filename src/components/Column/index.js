@@ -1,12 +1,12 @@
 /* eslint-disable max-classes-per-file */
 import React, { Component, PureComponent } from 'react';
-import { Card, Button } from 'antd';
+import { Card } from 'antd';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { connect } from 'dva';
 import styles from './index.less';
 import Task from '../Task';
-import { MODAL_TYPE } from '../../utils/constants';
 import ColumnHeader from '../ColumnHeader';
+import CreateTaskButton from '../CreateTaskButton';
 
 class TasksContainer extends PureComponent {
   render() {
@@ -18,7 +18,7 @@ class TasksContainer extends PureComponent {
 
 class Column extends Component {
   render() {
-    const { column, tasks, index, changeTaskModalState } = this.props;
+    const { column, tasks, index } = this.props;
     return (
       <Draggable draggableId={column.id} index={index}>
         {provided => (
@@ -59,14 +59,7 @@ class Column extends Component {
                   >
                     <TasksContainer tasks={tasks} />
                     {colProvided.placeholder}
-                    <div style={{ alignSelf: 'center' }}>
-                      <Button
-                        icon="plus"
-                        shape="circle"
-                        size="large"
-                        onClick={() => changeTaskModalState(MODAL_TYPE.CREATE)}
-                      />
-                    </div>
+                    <CreateTaskButton />
                   </div>
                 )}
               </Droppable>

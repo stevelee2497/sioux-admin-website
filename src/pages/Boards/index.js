@@ -2,7 +2,7 @@
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Spin } from 'antd';
+import { Spin, Empty } from 'antd';
 import initialData from './data';
 import Column from '../../components/Column';
 import ProjectMenu from '../../components/ProjectMenu';
@@ -78,7 +78,21 @@ class Boards extends Component {
   }
 
   renderBoard = () => {
-    const { columns, selectedProject: { phaseOrder: columnOrder }, tasks } = this.props;
+    const { columns, selectedProject, tasks } = this.props;
+    if (!selectedProject) {
+      return (
+        <Empty style={{
+          display: 'flex',
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          paddingBottom: 100
+        }}
+        />
+      );
+    }
+
+    const { phaseOrder: columnOrder } = selectedProject;
     return (
       <div style={{ display: 'flex', flex: 1, overflowY: 'hidden' }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -108,13 +122,13 @@ class Boards extends Component {
   renderSpin = () => (<Spin style={{ backgroundColor: 'white', flex: 1, paddingTop: 300 }} size="large" />);
 
   render() {
-    const { loading, selectedProject } = this.props;
+    const { loading } = this.props;
     return (
       <div style={{ display: 'flex', flex: 1, backgroundColor: 'white', overflowY: 'hidden' }}>
         <ProjectMenu />
         <div style={{ display: 'flex', flex: 1, flexDirection: 'column', overflowY: 'hidden' }}>
           <BoardHeader />
-          {loading || !selectedProject ? this.renderSpin() : this.renderBoard()}
+          {loading ? this.renderSpin() : this.renderBoard()}
         </div>
         {/* Register Modals */}
         <ProjectForm />

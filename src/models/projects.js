@@ -37,7 +37,9 @@ export default {
       const { id } = yield select(state => state.passport.profile);
       const { data } = yield call(fetchBoards, id);
       yield put({ type: 'fetchProjectsSuccess', payload: data });
-      yield put({ type: 'fetchProject', payload: data[0].id });
+      if (data[0]) {
+        yield put({ type: 'fetchProject', payload: data[0].id });
+      }
     },
     *updateProject({ payload }, { call, put }) {
       yield put({ type: 'fetchProjectSuccess', payload });

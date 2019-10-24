@@ -40,7 +40,6 @@ class ProjectMenu extends Component {
   }
 
   handleOnSelectMenuItem = ({ key }) => {
-    console.log(key);
     this.props.fetchProject(key);
   }
 

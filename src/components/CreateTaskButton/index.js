@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, Input } from 'antd';
+import { Button, Card, Input, Spin } from 'antd';
 
 class CreateTaskButton extends Component {
   constructor(props) {
@@ -29,11 +29,26 @@ class CreateTaskButton extends Component {
     this.setState({ inputValue: '' });
   }
 
+  handleCreateTask = () => {
+    const { reporterUserId, boardId, phase, createTask } = this.props;
+    const { inputValue } = this.state;
+    const payload = {
+      task: {
+        title: inputValue,
+        reporterUserId,
+        boardId,
+        assignees: []
+      },
+      phase
+    };
+    createTask(payload);
+  }
+
   handleOnBlur = () => {
     // wait for a moment to ensure that if user click the Create button, the click button is fired
     setTimeout(() => {
       this.changeButtonState(false);
-    }, 100);
+    }, 200);
   }
 
   renderDefault = () => (
@@ -45,30 +60,34 @@ class CreateTaskButton extends Component {
         onClick={() => this.changeButtonState(true)}
       />
     </div>
-    );
+  );
 
-  renderEditting = () => (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Card
-        style={{ marginBottom: 5 }}
-        hoverable
-        size="small"
-        onClick={() => this.changeButtonState(true)}
-      >
-        <Input.TextArea
-          ref={this.input}
-          onBlur={this.handleOnBlur}
-          style={{ borderColor: 'white', color: 'black', boxShadow: 'none', padding: 0 }}
-          placeholder="asdfasd"
-          autosize
-        />
-      </Card>
-      <div>
-        <Button type="primary">Create</Button>
-        <Button icon="close" type="link" size="large" style={{ color: 'gray' }} ghost />
-      </div>
-    </div>
-    )
+  renderEditting = () => {
+    const { loading } = this.props;
+    return (
+      <Spin spinning={loading}>
+        <Card
+          style={{ marginBottom: 5 }}
+          hoverable
+          size="small"
+          onClick={() => this.changeButtonState(true)}
+        >
+          <Input.TextArea
+            ref={this.input}
+            onBlur={this.handleOnBlur}
+            style={{ borderColor: 'white', color: 'black', boxShadow: 'none', padding: 0 }}
+            placeholder="Enter title for this card ..."
+            autosize
+            onChange={this.handleInputChange}
+          />
+        </Card>
+        <div>
+          <Button type="primary" onClick={this.handleCreateTask}>Create</Button>
+          <Button icon="close" type="link" size="large" style={{ color: 'gray' }} ghost />
+        </div>
+      </Spin>
+    );
+  }
 
   render() {
     const { editting } = this.state;
@@ -79,15 +98,25 @@ class CreateTaskButton extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-
+const mapStateToProps = ({
+  passport: { profile: { id: reporterUserId } },
+  projects: { selectedProject: { id: boardId } },
+  loading: { global }
+}) => ({
+  reporterUserId,
+  boardId,
+  loading: global
 });
 
 const mapDispatchToProps = dispatch => ({
   changeTaskModalState: (modalType) => dispatch({
     type: 'modals/changeTaskModalState',
     payload: modalType
-  })
+  }),
+  createTask: (payload) => dispatch({
+    type: 'tasks/createTask',
+    payload
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskButton);

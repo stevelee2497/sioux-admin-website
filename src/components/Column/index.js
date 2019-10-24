@@ -11,7 +11,6 @@ import CreateTaskButton from '../CreateTaskButton';
 class TasksContainer extends PureComponent {
   render() {
     const { tasks } = this.props;
-    console.log(tasks);
     return tasks.map((task, taskIndex) => <Task key={task.id} task={task} index={taskIndex} />);
   }
 }
@@ -59,7 +58,7 @@ class Column extends Component {
                   >
                     <TasksContainer tasks={tasks} />
                     {colProvided.placeholder}
-                    <CreateTaskButton />
+                    <CreateTaskButton phase={column} />
                   </div>
                 )}
               </Droppable>

@@ -11,7 +11,6 @@ class EmployeeProfileModal extends Component {
     const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         action({ ...selectedEmployee, ...values });
       }
     });

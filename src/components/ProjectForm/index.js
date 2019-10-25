@@ -7,10 +7,19 @@ import FormItem from '../FormItem';
 
 class ProjectFormModal extends Component {
   handleSubmit = () => {
-    const { form: { validateFields }, createBoard } = this.props;
+    const { form: { validateFields }, createBoard, updateProject, modalType, project } = this.props;
     validateFields((err, values) => {
       if (!err) {
-        createBoard(values);
+        switch (modalType) {
+          case MODAL_TYPE.CREATE:
+            createBoard(values);
+            break;
+          case MODAL_TYPE.EDIT:
+            updateProject({ ...project, ...values });
+            break;
+          default:
+            break;
+        }
       }
     });
   }
@@ -20,12 +29,18 @@ class ProjectFormModal extends Component {
   }
 
   render() {
-    const { visible, modalType, loading, form: { getFieldDecorator } } = this.props;
+    const { visible, modalType, loading, form: { getFieldDecorator }, project } = this.props;
+    const initFormValue = modalType === MODAL_TYPE.EDIT ? project : {
+      imageUrl: '',
+      name: '',
+      description: ''
+    };
+
     return (
       <Modal
         visible={visible}
         title="Create a new collection"
-        okText="Create"
+        okText={modalType === MODAL_TYPE.CREATE ? 'Create' : 'Update'}
         onCancel={this.handleCancel}
         onOk={this.handleSubmit}
         width={600}
@@ -35,7 +50,7 @@ class ProjectFormModal extends Component {
           <Form hideRequiredMark style={{ display: 'flex', paddingLeft: 20, paddingRight: 20 }}>
             <FormItem
               value="imageUrl"
-              initialValue=""
+              initialValue={initFormValue.imageUrl}
               component={<UploadImage size={145} modalType={modalType} category="board" />}
               getFieldDecorator={getFieldDecorator}
             />
@@ -43,14 +58,14 @@ class ProjectFormModal extends Component {
               <FormItem
                 getFieldDecorator={getFieldDecorator}
                 value="name"
-                initialValue=""
+                initialValue={initFormValue.name}
                 component={<Input placeholder="Board Name" />}
                 required
               />
               <FormItem
                 getFieldDecorator={getFieldDecorator}
                 value="description"
-                initialValue=""
+                initialValue={initFormValue.description}
                 component={<Input.TextArea placeholder="Description" type="textarea" rows={7} />}
               />
             </div>
@@ -65,11 +80,13 @@ const WrappedProjectForm = Form.create({ name: 'project_form' })(ProjectFormModa
 
 const mapStateToProps = ({
   modals: { projectModalVisible, modalType },
-  loading: { global }
+  loading: { global },
+  projects: { selectedProject }
 }) => ({
   visible: projectModalVisible,
   modalType,
-  loading: global
+  loading: global,
+  project: selectedProject
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -79,6 +96,10 @@ const mapDispatchToProps = dispatch => ({
   }),
   createBoard: (board) => dispatch({
     type: 'projects/createBoard',
+    payload: board
+  }),
+  updateProject: (board) => dispatch({
+    type: 'projects/updateProject',
     payload: board
   })
 });

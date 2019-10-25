@@ -1,10 +1,11 @@
-import { fetchBoards, deleteBoard, createBoard, fetchBoard } from '../utils/api';
+import _ from 'lodash';
+import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard, delay } from '../utils/api';
 import { MODAL_TYPE } from '../utils/constants';
 
 export default {
   namespace: 'projects',
   state: {
-    involvedProjects: [],
+    involvedProjects: null,
     selectedProject: null
   },
   subscriptions: {
@@ -27,13 +28,23 @@ export default {
     },
     *fetchProject({ payload: id }, { call, put }) {
       const { data } = yield call(fetchBoard, id);
+      yield put({ type: 'tasks/fetchTasks', payload: id });
+      yield call(delay, 100);
       yield put({ type: 'fetchProjectSuccess', payload: data });
+      yield put({ type: 'phases/fetchPhases', payload: id });
     },
     *fetchProjects({ payload }, { call, put, select }) {
       const { id } = yield select(state => state.passport.profile);
       const { data } = yield call(fetchBoards, id);
       yield put({ type: 'fetchProjectsSuccess', payload: data });
-      yield put({ type: 'fetchProject', payload: data[0].id });
+      if (data[0]) {
+        yield put({ type: 'fetchProject', payload: data[0].id });
+      }
+    },
+    *updateProject({ payload }, { call, put }) {
+      yield put({ type: 'fetchProjectSuccess', payload });
+      yield call(updateBoard, payload);
+      yield put({ type: 'modals/changeProjectModalState', payload: MODAL_TYPE.CLOSED });
     },
     *deleteBoard({ payload: id }, { call, put }) {
       yield call(deleteBoard, id);
@@ -41,22 +52,23 @@ export default {
     },
   },
   reducers: {
-    createProjectSuccess(state, { payload: createdProject }) {
+    createProjectSuccess(state, { payload: project }) {
       return {
         ...state,
-        involvedProjects: [...state.involvedProjects, createdProject]
+        involvedProjects: { ...state.involvedProjects, [project.id]: project }
       };
     },
-    fetchProjectSuccess(state, { payload: selectedProject }) {
+    fetchProjectSuccess(state, { payload: project }) {
       return {
         ...state,
-        selectedProject
+        involvedProjects: { ...state.involvedProjects, [project.id]: project },
+        selectedProject: project
       };
     },
-    fetchProjectsSuccess(state, { payload: involvedProjects }) {
+    fetchProjectsSuccess(state, { payload }) {
       return {
         ...state,
-        involvedProjects,
+        involvedProjects: _.keyBy(payload, 'id'),
       };
     },
   },

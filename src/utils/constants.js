@@ -1,4 +1,5 @@
 // #region PROFILE_MODAL_TYPE
+
 const EDIT = 'EDIT';
 const VIEW = 'VIEW';
 const CREATE = 'CREATE';
@@ -10,7 +11,7 @@ export const PROFILE_MODAL_TYPE = {
 
 // #endregion
 
-// #endregion MODAL_TYPE
+// #region MODAL_TYPE
 
 export const MODAL_TYPE = {
   EDIT, VIEW, CREATE, CLOSED
@@ -19,6 +20,7 @@ export const MODAL_TYPE = {
 // #endregion
 
 // #region ROLE
+
 const ADMIN = 'Admin';
 const EMPLOYEE = 'Employee';
 const MANAGER = 'Manager';
@@ -34,6 +36,7 @@ export const ROLE = {
 export const APP_CONSTANTS = {
   API_BASE_URL: 'https://quoc.azurewebsites.net/api/',
   // API_BASE_URL: 'https://localhost:5001/api/',
+  API_UPLOAD_URL: 'https://quoc.azurewebsites.net/api/'
 };
 
 // #endregion

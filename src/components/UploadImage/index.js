@@ -36,7 +36,7 @@ class UploadImage extends Component {
       <ImgCrop>
         <Upload
           name="file"
-          action={`${APP_CONSTANTS.API_BASE_URL}files/${category}`}
+          action={`${APP_CONSTANTS.API_UPLOAD_URL}files/${category}`}
           listType="picture-card"
           onChange={this.onAvatarChange}
           showUploadList={false}

@@ -7,7 +7,7 @@ import FormItem from '../FormItem';
 
 class ProjectFormModal extends Component {
   handleSubmit = () => {
-    const { form: { validateFields }, createBoard, updateProject, modalType, project } = this.props;
+    const { form: { validateFields, resetFields }, createBoard, updateProject, modalType, project } = this.props;
     validateFields((err, values) => {
       if (!err) {
         switch (modalType) {
@@ -16,6 +16,7 @@ class ProjectFormModal extends Component {
             break;
           case MODAL_TYPE.EDIT:
             updateProject({ ...project, ...values });
+            resetFields();
             break;
           default:
             break;

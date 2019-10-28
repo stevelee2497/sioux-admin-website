@@ -8,30 +8,53 @@ const USER_MENU_OPTION = {
   REMOVE: 'REMOVE'
 };
 
+const filterDefaultMembers = (all, current) =>
+  all.filter(item => !current.some(user => user.userId === item.id))
+    .map(item => ({ value: item.id, text: item.fullName }));
+
 class BoardMembers extends Component {
   constructor(props) {
     super(props);
     this.input = createRef();
+    const { members, project: { users } } = props;
     this.state = {
       adding: false,
-      members: props.members.map(item => ({ value: item.id, text: item.fullName })),
+      members: filterDefaultMembers(members, users),
       inputValue: ''
     };
   }
 
+  changeButtonState = (state) => {
+    this.setState({
+      adding: state
+    }, () => {
+      if (state) {
+        this.input.current.focus();
+      }
+    });
+  }
+
+  resetSearch = () => {
+    const { members, project: { users } } = this.props;
+    this.setState({
+      inputValue: '',
+      members: filterDefaultMembers(members, users)
+    });
+  }
+
   handleSearching = searchText => {
-    const { members } = this.props;
+    const { members, project: { users } } = this.props;
     this.setState({
       members: !searchText
-        ? members.map(item => ({ value: item.id, text: item.fullName }))
-        : members.filter(value => value.fullName.toUpperCase().includes(searchText.toUpperCase())).map(item => ({ value: item.id, text: item.fullName })),
+        ? filterDefaultMembers(members, users)
+        : filterDefaultMembers(members, users).filter(member => member.text.toUpperCase().includes(searchText.toUpperCase())),
     });
   };
 
   handleSelecting = (id) => {
-    const { project, addUserToProject } = this.props;
-    addUserToProject({ userId: id, boardId: project.id });
-    this.setState({ inputValue: '', members: this.props.members.map(item => ({ value: item.id, text: item.fullName })) });
+    const { project: { id: boardId }, addUserToProject } = this.props;
+    addUserToProject({ userId: id, boardId });
+    this.resetSearch();
   }
 
   handleChanging = value => {
@@ -52,12 +75,10 @@ class BoardMembers extends Component {
     }
   }
 
-  changeButtonState = (state) => {
-    this.setState({ adding: state }, () => {
-      if (state) {
-        this.input.current.focus();
-      }
-    });
+  handleBluring = () => {
+    setTimeout(() => {
+      this.changeButtonState(false);
+    }, 200);
   }
 
   renderMenu = (item) => (
@@ -90,6 +111,7 @@ class BoardMembers extends Component {
           onSelect={this.handleSelecting}
           onSearch={this.handleSearching}
           onChange={this.handleChanging}
+          onBlur={this.handleBluring}
           placeholder="Name ..."
           value={inputValue}
           ref={this.input}

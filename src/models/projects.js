@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard, delay } from '../utils/api';
+import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard, delay, addBoardMember } from '../utils/api';
 import { MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -14,6 +14,9 @@ export default {
         if (pathname.toLowerCase() === '/boards') {
           dispatch({
             type: 'fetchProjects'
+          });
+          dispatch({
+            type: 'people/fetch'
           });
         }
       });
@@ -50,6 +53,11 @@ export default {
       yield call(deleteBoard, id);
       yield put({ type: 'fetchProjects' });
     },
+    *addUserToProject({ payload }, { call, put }) {
+      const { data } = yield call(addBoardMember, payload);
+      console.log(data);
+      yield put({ type: 'addUserToProjectSuccess', payload: data });
+    },
   },
   reducers: {
     createProjectSuccess(state, { payload: project }) {
@@ -69,6 +77,15 @@ export default {
       return {
         ...state,
         involvedProjects: _.keyBy(payload, 'id'),
+      };
+    },
+    addUserToProjectSuccess(state, { payload }) {
+      return {
+        ...state,
+        selectedProject: {
+          ...state.selectedProject,
+          users: [...state.selectedProject.users, payload]
+        }
       };
     },
   },

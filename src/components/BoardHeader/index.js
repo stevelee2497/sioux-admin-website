@@ -1,18 +1,10 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Menu, Dropdown, Avatar, Divider, Input } from 'antd';
+import { Button, Menu, Dropdown, Divider } from 'antd';
 import { MODAL_TYPE } from '../../utils/constants';
-import { parseImage } from '../../utils/images';
+import BoardMembers from '../BoardMembers';
 
 class BoardHeader extends Component {
-  constructor(props) {
-    super(props);
-    this.input = createRef();
-    this.state = {
-      adding: false
-    };
-  }
-
   handleMenuItemClick = ({ key }) => {
     const { project: { id }, deleteBoard, changeProjectModalState } = this.props;
     switch (key) {
@@ -26,46 +18,6 @@ class BoardHeader extends Component {
         break;
     }
   }
-
-  handleOnBlur = () => {
-    // wait for a moment to ensure that if user click the Create button, the click button is fired
-    setTimeout(() => {
-      this.changeButtonState(false);
-    }, 200);
-  }
-
-  changeButtonState = (state) => {
-    this.setState({ adding: state }, () => {
-      if (state) {
-        this.input.current.focus();
-      }
-    });
-  }
-
-  renderInvite = () => {
-    const { adding } = this.state;
-    if (!adding) {
-      return (
-        <Button
-          style={{ marginLeft: 10 }}
-          onClick={() => this.changeButtonState(true)}
-        >
-          Invite
-        </Button>
-      );
-    }
-
-    return (
-      <div style={{ display: 'flex', marginLeft: 10 }}>
-        <Input ref={this.input} onBlur={this.handleOnBlur} placeholder="Enter email ..." />
-        <Button type="primary" style={{ marginLeft: 10 }}>Add</Button>
-      </div>
-    );
-  }
-
-  renderUsers = (users) => users.map(user => (
-    <Avatar key={user.id} src={parseImage(user.avatarUrl)} />
-  ));
 
   render() {
     const { project } = this.props;
@@ -81,26 +33,23 @@ class BoardHeader extends Component {
     );
 
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingRight: 10,
-          paddingLeft: 10,
-          paddingTop: 5,
-        }}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 10,
+        paddingLeft: 10,
+        paddingTop: 5,
+      }}
       >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center'
-          }}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center'
+        }}
         >
           <h2 style={{ marginBottom: 0, marginRight: 10 }}>{project.name}</h2>
           <Divider type="vertical" style={{ height: 25 }} />
-          {this.renderUsers(project.users)}
-          {this.renderInvite()}
+          <BoardMembers />
         </div>
         <Dropdown overlay={BoardMenu} trigger={['click']}>
           <Button icon="setting" size="default" shape="circle" />
@@ -111,9 +60,9 @@ class BoardHeader extends Component {
 }
 
 const mapStateToProps = ({
-  projects: { selectedProject }
+  projects: { selectedProject },
 }) => ({
-  project: selectedProject
+  project: selectedProject,
 });
 
 const mapDispatchToProps = dispatch => ({

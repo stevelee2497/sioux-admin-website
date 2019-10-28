@@ -188,6 +188,22 @@ export const deleteBoard = async (id) => {
 
 // #endregion
 
+// #region Board User
+
+export const addBoardMember = async (boardUser) => {
+  const response = await api.post('/boardUsers', boardUser);
+  const { data } = response;
+  return data;
+};
+
+export const removeBoardMember = async (id) => {
+  const response = await api.delete(`/boardUsers/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
 // #region Phase
 
 export const createPhase = async (phase) => {

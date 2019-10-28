@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard, delay, addBoardMember } from '../utils/api';
+import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard, delay, addBoardMember, removeBoardMember } from '../utils/api';
 import { MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -55,8 +55,13 @@ export default {
     },
     *addUserToProject({ payload }, { call, put }) {
       const { data } = yield call(addBoardMember, payload);
-      console.log(data);
       yield put({ type: 'addUserToProjectSuccess', payload: data });
+    },
+    *removeBoardMember({ payload: id }, { call, put }) {
+      const { data } = yield call(removeBoardMember, id);
+      if (data) {
+        yield put({ type: 'removeBoardMemberSuccess', payload: id });
+      }
     },
   },
   reducers: {
@@ -85,6 +90,15 @@ export default {
         selectedProject: {
           ...state.selectedProject,
           users: [...state.selectedProject.users, payload]
+        }
+      };
+    },
+    removeBoardMemberSuccess(state, { payload: id }) {
+      return {
+        ...state,
+        selectedProject: {
+          ...state.selectedProject,
+          users: state.selectedProject.users.filter(x => x.id !== id)
         }
       };
     },

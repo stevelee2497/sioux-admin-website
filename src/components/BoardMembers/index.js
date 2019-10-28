@@ -31,7 +31,7 @@ class BoardMembers extends Component {
   handleSelecting = (id) => {
     const { project, addUserToProject } = this.props;
     addUserToProject({ userId: id, boardId: project.id });
-    this.setState({ inputValue: '' });
+    this.setState({ inputValue: '', members: this.props.members.map(item => ({ value: item.id, text: item.fullName })) });
   }
 
   handleChanging = value => {
@@ -39,12 +39,13 @@ class BoardMembers extends Component {
   };
 
   handleMemberClick = (item, menuKey) => {
+    const { removeBoardMember, showProfile } = this.props;
     switch (menuKey) {
       case USER_MENU_OPTION.VIEW_PROFILE:
-        // TODO: view user profile with item.userId
+        showProfile(item.userId);
         break;
       case USER_MENU_OPTION.REMOVE:
-        // TODO: Remove user from board with item.id
+        removeBoardMember(item.id);
         break;
       default:
         break;
@@ -129,6 +130,14 @@ const mapDispatchToProps = dispatch => ({
   addUserToProject: boardUser => dispatch({
     type: 'projects/addUserToProject',
     payload: boardUser
+  }),
+  removeBoardMember: id => dispatch({
+    type: 'projects/removeBoardMember',
+    payload: id
+  }),
+  showProfile: id => dispatch({
+    type: 'people/showProfile',
+    payload: id
   }),
 });
 

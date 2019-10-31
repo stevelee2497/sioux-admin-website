@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { Card } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'dva';
-import { MODAL_TYPE } from '../../utils/constants';
 
 class Task extends Component {
   render() {
-    const { task, index, changeTaskModalState } = this.props;
+    const { task, index, showTask } = this.props;
     return (
       <Draggable draggableId={task.id} index={index}>
         {(provided) => (
@@ -19,7 +18,7 @@ class Task extends Component {
               style={{ marginBottom: 5 }}
               hoverable
               size="small"
-              onClick={() => changeTaskModalState(MODAL_TYPE.CREATE)}
+              onClick={() => showTask(task.id)}
             >
               <h4>{task.title}</h4>
               {task.content}
@@ -34,9 +33,9 @@ class Task extends Component {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-  changeTaskModalState: (modalType) => dispatch({
-    type: 'modals/changeTaskModalState',
-    payload: modalType
+  showTask: (taskId) => dispatch({
+    type: 'modals/showTask',
+    payload: taskId
   })
 });
 

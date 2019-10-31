@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Modal, Input } from 'antd';
+import { Modal, Input, Button, Tag, Icon } from 'antd';
 import { MODAL_TYPE } from '../../utils/constants';
+import styles from './index.less';
 
 class TaskModal extends Component {
   handleSubmit = () => {
@@ -12,51 +13,73 @@ class TaskModal extends Component {
     this.props.changeTaskModalState(MODAL_TYPE.CLOSED);
   }
 
-  renderForm = () => {
-    const { form: { getFieldDecorator } } = this.props;
-    return (
-      <Form>
-        <Form.Item label="Title">
-          {getFieldDecorator('title', {
-              rules: [{ required: true, message: 'Please input the title of collection!' }],
-            })(<Input />)}
-        </Form.Item>
-        <Form.Item label="Description">
-          {getFieldDecorator('description')(<Input type="textarea" />)}
-        </Form.Item>
-      </Form>
-    );
+  handleOnBlur = e => {
+    console.log(e.target);
   }
 
   render() {
-    const { visible } = this.props;
+    const { visible, task } = this.props;
+    if (!task) {
+      return null;
+    }
+
+    console.log(task);
+
     return (
       <Modal
         visible={visible}
-        title="Task Modal"
-        okText="Create"
+        footer={null}
         onCancel={this.handleCancel}
-        onOk={this.handleSubmit}
+        bodyStyle={{ padding: 15, display: 'flex', flexDirection: 'column' }}
       >
-        {this.renderForm()}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Icon style={{ fontSize: 20, marginRight: 5 }} type="book" />
+          <Input.TextArea
+            name="title"
+            onBlur={this.handleOnBlur}
+            autosize
+            defaultValue={task.title}
+            className={styles.title}
+          />
+        </div>
+        <div style={{ marginLeft: 32, marginTop: 2 }}>
+          <div>
+            status:
+            <Tag color="#448aff" style={{ marginLeft: 10 }}>To do</Tag>
+          </div>
+          ádf
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginTop: 30 }}>
+          <Icon style={{ fontSize: 20, marginRight: 5 }} type="align-left" />
+          <h3 style={{ margin: 0, marginLeft: 5 }}>Description</h3>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <Input.TextArea
+            name="description"
+            onBlur={this.handleOnBlur}
+            autosize
+            defaultValue={task.description}
+            className={styles.description}
+          />
+        </div>
       </Modal>
     );
   }
 }
 
-const WrappedTaskModal = Form.create({ name: 'task_form' })(TaskModal);
-
 const mapStateToProps = ({
-  modals: { taskModalVisible }
+  modals: { taskModalVisible, taskId },
+  tasks
 }) => ({
-  visible: taskModalVisible
+  visible: taskModalVisible,
+  task: tasks[taskId]
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeTaskModalState: (modalType) => dispatch({
+  changeTaskModalState: (modalType, taskId) => dispatch({
     type: 'modals/changeTaskModalState',
-    payload: modalType
+    payload: { modalType, taskId }
   })
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedTaskModal);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskModal);

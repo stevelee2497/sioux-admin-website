@@ -73,10 +73,6 @@ class Column extends Component {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-  changeTaskModalState: (modalType) => dispatch({
-    type: 'modals/changeTaskModalState',
-    payload: modalType
-  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Column);

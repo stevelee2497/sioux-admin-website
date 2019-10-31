@@ -258,8 +258,8 @@ export const fetchTasks = async (boardId) => {
   return data;
 };
 
-export const updateTask = async (board) => {
-  const response = await api.put(`/tasks/${board.id}`, board);
+export const updateTask = async (task) => {
+  const response = await api.put(`/tasks/${task.id}`, task);
   const { data } = response;
   return data;
 };

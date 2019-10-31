@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchTasks, createTask } from '../utils/api';
+import { fetchTasks, createTask, updateTask } from '../utils/api';
 
 export default {
   namespace: 'tasks',
@@ -8,7 +8,7 @@ export default {
     *createTask({ payload }, { call, put }) {
       const { task, phase } = payload;
       const { data } = yield call(createTask, task);
-      yield put({ type: 'createTaskSuccess', payload: data });
+      yield put({ type: 'saveTask', payload: data });
       // Update taskOrder of the phase where the task is created
       const newPhase = {
         ...phase,
@@ -20,6 +20,10 @@ export default {
       const { data } = yield call(fetchTasks, boardId);
       yield put({ type: 'fetchTasksSuccess', payload: data });
     },
+    *updateTask({ payload: task }, { call, put }) {
+      yield put({ type: 'saveTask', payload: task });
+      yield call(updateTask, task);
+    },
     *deletePhase({ payload: id }, { call, put }) {
     },
   },
@@ -27,7 +31,7 @@ export default {
     fetchTasksSuccess(state, { payload }) {
       return _.keyBy(payload, 'id');
     },
-    createTaskSuccess(state, { payload }) {
+    saveTask(state, { payload }) {
       return {
         ...state,
         [payload.id]: payload

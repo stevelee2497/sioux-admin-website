@@ -1,3 +1,14 @@
+.block {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    font-size: 20px;
+    margin-right: 4px;
+    margin-left: 6px;
+  }
+}
+
 .borderlessTextArea {
   border-color: transparent;
   color: black;
@@ -7,12 +18,20 @@
 
 .title {
   .borderlessTextArea();
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
+  margin-right: 30px;
 }
 
 .description {
   .borderlessTextArea();
-  margin-left: 25px;
+  margin-left: 36px;
   margin-top: 10px;
+  background-color: whitesmoke;
+}
+
+.comment {
+  .borderlessTextArea();
+  margin-left: 5px;
+  background-color: whitesmoke;
 }

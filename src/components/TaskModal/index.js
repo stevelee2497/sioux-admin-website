@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Input, Button, Tag, Icon, Avatar } from 'antd';
+import { Modal, Input, Button, Tag, Icon, Avatar, Menu, Dropdown } from 'antd';
 import faker from 'faker';
+import moment from 'moment';
 import { MODAL_TYPE } from '../../utils/constants';
 import styles from './index.less';
+import { toTimeSpan, toString } from '../../helpers/timeHelper';
+import AssignMemberButton from '../AssignMemberButton';
 
 class TaskModal extends Component {
   handleSubmit = () => {
@@ -20,7 +23,14 @@ class TaskModal extends Component {
     switch (name) {
       case 'title':
       case 'description':
-        updateTask({ ...task, [name]: value });
+        if (task[name] !== value) {
+          updateTask({ ...task, [name]: value });
+        }
+        break;
+      case 'estimation':
+        if (task[name] !== toTimeSpan(value)) {
+          updateTask({ ...task, [name]: toTimeSpan(value) });
+        }
         break;
       case 'comment':
         break;
@@ -34,11 +44,28 @@ class TaskModal extends Component {
     <Avatar src={faker.image.avatar()} key={faker.random.uuid()} style={{ marginRight: 2 }} />
   ))
 
+  renderActivities = (task) => Array.from({ length: 2 }).map(item => (
+    <div style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
+      <Avatar style={{ marginTop: 10 }} src={faker.image.avatar()} />
+      <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5, fontSize: 13 }}>
+        <div>
+          <Button type="link" style={{ padding: 0, marginRight: 5 }}>
+            <h4 style={{ margin: 0 }}>Quoc Tran</h4>
+          </Button>
+          has created this task
+        </div>
+        <p style={{ marginTop: -3, marginBottom: 0 }}>{moment(task.createdTime).format('DD/MM/YYYY HH:mm')}</p>
+      </div>
+    </div>
+  ))
+
   render() {
     const { visible, task } = this.props;
     if (!task) {
       return null;
     }
+
+    console.log(task);
 
     return (
       <Modal
@@ -49,7 +76,7 @@ class TaskModal extends Component {
         width={720}
       >
         <div className={styles.block}>
-          <Icon className={styles.icon} type="book" />
+          <Icon className={styles.icon} style={{ marginTop: 12 }} type="book" />
           <Input.TextArea
             name="title"
             onBlur={this.handleOnBlur}
@@ -67,7 +94,29 @@ class TaskModal extends Component {
             MEMBERS
             <div style={{ display: 'flex' }}>
               {this.renderMembers()}
-              <Button icon="plus" shape="circle" />
+              <AssignMemberButton />
+            </div>
+          </div>
+        </div>
+        <div className={styles.block} style={{ marginTop: 30 }}>
+          <Icon className={styles.icon} type="clock-circle" />
+          <div style={{ display: 'flex', flex: 1, marginTop: -3 }}>
+            <div style={{ marginLeft: 5, display: 'flex', flex: 1, alignItems: 'baseline' }}>
+              <h3 style={{ margin: 0 }}>Estimate:</h3>
+              <Input
+                name="estimation"
+                onBlur={this.handleOnBlur}
+                className={styles.estimation}
+                defaultValue={toString(task.estimation)}
+              />
+            </div>
+            <div style={{ marginLeft: 5, display: 'flex', flex: 1, alignItems: 'baseline', marginTop: 2 }}>
+              <h3 style={{ margin: 0 }}>Spent:</h3>
+              <div className={styles.estimation}>4h</div>
+            </div>
+            <div style={{ marginLeft: 5, display: 'flex', flex: 1, alignItems: 'baseline', marginTop: 2 }}>
+              <h3 style={{ margin: 0 }}>Remaining:</h3>
+              <div className={styles.estimation}>30m</div>
             </div>
           </div>
         </div>
@@ -89,9 +138,7 @@ class TaskModal extends Component {
           <h3 style={{ margin: 0, marginLeft: 5 }}>Comments</h3>
         </div>
         <div style={{ display: 'flex', marginRight: 25, marginTop: 10 }}>
-          <div>
-            <Avatar src={faker.image.avatar()} />
-          </div>
+          <Avatar src={faker.image.avatar()} />
           <Input.TextArea
             name="comment"
             onBlur={this.handleOnBlur}
@@ -100,6 +147,12 @@ class TaskModal extends Component {
             className={styles.comment}
           />
         </div>
+
+        <div className={styles.block} style={{ marginTop: 30 }}>
+          <Icon className={styles.icon} type="thunderbolt" />
+          <h3 style={{ margin: 0, marginLeft: 5, marginTop: 3 }}>Activities</h3>
+        </div>
+        {this.renderActivities(task)}
       </Modal>
     );
   }

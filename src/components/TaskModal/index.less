@@ -1,11 +1,13 @@
+@import '../../global.less';
+
 .block {
   display: flex;
-  align-items: center;
 
   .icon {
     font-size: 20px;
     margin-right: 4px;
     margin-left: 6px;
+    margin-top: 3px;
   }
 }
 
@@ -21,6 +23,13 @@
   font-size: 20px;
   font-weight: 500;
   margin-right: 30px;
+}
+
+.estimation {
+  .borderlessTextArea();
+  width: 100px;
+  font-weight: 500;
+  color: @secondaryTextColor;
 }
 
 .description {

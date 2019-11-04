@@ -90,7 +90,9 @@ class BoardMembers extends Component {
 
   renderUsers = (users) => users.map(item => (
     <Dropdown key={item.id} overlay={() => this.renderMenu(item)}>
-      <Avatar src={parseImage(item.avatarUrl)} style={{ marginRight: 2 }} />
+      <Avatar src={parseImage(item.avatarUrl)} style={{ marginRight: 2 }}>
+        {item.fullName.match(/\b\w/g).join('')}
+      </Avatar>
     </Dropdown>
   ));
 

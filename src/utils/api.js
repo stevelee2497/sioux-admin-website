@@ -204,6 +204,22 @@ export const removeBoardMember = async (id) => {
 
 // #endregion
 
+// #region TaskAssignee
+
+export const assignTask = async (taskAssignee) => {
+  const response = await api.post('/taskAssignees', taskAssignee);
+  const { data } = response;
+  return data;
+};
+
+export const unAssignTask = async (id) => {
+  const response = await api.delete(`/taskAssignees/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
 // #region Phase
 
 export const createPhase = async (phase) => {

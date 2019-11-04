@@ -7,6 +7,7 @@ import { MODAL_TYPE } from '../../utils/constants';
 import styles from './index.less';
 import { toTimeSpan, toString } from '../../helpers/timeHelper';
 import AssignMemberButton from '../AssignMemberButton';
+import { parseImage } from '../../utils/images';
 
 class TaskModal extends Component {
   handleSubmit = () => {
@@ -37,15 +38,28 @@ class TaskModal extends Component {
       default:
         break;
     }
-    console.log({ name, value });
   }
 
-  renderMembers = () => Array.from({ length: 2 }).map(item => (
-    <Avatar src={faker.image.avatar()} key={faker.random.uuid()} style={{ marginRight: 2 }} />
-  ))
+  renderMembers = () => {
+    const { employees, task: { taskAssignees } } = this.props;
+    console.log(taskAssignees);
+    return taskAssignees.map(item => {
+      const member = employees[item.userId];
+      console.log(member);
+      return (
+        <Avatar
+          src={parseImage(member.avatarUrl)}
+          key={member.id}
+          style={{ marginRight: 2 }}
+        >
+          {member.fullName.match(/\b\w/g).join('')}
+        </Avatar>
+      );
+    });
+  }
 
   renderActivities = (task) => Array.from({ length: 2 }).map(item => (
-    <div style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
+    <div key={faker.random.uuid()} style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
       <Avatar style={{ marginTop: 10 }} src={faker.image.avatar()} />
       <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5, fontSize: 13 }}>
         <div>
@@ -60,12 +74,10 @@ class TaskModal extends Component {
   ))
 
   render() {
-    const { visible, task } = this.props;
+    const { visible, task, profile: { avatarUrl } } = this.props;
     if (!task) {
       return null;
     }
-
-    console.log(task);
 
     return (
       <Modal
@@ -94,7 +106,7 @@ class TaskModal extends Component {
             MEMBERS
             <div style={{ display: 'flex' }}>
               {this.renderMembers()}
-              <AssignMemberButton />
+              <AssignMemberButton taskId={task.id} />
             </div>
           </div>
         </div>
@@ -112,11 +124,11 @@ class TaskModal extends Component {
             </div>
             <div style={{ marginLeft: 5, display: 'flex', flex: 1, alignItems: 'baseline', marginTop: 2 }}>
               <h3 style={{ margin: 0 }}>Spent:</h3>
-              <div className={styles.estimation}>4h</div>
+              <div className={styles.estimation}>0h</div>
             </div>
             <div style={{ marginLeft: 5, display: 'flex', flex: 1, alignItems: 'baseline', marginTop: 2 }}>
               <h3 style={{ margin: 0 }}>Remaining:</h3>
-              <div className={styles.estimation}>30m</div>
+              <div className={styles.estimation}>{toString(task.estimation)}</div>
             </div>
           </div>
         </div>
@@ -131,6 +143,7 @@ class TaskModal extends Component {
             autosize={{ minRows: 6 }}
             defaultValue={task.description}
             className={styles.description}
+            placeholder="Add a description ..."
           />
         </div>
         <div className={styles.block} style={{ marginTop: 30 }}>
@@ -138,13 +151,14 @@ class TaskModal extends Component {
           <h3 style={{ margin: 0, marginLeft: 5 }}>Comments</h3>
         </div>
         <div style={{ display: 'flex', marginRight: 25, marginTop: 10 }}>
-          <Avatar src={faker.image.avatar()} />
+          <Avatar src={parseImage(avatarUrl)} />
           <Input.TextArea
             name="comment"
             onBlur={this.handleOnBlur}
             autosize={{ minRows: 2 }}
             defaultValue={task.description}
             className={styles.comment}
+            placeholder="Add a comment ..."
           />
         </div>
 
@@ -160,10 +174,14 @@ class TaskModal extends Component {
 
 const mapStateToProps = ({
   modals: { taskModalVisible, taskId },
-  tasks
+  tasks,
+  people: { employees },
+  passport: { profile }
 }) => ({
   visible: taskModalVisible,
-  task: tasks[taskId]
+  task: tasks[taskId],
+  employees,
+  profile
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchTasks, createTask, updateTask, assignTask } from '../utils/api';
+import { fetchTasks, createTask, updateTask, assignTask, unAssignTask } from '../utils/api';
 
 export default {
   namespace: 'tasks',
@@ -28,6 +28,10 @@ export default {
       const { data } = yield call(assignTask, taskAssignee);
       yield put({ type: 'assignTaskSuccess', payload: data });
     },
+    *unAssignTask({ payload: id }, { call, put }) {
+      const { data } = yield call(unAssignTask, id);
+      yield put({ type: 'unAssignTaskSuccess', payload: data });
+    },
     *deletePhase({ payload: id }, { call, put }) {
     },
   },
@@ -48,6 +52,16 @@ export default {
         [taskAssignee.taskId]: {
           ...task,
           taskAssignees: [...task.taskAssignees, taskAssignee]
+        }
+      };
+    },
+    unAssignTaskSuccess(state, { payload: taskAssignee }) {
+      const task = state[taskAssignee.taskId];
+      return {
+        ...state,
+        [taskAssignee.taskId]: {
+          ...task,
+          taskAssignees: task.taskAssignees.filter(item => item.id !== taskAssignee.id)
         }
       };
     },

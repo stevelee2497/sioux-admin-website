@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Input, Button, Tag, Icon, Avatar, Menu, Dropdown } from 'antd';
+import { Modal, Input, Button, Tag, Icon, Avatar } from 'antd';
 import faker from 'faker';
 import moment from 'moment';
 import { MODAL_TYPE } from '../../utils/constants';
@@ -42,10 +42,8 @@ class TaskModal extends Component {
 
   renderMembers = () => {
     const { employees, task: { taskAssignees } } = this.props;
-    console.log(taskAssignees);
     return taskAssignees.map(item => {
       const member = employees[item.userId];
-      console.log(member);
       return (
         <Avatar
           src={parseImage(member.avatarUrl)}
@@ -58,7 +56,7 @@ class TaskModal extends Component {
     });
   }
 
-  renderActivities = (task) => Array.from({ length: 2 }).map(item => (
+  renderActivities = (task) => Array.from({ length: 2 }).map(() => (
     <div key={faker.random.uuid()} style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
       <Avatar style={{ marginTop: 10 }} src={faker.image.avatar()} />
       <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5, fontSize: 13 }}>
@@ -98,15 +96,18 @@ class TaskModal extends Component {
           />
         </div>
         <div style={{ marginLeft: 36, marginTop: 2 }}>
-          <div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             status:
             <Tag color="#448aff" style={{ marginLeft: 10 }}>To do</Tag>
+            <span style={{ marginLeft: 30 }}>label:</span>
+            <Tag color="#00bfa5" style={{ marginLeft: 10 }}>Backlog</Tag>
+            <Button size="small" shape="circle" icon="tag" />
           </div>
           <div style={{ fontWeight: 500, marginTop: 20, display: 'flex', flexDirection: 'column' }}>
             MEMBERS
             <div style={{ display: 'flex' }}>
               {this.renderMembers()}
-              <AssignMemberButton taskId={task.id} />
+              <AssignMemberButton task={task} />
             </div>
           </div>
         </div>

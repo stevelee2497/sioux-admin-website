@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill, getUserSkills, removeUserSkills, getTimeLineEvents, addTimeLineEvent, removeTimeLineEvents, createNewSkill, createEmployee } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
@@ -12,7 +13,8 @@ export default {
     modalVisible: false,
     selectedPosition: undefined,
     selectedSkills: [],
-    profileModalType: PROFILE_MODAL_TYPE.EDIT
+    profileModalType: PROFILE_MODAL_TYPE.EDIT,
+    employees: undefined
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -111,6 +113,7 @@ export default {
         ...state,
         dataSource: payload.data,
         total: payload.total,
+        employees: _.keyBy(payload.data, 'id')
       };
     },
     savePagination(state, { payload }) {

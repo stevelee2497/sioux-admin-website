@@ -71,7 +71,7 @@ class EmployeeForm extends Component {
             <FormItem
               value="avatarUrl"
               initialValue={profile.avatarUrl}
-              component={(<UploadImage name={profile.fullName} />)}
+              component={(<UploadImage name={profile.fullName} category="avatar" />)}
               getFieldDecorator={getFieldDecorator}
             />
             <div className={styles.skills}>

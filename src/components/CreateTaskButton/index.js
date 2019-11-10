@@ -109,10 +109,6 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeTaskModalState: (modalType) => dispatch({
-    type: 'modals/changeTaskModalState',
-    payload: modalType
-  }),
   createTask: (payload) => dispatch({
     type: 'tasks/createTask',
     payload

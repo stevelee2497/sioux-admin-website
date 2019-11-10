@@ -188,6 +188,38 @@ export const deleteBoard = async (id) => {
 
 // #endregion
 
+// #region Board User
+
+export const addBoardMember = async (boardUser) => {
+  const response = await api.post('/boardUsers', boardUser);
+  const { data } = response;
+  return data;
+};
+
+export const removeBoardMember = async (id) => {
+  const response = await api.delete(`/boardUsers/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
+// #region TaskAssignee
+
+export const assignTask = async (taskAssignee) => {
+  const response = await api.post('/taskAssignees', taskAssignee);
+  const { data } = response;
+  return data;
+};
+
+export const unAssignTask = async (id) => {
+  const response = await api.delete(`/taskAssignees/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
 // #region Phase
 
 export const createPhase = async (phase) => {
@@ -242,8 +274,8 @@ export const fetchTasks = async (boardId) => {
   return data;
 };
 
-export const updateTask = async (board) => {
-  const response = await api.put(`/tasks/${board.id}`, board);
+export const updateTask = async (task) => {
+  const response = await api.put(`/tasks/${task.id}`, task);
   const { data } = response;
   return data;
 };

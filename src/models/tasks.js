@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchTasks, createTask } from '../utils/api';
+import { fetchTasks, createTask, updateTask, assignTask, unAssignTask } from '../utils/api';
 
 export default {
   namespace: 'tasks',
@@ -8,7 +8,7 @@ export default {
     *createTask({ payload }, { call, put }) {
       const { task, phase } = payload;
       const { data } = yield call(createTask, task);
-      yield put({ type: 'createTaskSuccess', payload: data });
+      yield put({ type: 'saveTask', payload: data });
       // Update taskOrder of the phase where the task is created
       const newPhase = {
         ...phase,
@@ -20,6 +20,18 @@ export default {
       const { data } = yield call(fetchTasks, boardId);
       yield put({ type: 'fetchTasksSuccess', payload: data });
     },
+    *updateTask({ payload: task }, { call, put }) {
+      yield put({ type: 'saveTask', payload: task });
+      yield call(updateTask, task);
+    },
+    *assignTask({ payload: taskAssignee }, { call, put }) {
+      const { data } = yield call(assignTask, taskAssignee);
+      yield put({ type: 'assignTaskSuccess', payload: data });
+    },
+    *unAssignTask({ payload: id }, { call, put }) {
+      const { data } = yield call(unAssignTask, id);
+      yield put({ type: 'unAssignTaskSuccess', payload: data });
+    },
     *deletePhase({ payload: id }, { call, put }) {
     },
   },
@@ -27,10 +39,30 @@ export default {
     fetchTasksSuccess(state, { payload }) {
       return _.keyBy(payload, 'id');
     },
-    createTaskSuccess(state, { payload }) {
+    saveTask(state, { payload }) {
       return {
         ...state,
         [payload.id]: payload
+      };
+    },
+    assignTaskSuccess(state, { payload: taskAssignee }) {
+      const task = state[taskAssignee.taskId];
+      return {
+        ...state,
+        [taskAssignee.taskId]: {
+          ...task,
+          taskAssignees: [...task.taskAssignees, taskAssignee]
+        }
+      };
+    },
+    unAssignTaskSuccess(state, { payload: taskAssignee }) {
+      const task = state[taskAssignee.taskId];
+      return {
+        ...state,
+        [taskAssignee.taskId]: {
+          ...task,
+          taskAssignees: task.taskAssignees.filter(item => item.id !== taskAssignee.id)
+        }
       };
     },
   },

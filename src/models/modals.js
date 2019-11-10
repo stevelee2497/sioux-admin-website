@@ -5,13 +5,16 @@ export default {
   state: {
     projectModalVisible: false,
     taskModalVisible: false,
-    modalType: MODAL_TYPE.CLOSED
+    modalType: MODAL_TYPE.CLOSED,
+    taskId: null,
   },
   subscriptions: {
 
   },
   effects: {
-
+    *showTask({ payload: taskId }, { call, put, select }) {
+      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, taskId } });
+    },
   },
   reducers: {
     changeProjectModalState(state, { payload: modalType }) {
@@ -21,11 +24,12 @@ export default {
         projectModalVisible: modalType !== MODAL_TYPE.CLOSED
       };
     },
-    changeTaskModalState(state, { payload: modalType }) {
+    changeTaskModalState(state, { payload: { modalType, taskId } }) {
       return {
         ...state,
         modalType,
-        taskModalVisible: modalType !== MODAL_TYPE.CLOSED
+        taskModalVisible: modalType !== MODAL_TYPE.CLOSED,
+        taskId
       };
     },
   }

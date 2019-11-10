@@ -1,0 +1,48 @@
+@import '../../global.less';
+
+.block {
+  display: flex;
+
+  .icon {
+    font-size: 20px;
+    margin-right: 4px;
+    margin-left: 6px;
+    margin-top: 3px;
+  }
+}
+
+.borderlessTextArea {
+  color: black;
+  resize:none;
+}
+
+.title {
+  .borderlessTextArea();
+  font-size: 20px;
+  font-weight: 500;
+  margin-right: 30px;
+  border-color: transparent;
+  padding-left: 5px;
+}
+
+.estimation {
+  .borderlessTextArea();
+  width: 100px;
+  font-weight: 500;
+  color: @secondaryTextColor;
+  border-color: transparent;
+  padding-left: 5px;
+}
+
+.description {
+  .borderlessTextArea();
+  margin-left: 36px;
+  margin-top: 10px;
+  background-color: whitesmoke;
+}
+
+.comment {
+  .borderlessTextArea();
+  margin-left: 5px;
+  background-color: whitesmoke;
+}

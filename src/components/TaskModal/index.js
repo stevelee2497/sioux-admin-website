@@ -6,8 +6,9 @@ import moment from 'moment';
 import { MODAL_TYPE } from '../../utils/constants';
 import styles from './index.less';
 import { toTimeSpan, toString } from '../../helpers/timeHelper';
-import AssignMemberButton from '../AssignMemberButton';
 import { parseImage } from '../../utils/images';
+import TaskLabels from '../TaskLabels';
+import TaskMembers from '../TaskMembers';
 
 class TaskModal extends Component {
   handleSubmit = () => {
@@ -38,22 +39,6 @@ class TaskModal extends Component {
       default:
         break;
     }
-  }
-
-  renderMembers = () => {
-    const { employees, task: { taskAssignees } } = this.props;
-    return taskAssignees.map(item => {
-      const member = employees[item.userId];
-      return (
-        <Avatar
-          src={parseImage(member.avatarUrl)}
-          key={member.id}
-          style={{ marginRight: 2 }}
-        >
-          {member.fullName.match(/\b\w/g).join('')}
-        </Avatar>
-      );
-    });
   }
 
   renderActivities = (task) => Array.from({ length: 2 }).map(() => (
@@ -99,17 +84,9 @@ class TaskModal extends Component {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             status:
             <Tag color="#448aff" style={{ marginLeft: 10 }}>To do</Tag>
-            <span style={{ marginLeft: 30 }}>label:</span>
-            <Tag color="#00bfa5" style={{ marginLeft: 10 }}>Backlog</Tag>
-            <Button size="small" shape="circle" icon="tag" />
+            <TaskLabels />
           </div>
-          <div style={{ fontWeight: 500, marginTop: 20, display: 'flex', flexDirection: 'column' }}>
-            MEMBERS
-            <div style={{ display: 'flex' }}>
-              {this.renderMembers()}
-              <AssignMemberButton task={task} />
-            </div>
-          </div>
+          <TaskMembers />
         </div>
         <div className={styles.block} style={{ marginTop: 30 }}>
           <Icon className={styles.icon} type="clock-circle" />
@@ -162,7 +139,6 @@ class TaskModal extends Component {
             placeholder="Add a comment ..."
           />
         </div>
-
         <div className={styles.block} style={{ marginTop: 30 }}>
           <Icon className={styles.icon} type="thunderbolt" />
           <h3 style={{ margin: 0, marginLeft: 5, marginTop: 3 }}>Activities</h3>

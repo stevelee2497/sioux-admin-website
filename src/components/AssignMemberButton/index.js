@@ -27,17 +27,8 @@ class AssignMemberButton extends Component {
     this.setState({ visible: flag });
   };
 
-  renderChecked = () => {
-    const { task } = this.props;
-    return (
-      <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" style={{ marginLeft: 10 }} />
-    );
-  }
-
   render() {
     const { members, task: { taskAssignees } } = this.props;
-    console.log(taskAssignees);
-    console.log(members);
     const { visible } = this.state;
 
     const menu = (

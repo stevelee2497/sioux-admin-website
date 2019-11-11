@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard, delay, addBoardMember, removeBoardMember, fetchTasks } from '../utils/api';
+import { fetchBoards, deleteBoard, createBoard, fetchBoard, updateBoard, addBoardMember, removeBoardMember, fetchTasks, fetchLabels } from '../utils/api';
 import { MODAL_TYPE } from '../utils/constants';
 
 export default {
@@ -32,6 +32,8 @@ export default {
     *fetchProject({ payload: id }, { call, put }) {
       const { data: board } = yield call(fetchBoard, id);
       const { data: tasks } = yield call(fetchTasks, id);
+      const { data: labels } = yield call(fetchLabels, id);
+      yield put({ type: 'labels/fetchLabelsSuccess', payload: labels });
       yield put({ type: 'tasks/fetchTasksSuccess', payload: tasks });
       yield put({ type: 'fetchProjectSuccess', payload: board });
       yield put({ type: 'phases/fetchPhases', payload: id });

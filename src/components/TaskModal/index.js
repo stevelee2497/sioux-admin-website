@@ -84,7 +84,7 @@ class TaskModal extends Component {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             status:
             <Tag color="#448aff" style={{ marginLeft: 10 }}>To do</Tag>
-            <TaskLabels />
+            <TaskLabels task={task} />
           </div>
           <TaskMembers />
         </div>

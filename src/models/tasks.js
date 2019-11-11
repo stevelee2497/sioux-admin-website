@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchTasks, createTask, updateTask, assignTask, unAssignTask } from '../utils/api';
+import { fetchTasks, createTask, updateTask, assignTask, unAssignTask, addTaskLabel, removeTaskLabel } from '../utils/api';
 
 export default {
   namespace: 'tasks',
@@ -32,7 +32,13 @@ export default {
       const { data } = yield call(unAssignTask, id);
       yield put({ type: 'unAssignTaskSuccess', payload: data });
     },
-    *deletePhase({ payload: id }, { call, put }) {
+    *addTaskLabel({ payload: taskLabel }, { call, put }) {
+      const { data } = yield call(addTaskLabel, taskLabel);
+      yield put({ type: 'addTaskLabelSuccess', payload: data });
+    },
+    *removeTaskLabel({ payload: id }, { call, put }) {
+      const { data } = yield call(removeTaskLabel, id);
+      yield put({ type: 'removeTaskLabelSuccess', payload: data });
     },
   },
   reducers: {
@@ -62,6 +68,26 @@ export default {
         [taskAssignee.taskId]: {
           ...task,
           taskAssignees: task.taskAssignees.filter(item => item.id !== taskAssignee.id)
+        }
+      };
+    },
+    addTaskLabelSuccess(state, { payload: taskLabel }) {
+      const task = state[taskLabel.taskId];
+      return {
+        ...state,
+        [taskLabel.taskId]: {
+          ...task,
+          taskLabels: [...task.taskLabels, taskLabel]
+        }
+      };
+    },
+    removeTaskLabelSuccess(state, { payload: taskLabel }) {
+      const task = state[taskLabel.taskId];
+      return {
+        ...state,
+        [taskLabel.taskId]: {
+          ...task,
+          taskLabels: task.taskLabels.filter(item => item.id !== taskLabel.id)
         }
       };
     },

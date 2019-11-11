@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { Card, Avatar } from 'antd';
+import { Card, Avatar, Tag } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'dva';
 import { parseImage } from '../../utils/images';
 
 class Task extends Component {
+  renderLabels = () => {
+    const { labels, task: { taskLabels } } = this.props;
+    return taskLabels.map(item => {
+      const label = labels[item.labelId];
+      return (
+        <Tag key={label.id} color={label.color} style={{ marginRight: 3, marginBottom: 3 }}>{label.name}</Tag>
+      );
+    });
+  }
+
   renderMembers = () => {
     const { employees, task: { taskAssignees } } = this.props;
     return taskAssignees.map(item => {
@@ -37,6 +47,7 @@ class Task extends Component {
               size="small"
               onClick={() => showTask(task.id)}
             >
+              {this.renderLabels()}
               <h4 style={{ margin: 0 }}>{task.title}</h4>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {this.renderMembers()}
@@ -50,9 +61,11 @@ class Task extends Component {
 }
 
 const mapStateToProps = ({
-  people: { employees }
+  people: { employees },
+  labels,
 }) => ({
-  employees
+  employees,
+  labels,
 });
 
 const mapDispatchToProps = dispatch => ({

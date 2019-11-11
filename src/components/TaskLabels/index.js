@@ -32,7 +32,7 @@ class TaskLabels extends Component {
     return taskLabels.map(item => {
       const label = labels[item.labelId];
       return (
-        <Tag key={label.id} color={label.color} style={{ marginRight: 5 }}>{label.name}</Tag>
+        <Tag key={label.id} color={label.color} style={{ marginRight: 3 }}>{label.name}</Tag>
       );
     });
   }
@@ -44,7 +44,7 @@ class TaskLabels extends Component {
     const menu = (
       <Menu onClick={this.handleMenuClick}>
         {labels && _.map(labels, label => (
-          <Menu.Item key={label.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Menu.Item key={label.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minWidth: 150 }}>
             <Tag color={label.color}>{label.name}</Tag>
             {taskLabels.some(item => item.labelId === label.id) ? <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" style={{ marginLeft: 10 }} /> : null}
           </Menu.Item>

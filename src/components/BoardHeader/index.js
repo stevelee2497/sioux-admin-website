@@ -20,7 +20,7 @@ class BoardHeader extends Component {
   }
 
   render() {
-    const { project } = this.props;
+    const { project, changeLabelModalState } = this.props;
     if (!project) {
       return null;
     }
@@ -51,9 +51,12 @@ class BoardHeader extends Component {
           <Divider type="vertical" style={{ height: 25 }} />
           <BoardMembers />
         </div>
-        <Dropdown overlay={BoardMenu} trigger={['click']}>
-          <Button icon="setting" size="default" shape="circle" />
-        </Dropdown>
+        <div>
+          <Button icon="tags" size="default" shape="circle" style={{ marginRight: 5 }} onClick={() => changeLabelModalState(true)} />
+          <Dropdown overlay={BoardMenu} trigger={['click']}>
+            <Button icon="setting" size="default" shape="circle" />
+          </Dropdown>
+        </div>
       </div>
     );
   }
@@ -73,6 +76,10 @@ const mapDispatchToProps = dispatch => ({
   changeProjectModalState: (modalType) => dispatch({
     type: 'modals/changeProjectModalState',
     payload: modalType
+  }),
+  changeLabelModalState: (visible) => dispatch({
+    type: 'modals/changeLabelModalState',
+    payload: visible
   }),
 });
 

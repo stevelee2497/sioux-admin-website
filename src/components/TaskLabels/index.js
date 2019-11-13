@@ -31,7 +31,7 @@ class TaskLabels extends Component {
     const { labels, task: { taskLabels } } = this.props;
     return taskLabels.map(item => {
       const label = labels[item.labelId];
-      return (
+      return label && (
         <Tag key={label.id} color={label.color} style={{ marginRight: 3 }}>{label.name}</Tag>
       );
     });

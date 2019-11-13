@@ -13,7 +13,7 @@ export default {
       const { data } = yield call(fetchLabels, boardId);
       yield put({ type: 'fetchLabelsSuccess', payload: data });
     },
-    *updateProject({ payload }, { call, put }) {
+    *updateLabel({ payload }, { call, put }) {
       yield put({ type: 'saveLabel', payload });
       yield call(updateLabel, payload);
     },

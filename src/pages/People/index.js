@@ -17,7 +17,7 @@ const CreateProfileButton = props => {
 
 class People extends Component {
   render() {
-    const { people, profile, openEmployeeForm } = this.props;
+    const { people, profile, openEmployeeForm, changeSearchFilter } = this.props;
 
     return (
       <div className={styles.container}>
@@ -26,7 +26,7 @@ class People extends Component {
             placeholder="Employee name"
             enterButton="Search For"
             size="large"
-            onSearch={value => console.log(value)}
+            onSearch={value => changeSearchFilter(value)}
             className={styles.search}
           />
           <h2>There are totally {people.total} employees in the company</h2>
@@ -49,6 +49,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
   openEmployeeForm: () => dispatch({
     type: 'people/openEmployeeForm'
+  }),
+  changeSearchFilter: (filter) => dispatch({
+    type: 'people/changeSearchFilter',
+    payload: filter
   })
 });
 

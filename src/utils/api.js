@@ -24,8 +24,8 @@ export const login = async (authDto) => {
 
 // #region Employee
 
-export const fetchEmployees = async (page = 1, pageSize = 10, positionId, skillIds) => {
-  const response = await api.get(`/users?positionId=${positionId}&skillIds=${skillIds}`);
+export const fetchEmployees = async (page = 1, pageSize = 10, positionId, skillIds, name) => {
+  const response = await api.get(`/users?name=${name}&positionId=${positionId}&skillIds=${skillIds}`);
   const { data } = response;
   return data;
 };

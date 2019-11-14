@@ -14,7 +14,8 @@ export default {
     selectedPosition: undefined,
     selectedSkills: [],
     profileModalType: PROFILE_MODAL_TYPE.EDIT,
-    employees: undefined
+    employees: undefined,
+    searchFilter: ''
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -33,10 +34,10 @@ export default {
   },
   effects: {
     *fetch({ payload }, { call, put, select }) {
-      const { page, pageSize, selectedPosition, selectedSkills } = yield select(state => state.people);
+      const { page, pageSize, selectedPosition, selectedSkills, searchFilter } = yield select(state => state.people);
       const positionId = selectedPosition ? selectedPosition.id : '';
       const skillIds = selectedSkills.map(skill => skill.id).join(',');
-      const response = yield call(fetchEmployees, page, pageSize, positionId, skillIds);
+      const response = yield call(fetchEmployees, page, pageSize, positionId, skillIds, searchFilter);
       yield put({ type: 'fetchSuccess', payload: response });
     },
     *changePagination({ payload }, { call, put, select }) {
@@ -45,6 +46,10 @@ export default {
     },
     *changePositionFilter({ payload }, { call, put, select }) {
       yield put({ type: 'savePositionTag', payload });
+      yield put({ type: 'fetch' });
+    },
+    *changeSearchFilter({ payload }, { call, put, select }) {
+      yield put({ type: 'saveSearchFilter', payload });
       yield put({ type: 'fetch' });
     },
     *changeSkillsFilter({ payload }, { call, put, select }) {
@@ -143,6 +148,12 @@ export default {
       return {
         ...state,
         selectedPosition: payload,
+      };
+    },
+    saveSearchFilter(state, { payload }) {
+      return {
+        ...state,
+        searchFilter: payload,
       };
     },
     saveSkillTags(state, { payload }) {

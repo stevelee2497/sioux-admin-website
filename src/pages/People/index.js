@@ -9,7 +9,7 @@ import { ROLE } from '../../utils/constants';
 const CreateProfileButton = props => {
   const { visible, onClick } = props;
   return visible && (
-    <Affix offsetBottom={50} style={{ alignSelf: 'flex-end', marginRight: 50 }}>
+    <Affix offsetBottom={100} style={{ alignSelf: 'flex-end', marginRight: 50 }}>
       <Button shape="circle" icon="plus" size="large" type="primary" onClick={onClick} />
     </Affix>
   );

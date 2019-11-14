@@ -1,7 +1,5 @@
-import faker from 'faker';
-import moment from 'moment';
 import axios from 'axios';
-import { ROLE, APP_CONSTANTS } from './constants';
+import { APP_CONSTANTS } from './constants';
 
 export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
@@ -26,8 +24,8 @@ export const login = async (authDto) => {
 
 // #region Employee
 
-export const fetchEmployees = async (page = 1, pageSize = 10) => {
-  const response = await api.get('/users');
+export const fetchEmployees = async (page = 1, pageSize = 10, positionId, skillIds) => {
+  const response = await api.get(`/users?positionId=${positionId}&skillIds=${skillIds}`);
   const { data } = response;
   return data;
 };

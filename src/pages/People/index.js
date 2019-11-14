@@ -47,9 +47,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    openEmployeeForm: () => dispatch({
-      type: 'people/openEmployeeForm'
-    })
-  });
+  openEmployeeForm: () => dispatch({
+    type: 'people/openEmployeeForm'
+  })
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(People);

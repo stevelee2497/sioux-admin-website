@@ -33,8 +33,10 @@ export default {
   },
   effects: {
     *fetch({ payload }, { call, put, select }) {
-      const { page, pageSize } = yield select(state => state.people);
-      const response = yield call(fetchEmployees, page, pageSize);
+      const { page, pageSize, selectedPosition, selectedSkills } = yield select(state => state.people);
+      const positionId = selectedPosition ? selectedPosition.id : '';
+      const skillIds = selectedSkills.map(skill => skill.id).join(',');
+      const response = yield call(fetchEmployees, page, pageSize, positionId, skillIds);
       yield put({ type: 'fetchSuccess', payload: response });
     },
     *changePagination({ payload }, { call, put, select }) {

@@ -9,7 +9,7 @@ class TaskMembers extends Component {
     const { employees, task: { taskAssignees } } = this.props;
     return taskAssignees.map(item => {
       const member = employees[item.userId];
-      return (
+      return member && (
         <Avatar
           src={parseImage(member.avatarUrl)}
           key={member.id}
@@ -20,7 +20,7 @@ class TaskMembers extends Component {
       );
     });
   }
-  
+
   render() {
     const { task } = this.props;
 
@@ -39,7 +39,7 @@ class TaskMembers extends Component {
 const mapStateToProps = ({
   modals: { taskId },
   tasks,
-  people: { employees },
+  projects: { selectedProject: { users: employees } },
 }) => ({
   task: tasks[taskId],
   employees,

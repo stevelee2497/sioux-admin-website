@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Menu, Dropdown, Button, Avatar, Icon } from 'antd';
+import _ from 'lodash';
 import { parseImage } from '../../utils/images';
 
 class AssignMemberButton extends Component {
@@ -33,7 +34,7 @@ class AssignMemberButton extends Component {
 
     const menu = (
       <Menu onClick={this.handleMenuClick}>
-        {members.map(member => (
+        {_.map(members, member => (
           <Menu.Item key={member.userId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <Avatar src={parseImage(member.avatarUrl)} style={{ marginRight: 10 }} />

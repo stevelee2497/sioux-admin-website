@@ -21,7 +21,7 @@ class Task extends Component {
     const { employees, task: { taskAssignees } } = this.props;
     return taskAssignees.map(item => {
       const member = employees[item.userId];
-      return (
+      return member && (
         <Avatar
           src={parseImage(member.avatarUrl)}
           key={member.id}
@@ -63,7 +63,7 @@ class Task extends Component {
 }
 
 const mapStateToProps = ({
-  people: { employees },
+  projects: { selectedProject: { users: employees } },
   labels,
 }) => ({
   employees,

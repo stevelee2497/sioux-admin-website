@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { fetchEmployees, delay, updateEmployee, fetchEmployee, addUserSkill, getUserSkills, removeUserSkills, getTimeLineEvents, addTimeLineEvent, removeTimeLineEvents, createNewSkill, createEmployee } from '../utils/api';
+import { fetchEmployees, updateEmployee, fetchEmployee, addUserSkill, getUserSkills, removeUserSkills, getTimeLineEvents, addTimeLineEvent, removeTimeLineEvents, createNewSkill, createEmployee } from '../utils/api';
 import { PROFILE_MODAL_TYPE } from '../utils/constants';
 
 export default {

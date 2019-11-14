@@ -14,24 +14,6 @@ const api = axios.create({
   },
 });
 
-const fakeUser = () => ({
-  id: faker.random.uuid(),
-  fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
-  avatar: `https://picsum.photos/id/${faker.random.number({ min: 1, max: 300 })}/500/500`,
-  position: faker.name.jobTitle(),
-  location: `${faker.address.city()}, ${faker.address.countryCode()}`,
-  address: faker.address.streetAddress(),
-  description: faker.random.words(30),
-  skills: Array.from({ length: faker.random.number({ min: 1, max: 7 }) }).map(_ => faker.name.jobType()),
-  phone: faker.phone.phoneNumber(),
-  email: faker.internet.email(),
-  socialLink: faker.internet.url(),
-  birthDate: faker.date.past(),
-  gender: faker.random.boolean() ? 'Male' : 'Female',
-  role: faker.random.boolean() ? ROLE.ADMIN : ROLE.EMPLOYEE,
-  timeline: Array.from({ length: faker.random.number({ min: 2, max: 4 }) }).map(_ => `${faker.random.words(4)} in ${moment(faker.date.past()).format('DD/MM/YYYY')}`),
-});
-
 // #region Authentication
 
 export const login = async (authDto) => {
@@ -282,6 +264,56 @@ export const updateTask = async (task) => {
 
 export const deleteTask = async (id) => {
   const response = await api.delete(`/tasks/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
+// #region Label
+
+export const createLabel = async (label) => {
+  const response = await api.post('/labels', label);
+  const { data } = response;
+  return data;
+};
+
+export const fetchLabel = async (id) => {
+  const response = await api.get(`/labels/${id}`);
+  const { data } = response;
+  return data;
+};
+
+export const fetchLabels = async (boardId) => {
+  const response = await api.get(`/labels?boardId=${boardId}`);
+  const { data } = response;
+  return data;
+};
+
+export const updateLabel = async (label) => {
+  const response = await api.put(`/labels/${label.id}`, label);
+  const { data } = response;
+  return data;
+};
+
+export const deleteLabel = async (id) => {
+  const response = await api.delete(`/labels/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
+// #region Task Label
+
+export const addTaskLabel = async (taskLabel) => {
+  const response = await api.post('/taskLabels', taskLabel);
+  const { data } = response;
+  return data;
+};
+
+export const removeTaskLabel = async (id) => {
+  const response = await api.delete(`/taskLabels/${id}`);
   const { data } = response;
   return data;
 };

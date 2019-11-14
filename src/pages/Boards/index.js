@@ -10,6 +10,7 @@ import BoardHeader from '../../components/BoardHeader';
 import TaskModal from '../../components/TaskModal';
 import ProjectForm from '../../components/ProjectForm';
 import CreateColumnButton from '../../components/CreateColumnButton';
+import LabelModal from '../../components/LabelModal';
 
 class ColumnContainer extends PureComponent {
   render() {
@@ -133,6 +134,7 @@ class Boards extends Component {
         {/* Register Modals */}
         <ProjectForm />
         <TaskModal />
+        <LabelModal />
       </div>
     );
   }

@@ -5,6 +5,7 @@ export default {
   state: {
     projectModalVisible: false,
     taskModalVisible: false,
+    labelModalVisible: false,
     modalType: MODAL_TYPE.CLOSED,
     taskId: null,
   },
@@ -32,5 +33,11 @@ export default {
         taskId
       };
     },
+    changeLabelModalState(state, { payload: visible }) {
+      return {
+        ...state,
+        labelModalVisible: visible
+      };
+    }
   }
 };

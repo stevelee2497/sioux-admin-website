@@ -1,6 +1,7 @@
 import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import { Spin, AutoComplete, Button, Menu, Dropdown, Avatar } from 'antd';
+import _ from 'lodash';
 import { parseImage } from '../../utils/images';
 
 const USER_MENU_OPTION = {
@@ -8,18 +9,13 @@ const USER_MENU_OPTION = {
   REMOVE: 'REMOVE'
 };
 
-const filterDefaultMembers = (all, current) =>
-  all.filter(item => !current.some(user => user.userId === item.id))
-    .map(item => ({ value: item.id, text: item.fullName }));
-
 class BoardMembers extends Component {
   constructor(props) {
     super(props);
     this.input = createRef();
-    const { members, project: { users } } = props;
+
     this.state = {
       adding: false,
-      members: filterDefaultMembers(members, users),
       inputValue: ''
     };
   }
@@ -34,27 +30,10 @@ class BoardMembers extends Component {
     });
   }
 
-  resetSearch = () => {
-    const { members, project: { users } } = this.props;
-    this.setState({
-      inputValue: '',
-      members: filterDefaultMembers(members, users)
-    });
-  }
-
-  handleSearching = searchText => {
-    const { members, project: { users } } = this.props;
-    this.setState({
-      members: !searchText
-        ? filterDefaultMembers(members, users)
-        : filterDefaultMembers(members, users).filter(member => member.text.toUpperCase().includes(searchText.toUpperCase())),
-    });
-  };
-
   handleSelecting = (id) => {
     const { project: { id: boardId }, addUserToProject } = this.props;
     addUserToProject({ userId: id, boardId });
-    this.resetSearch();
+    this.setState({ inputValue: '' });
   }
 
   handleChanging = value => {
@@ -68,7 +47,7 @@ class BoardMembers extends Component {
         showProfile(item.userId);
         break;
       case USER_MENU_OPTION.REMOVE:
-        removeBoardMember(item.id);
+        removeBoardMember(item);
         break;
       default:
         break;
@@ -88,7 +67,7 @@ class BoardMembers extends Component {
     </Menu>
   );
 
-  renderUsers = (users) => users.map(item => (
+  renderUsers = (users) => _.map(users, item => (
     <Dropdown key={item.id} overlay={() => this.renderMenu(item)}>
       <Avatar src={parseImage(item.avatarUrl)} style={{ marginRight: 2 }}>
         {item.fullName.match(/\b\w/g).join('')}
@@ -103,15 +82,20 @@ class BoardMembers extends Component {
   )
 
   renderEdittingInvite = () => {
-    const { loading } = this.props;
-    const { inputValue, members } = this.state;
+    const { loading, members, project: { users } } = this.props;
+    const { inputValue } = this.state;
+    const dataSource = _(members).filter(
+      item => !users[item.id] && item.fullName.toUpperCase().includes(inputValue.toUpperCase())
+    ).map(
+      item => ({ value: item.id, text: item.fullName })
+    ).value();
+
     return (
       <Spin spinning={loading}>
         <AutoComplete
-          dataSource={members}
+          dataSource={dataSource}
           style={{ width: 150 }}
           onSelect={this.handleSelecting}
-          onSearch={this.handleSearching}
           onChange={this.handleChanging}
           onBlur={this.handleBluring}
           placeholder="Name ..."
@@ -155,9 +139,9 @@ const mapDispatchToProps = dispatch => ({
     type: 'projects/addUserToProject',
     payload: boardUser
   }),
-  removeBoardMember: id => dispatch({
+  removeBoardMember: member => dispatch({
     type: 'projects/removeBoardMember',
-    payload: id
+    payload: member
   }),
   showProfile: id => dispatch({
     type: 'people/showProfile',

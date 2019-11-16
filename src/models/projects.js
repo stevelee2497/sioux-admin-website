@@ -59,10 +59,10 @@ export default {
       const { data } = yield call(addBoardMember, payload);
       yield put({ type: 'addUserToProjectSuccess', payload: data });
     },
-    *removeBoardMember({ payload: id }, { call, put }) {
-      const { data } = yield call(removeBoardMember, id);
+    *removeBoardMember({ payload: member }, { call, put }) {
+      const { data } = yield call(removeBoardMember, member.id);
       if (data) {
-        yield put({ type: 'removeBoardMemberSuccess', payload: id });
+        yield put({ type: 'removeBoardMemberSuccess', payload: member.userId });
       }
     },
   },
@@ -77,7 +77,10 @@ export default {
       return {
         ...state,
         involvedProjects: { ...state.involvedProjects, [project.id]: project },
-        selectedProject: project
+        selectedProject: {
+          ...project,
+          users: _.keyBy(project.users, 'userId')
+        }
       };
     },
     fetchProjectsSuccess(state, { payload }) {
@@ -87,20 +90,22 @@ export default {
       };
     },
     addUserToProjectSuccess(state, { payload }) {
+      const { selectedProject } = state;
       return {
         ...state,
         selectedProject: {
-          ...state.selectedProject,
-          users: [...state.selectedProject.users, payload]
+          ...selectedProject,
+          users: { ...selectedProject.users, [payload.userId]: payload }
         }
       };
     },
-    removeBoardMemberSuccess(state, { payload: id }) {
+    removeBoardMemberSuccess(state, { payload: userId }) {
+      const { selectedProject } = state;
       return {
         ...state,
         selectedProject: {
-          ...state.selectedProject,
-          users: state.selectedProject.users.filter(x => x.id !== id)
+          ...selectedProject,
+          users: _.omit(selectedProject.users, userId)
         }
       };
     },

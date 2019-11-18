@@ -248,8 +248,8 @@ export const fetchTask = async (id) => {
   return data;
 };
 
-export const fetchTasks = async (boardId) => {
-  const response = await api.get(`/tasks?boardId=${boardId}`);
+export const fetchTasks = async (boardId, memberId) => {
+  const response = await api.get(`/tasks?boardId=${boardId}&memberId=${memberId}`);
   const { data } = response;
   return data;
 };
@@ -312,6 +312,17 @@ export const addTaskLabel = async (taskLabel) => {
 
 export const removeTaskLabel = async (id) => {
   const response = await api.delete(`/taskLabels/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion
+
+
+// #region WorkLogs
+
+export const fetchWorkLogs = async (userId) => {
+  const response = await api.get(`/workLogs?userId=${userId}`);
   const { data } = response;
   return data;
 };

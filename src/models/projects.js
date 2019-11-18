@@ -29,14 +29,14 @@ export default {
       yield put({ type: 'modals/changeProjectModalState', payload: MODAL_TYPE.CLOSED });
       yield put({ type: 'fetchProject', payload: data.id });
     },
-    *fetchProject({ payload: id }, { call, put }) {
-      const { data: board } = yield call(fetchBoard, id);
-      const { data: tasks } = yield call(fetchTasks, id);
-      const { data: labels } = yield call(fetchLabels, id);
+    *fetchProject({ payload: boardId }, { call, put }) {
+      const { data: board } = yield call(fetchBoard, boardId);
+      const { data: tasks } = yield call(fetchTasks, boardId);
+      const { data: labels } = yield call(fetchLabels, boardId);
       yield put({ type: 'labels/fetchLabelsSuccess', payload: labels });
       yield put({ type: 'tasks/fetchTasksSuccess', payload: tasks });
       yield put({ type: 'fetchProjectSuccess', payload: board });
-      yield put({ type: 'phases/fetchPhases', payload: id });
+      yield put({ type: 'phases/fetchPhases', payload: boardId });
     },
     *fetchProjects({ payload }, { call, put, select }) {
       const { id } = yield select(state => state.passport.profile);

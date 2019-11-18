@@ -14,6 +14,7 @@ const columns = [
     title: 'Key',
     className: styles.col,
     align: 'center',
+    width: 75,
     render: (text, record) => (
       <Button type="link" style={{ height: 0 }}>#{text}</Button>
     ),
@@ -24,7 +25,7 @@ const columns = [
     title: 'Title',
     className: styles.col,
     render: (text, record) => (
-      <div style={{ wordWrap: 'break-word', wordBreak: 'break-word', width: 300 }}>
+      <div className={styles.title}>
         {text}
       </div>
     ),
@@ -34,6 +35,7 @@ const columns = [
     title: (<ColHeader index={index + 1} />),
     align: 'center',
     className: styles.col,
+    width: 75,
     render: (text, record) => (<Cell workLog={record.workLogs[index + 1]} />),
   }))
 ];
@@ -42,7 +44,14 @@ class TimeSheets extends Component {
   render() {
     const { timesheets } = this.props;
     return (
-      <Table columns={columns} dataSource={_.values(timesheets)} scroll={{ x: 1300 }} size="small" bordered />
+      <Table 
+        columns={columns}
+        dataSource={_.values(timesheets)}
+        scroll={{ x: 'max-content' }}
+        size="small"
+        bordered
+        pagination={false}
+      />
     );
   }
 }

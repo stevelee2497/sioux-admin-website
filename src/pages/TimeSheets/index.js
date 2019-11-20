@@ -12,23 +12,25 @@ const columns = [
     key: 'taskKey',
     dataIndex: 'taskKey',
     title: 'Key',
-    className: styles.col,
+    className: styles.fix,
     align: 'center',
     width: 75,
     render: (text, record) => (
       <Button type="link" style={{ height: 0 }}>#{text}</Button>
     ),
+    fixed: 'left',
   },
   {
     key: 'title',
     dataIndex: 'title',
     title: 'Title',
-    className: styles.col,
+    className: styles.fix,
     render: (text, record) => (
       <div className={styles.title}>
         {text}
       </div>
     ),
+    fixed: 'left',
   },
   ...Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
     key: `workLogs[${index + 1}].amount`,
@@ -36,22 +38,49 @@ const columns = [
     align: 'center',
     className: styles.col,
     width: 75,
-    render: (text, record) => (<Cell workLog={record.workLogs[index + 1]} />),
-  }))
+    render: (text, record) => (<Cell row={record.key} workLog={record.workLogs[index + 1]} />),
+  })),
+  {
+    key: 'sum',
+    dataIndex: 'sum',
+    title: 'Σ',
+    align: 'center',
+    width: 75,
+    className: styles.fix,
+    fixed: 'right',
+  },
 ];
 
 class TimeSheets extends Component {
   render() {
     const { timesheets } = this.props;
+    const data = _.values(timesheets);
+    const total = {
+      key: 'total',
+      title: 'Total',
+      workLogs: _.keyBy(Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
+        day: index + 1,
+        amount: data.reduce((a, b) => a + b.workLogs[index + 1].amount, 0)
+      })), 'day')
+    };
+
     return (
-      <Table 
-        columns={columns}
-        dataSource={_.values(timesheets)}
-        scroll={{ x: 'max-content' }}
-        size="small"
-        bordered
-        pagination={false}
-      />
+      <div className={styles.container}>
+        <Table 
+          columns={columns}
+          dataSource={[...data, total]}
+          scroll={{ x: 'max-content' }}
+          size="small"
+          bordered
+          pagination={false}
+          className={styles.table}
+          rowClassName={(record) => {
+            if (record.key === 'total') {
+              return styles.total;
+            }
+          }}
+        />
+      </div>
     );
   }
 }

@@ -26,4 +26,13 @@ const toString = (timeSpan) => {
   return result;
 };
 
-export const timeHelper = { toString, toTimeSpan };
+const totalHours = (timeSpan) => {
+  if (!timeSpan) {
+    return '0';
+  }
+
+  const arr = timeSpan.split(':');
+  return parseInt(arr[0]) + parseInt(arr[1]) / 60 + parseInt(arr[2]) / 3600;
+};
+
+export const timeHelper = { toString, toTimeSpan, totalHours };

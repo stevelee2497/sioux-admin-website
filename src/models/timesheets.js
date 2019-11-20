@@ -15,7 +15,7 @@ const saveWorkLog = (state, workLog) => {
         [moment(workLog.dateLog).dates()]: {
           id: workLog.id,
           day: moment(workLog.dateLog).dates(),
-          amount: timeHelper.toString(workLog.amount)
+          amount: timeHelper.totalHours(workLog.amount)
         }
       },
     }

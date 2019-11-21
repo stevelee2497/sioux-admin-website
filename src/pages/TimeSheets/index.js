@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button } from 'antd';
+import { Table, Button, TimePicker } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import styles from './index.less';
@@ -66,7 +66,7 @@ class TimeSheets extends Component {
 
     return (
       <div className={styles.container}>
-        <Table 
+        <Table
           columns={columns}
           dataSource={[...data, total]}
           scroll={{ x: 'max-content' }}

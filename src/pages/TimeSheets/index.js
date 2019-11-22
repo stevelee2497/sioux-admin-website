@@ -36,7 +36,7 @@ const columns = [
     key: `workLogs[${index + 1}].amount`,
     title: (<ColHeader index={index + 1} />),
     align: 'center',
-    className: styles.col,
+    className: moment({ day: index + 1 }).day() % 6 < 1 ? styles.weekEndCol : styles.col,
     width: 75,
     render: (text, record) => (<Cell row={record.key} workLog={record.workLogs[index + 1]} />),
   })),
@@ -48,6 +48,7 @@ const columns = [
     width: 75,
     className: styles.fix,
     fixed: 'right',
+    render: (text, record) => (<Cell row="total" workLog={{ amount: _.values(record.workLogs).reduce((a, b) => a + b.amount, 0) }} />),
   },
 ];
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
 import moment from 'moment';
-import { fetchTasks, fetchWorkLogs } from '../utils/api';
+import { fetchTasks, fetchWorkLogs, logWork } from '../utils/api';
 import { timeHelper } from '../helpers/timeHelper';
 
 const saveWorkLog = (state, workLog) => {
@@ -15,7 +15,8 @@ const saveWorkLog = (state, workLog) => {
         [moment(workLog.dateLog).dates()]: {
           id: workLog.id,
           day: moment(workLog.dateLog).dates(),
-          amount: timeHelper.totalHours(workLog.amount)
+          amount: timeHelper.totalHours(workLog.amount),
+          taskId: workLog.taskId
         }
       },
     }
@@ -43,10 +44,11 @@ export default {
       const tasks = data.map(value => ({
         ...value,
         key: value.id,
-        workLogs: _.keyBy(Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
+        workLogs: _.keyBy(Array.from({ length: moment().daysInMonth() }).map((foo, index) => ({
           id: null,
           day: index + 1,
-          amount: 0
+          amount: 0,
+          taskId: value.id
         })), 'day'),
       }));
       yield put({ type: 'saveTasks', payload: tasks });
@@ -55,6 +57,11 @@ export default {
     *fetchWorkLogs({ payload: memberId }, { call, put, select }) {
       const { data } = yield call(fetchWorkLogs, memberId);
       yield put({ type: 'saveWorkLogs', payload: data });
+    },
+    *logWork({ payload: workLog }, { call, put, select }) {
+      const { id: userId } = yield select(({ passport: { profile } }) => profile);
+      const { data } = yield call(logWork, { ...workLog, dateLog: moment({ day: workLog.day }), userId });
+      yield put({ type: 'saveWorkLog', payload: data });
     },
   },
   reducers: {

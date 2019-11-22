@@ -9,7 +9,7 @@ class Cell extends Component {
     super(props);
 
     this.state = {
-      amount: '',
+      amount: '00:00:00',
       description: '',
       visible: false,
     };
@@ -17,6 +17,8 @@ class Cell extends Component {
 
   handleClose = () => {
     this.setState({
+      amount: '00:00:00',
+      description: '',
       visible: false,
     });
   };
@@ -35,39 +37,38 @@ class Cell extends Component {
 
   handleSave = () => {
     // dispatch update worklog action
-    const { workLog, row } = this.props;
+    const { workLog, logWork } = this.props;
     const { amount, description } = this.state;
-    console.log({
-      ...workLog,
-      amount,
-      description
-    },
-    row);
+    logWork({ ...workLog, amount, description });
     this.handleClose();
   };
 
-  renderLogWorkPopup = () => (
-    <div style={{ backgroundColor: 'white', padding: 10 }}>
-      <TimePicker
-        defaultOpenValue={moment('00:00:00', 'HH:mm:ss')}
-        style={{ marginBottom: 10 }}
-        onChange={this.onChange}
-      />
-      <div style={{ marginBottom: 10 }}>
-        <Input.TextArea
-          placeholder="Description"
-          type="textarea"
-          rows={4}
-          onChange={this.handleChange}
+  renderLogWorkPopup = () => {
+    const { amount, description } = this.state;
+    return (
+      <div style={{ backgroundColor: 'white', padding: 10 }}>
+        <TimePicker
+          value={moment(amount, 'HH:mm:ss')}
+          style={{ marginBottom: 10 }}
+          onChange={this.onChange}
         />
+        <div style={{ marginBottom: 10 }}>
+          <Input.TextArea
+            placeholder="Description"
+            type="textarea"
+            rows={4}
+            onChange={this.handleChange}
+            value={description}
+          />
+        </div>
+        <Button type="primary" style={{ marginRight: 10 }} onClick={this.handleSave}>
+          <Icon type="check" />
+          Save and close
+        </Button>
+        <Button onClick={this.handleClose}>Cancel</Button>
       </div>
-      <Button type="primary" style={{ marginRight: 10 }} onClick={this.handleSave}>
-        <Icon type="check" />
-        Save and close
-      </Button>
-      <Button onClick={this.handleClose}>Cancel</Button>
-    </div>
-  )
+    );
+  }
 
   render() {
     const { workLog, row } = this.props;
@@ -93,8 +94,11 @@ const mapStateToProps = (state) => ({
 
 });
 
-const mapDispatchToProps = {
-
-};
+const mapDispatchToProps = dispatch => ({
+  logWork: (workLog) => dispatch({
+    type: 'timesheets/logWork',
+    payload: workLog
+  })
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cell);

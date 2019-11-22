@@ -318,8 +318,13 @@ export const removeTaskLabel = async (id) => {
 
 // #endregion
 
-
 // #region WorkLogs
+
+export const logWork = async (workLog) => {
+  const response = await api.post('/workLogs', workLog);
+  const { data } = response;
+  return data;
+};
 
 export const fetchWorkLogs = async (userId) => {
   const response = await api.get(`/workLogs?userId=${userId}`);

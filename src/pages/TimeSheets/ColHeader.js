@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import { Divider } from 'antd';
 
 class ColHeader extends Component {
   render() {
@@ -7,10 +9,14 @@ class ColHeader extends Component {
     return (
       <div>
         <div>
-        Nov
+          {moment().format('MMM')}
         </div>
         <div>
           {index}
+        </div>
+        <Divider type="horizontal" style={{ margin: 2 }} />
+        <div>
+          {moment({ day: index }).format('ddd')}
         </div>
       </div>
     );

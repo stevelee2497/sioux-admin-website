@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, TimePicker } from 'antd';
+import { Table, Button } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import styles from './index.less';
@@ -15,7 +15,7 @@ const columns = [
     className: styles.fix,
     align: 'center',
     width: 75,
-    render: (text, record) => (
+    render: (text) => (
       <Button type="link" style={{ height: 0 }}>#{text}</Button>
     ),
     fixed: 'left',
@@ -25,7 +25,7 @@ const columns = [
     dataIndex: 'title',
     title: 'Title',
     className: styles.fix,
-    render: (text, record) => (
+    render: (text) => (
       <div className={styles.title}>
         {text}
       </div>

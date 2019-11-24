@@ -35,4 +35,9 @@ const totalHours = (timeSpan) => {
   return parseInt(arr[0]) + parseInt(arr[1]) / 60 + parseInt(arr[2]) / 3600;
 };
 
-export const timeHelper = { toString, toTimeSpan, totalHours };
+const getTimeSpanFromHours = (hours) => {
+  const totalSeconds = parseInt(parseFloat(hours) * 60);
+  return `${(Math.floor(hours)).toString().padStart(2, '0')}:${(totalSeconds % 60).toString().padStart(2, '0')}:00`;
+};
+
+export const timeHelper = { toString, toTimeSpan, totalHours, getTimeSpanFromHours };

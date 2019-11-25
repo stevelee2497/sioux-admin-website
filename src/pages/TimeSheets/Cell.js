@@ -3,32 +3,49 @@ import { connect } from 'react-redux';
 import { Button, TimePicker, Input, Popover, Icon } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
+import { timeHelper } from '../../helpers/timeHelper';
 
 class Cell extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      amount: '00:00:00',
-      description: '',
       visible: false,
+      description: props.workLog.description,
+      amount: props.workLog.amount,
+      id: props.workLog.id
     };
   }
 
+  static getDerivedStateFromProps({ workLog }, prevState) {
+    if (workLog.id !== prevState.id) {
+      return {
+        description: workLog.description,
+        amount: workLog.amount,
+        id: workLog.id
+      };
+    }
+
+    return null;
+  }
+
   handleClose = () => {
+    const { workLog } = this.props;
     this.setState({
-      amount: '00:00:00',
-      description: '',
       visible: false,
+      description: workLog.description,
+      amount: workLog.amount,
     });
   };
 
   handleOnVisibleChange = visible => {
     this.setState({ visible });
+    if (!visible) {
+      this.handleClose();
+    }
   };
 
   onChange = (time, timeString) => {
-    this.setState({ amount: timeString });
+    this.setState({ amount: timeHelper.totalHours(timeString) });
   };
 
   handleChange = (e) => {
@@ -36,11 +53,15 @@ class Cell extends Component {
   };
 
   handleSave = () => {
-    // dispatch update worklog action
-    const { workLog, logWork } = this.props;
-    const { amount, description } = this.state;
-    logWork({ ...workLog, amount, description });
-    this.handleClose();
+    const { workLog, logWork, updateWorkLog } = this.props;
+    const { amount, description, id } = this.state;
+    if (id) {
+       // dispatch update worklog action
+      updateWorkLog({ ...workLog, amount: timeHelper.getTimeSpanFromHours(amount), description });
+    } else {
+      logWork({ ...workLog, amount: timeHelper.getTimeSpanFromHours(amount), description });
+    }
+    this.setState({ visible: false });
   };
 
   renderLogWorkPopup = () => {
@@ -48,7 +69,7 @@ class Cell extends Component {
     return (
       <div style={{ backgroundColor: 'white', padding: 10 }}>
         <TimePicker
-          value={moment(amount, 'HH:mm:ss')}
+          value={moment(timeHelper.getTimeSpanFromHours(amount), 'HH:mm:ss')}
           style={{ marginBottom: 10 }}
           onChange={this.onChange}
         />
@@ -90,15 +111,17 @@ class Cell extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
   logWork: (workLog) => dispatch({
     type: 'timesheets/logWork',
     payload: workLog
-  })
+  }),
+  updateWorkLog: (workLog) => dispatch({
+    type: 'timesheets/updateWorkLog',
+    payload: workLog
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cell);

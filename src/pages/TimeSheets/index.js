@@ -48,7 +48,7 @@ const columns = [
     width: 75,
     className: styles.fix,
     fixed: 'right',
-    render: (text, record) => (<Cell row="total" workLog={{ amount: _.values(record.workLogs).reduce((a, b) => a + b.amount, 0) }} />),
+    render: (text, record) => (<Cell row="total" workLog={{ amount: _.values(record.workLogs).reduce((a, b) => a + parseInt(b.amount), 0) }} />),
   },
 ];
 
@@ -61,7 +61,7 @@ class TimeSheets extends Component {
       title: 'Total',
       workLogs: _.keyBy(Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
         day: index + 1,
-        amount: data.reduce((a, b) => a + b.workLogs[index + 1].amount, 0)
+        amount: data.reduce((a, b) => a + parseInt(b.workLogs[index + 1].amount), 0)
       })), 'day')
     };
 
@@ -75,11 +75,7 @@ class TimeSheets extends Component {
           bordered
           pagination={false}
           className={styles.table}
-          rowClassName={(record) => {
-            if (record.key === 'total') {
-              return styles.total;
-            }
-          }}
+          rowClassName={(record) => (record.key === 'total' ? styles.total : null)}
         />
       </div>
     );

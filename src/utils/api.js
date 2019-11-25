@@ -332,4 +332,10 @@ export const fetchWorkLogs = async (userId) => {
   return data;
 };
 
+export const updateWorkLog = async (workLog) => {
+  const response = await api.put(`/workLogs/${workLog.id}`, workLog);
+  const { data } = response;
+  return data;
+};
+
 // #endregion

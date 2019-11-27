@@ -133,7 +133,6 @@ class Boards extends Component {
         </div>
         {/* Register Modals */}
         <ProjectForm />
-        <TaskModal />
         <LabelModal />
       </div>
     );

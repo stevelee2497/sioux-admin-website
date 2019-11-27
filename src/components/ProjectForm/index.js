@@ -33,6 +33,7 @@ class ProjectFormModal extends Component {
     const { visible, modalType, loading, form: { getFieldDecorator }, project } = this.props;
     const initFormValue = modalType === MODAL_TYPE.EDIT ? project : {
       imageUrl: '',
+      key: '',
       name: '',
       description: ''
     };
@@ -56,13 +57,24 @@ class ProjectFormModal extends Component {
               getFieldDecorator={getFieldDecorator}
             />
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, marginTop: -4 }}>
-              <FormItem
-                getFieldDecorator={getFieldDecorator}
-                value="name"
-                initialValue={initFormValue.name}
-                component={<Input placeholder="Board Name" />}
-                required
-              />
+              <div style={{ display: 'flex' }}>
+                <div style={{ flex: 1, marginRight: 5 }}>
+                  <FormItem
+                    getFieldDecorator={getFieldDecorator}
+                    value="name"
+                    initialValue={initFormValue.name}
+                    component={<Input placeholder="Board Name" />}
+                    required
+                  />
+                </div>
+                <FormItem
+                  getFieldDecorator={getFieldDecorator}
+                  value="key"
+                  initialValue={initFormValue.key}
+                  component={<Input placeholder="Board Key" style={{ width: 100 }} />}
+                  required
+                />
+              </div>
               <FormItem
                 getFieldDecorator={getFieldDecorator}
                 value="description"

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
 import moment from 'moment';
-import { fetchTasks, fetchWorkLogs, logWork, updateWorkLog } from '../utils/api';
+import { fetchTasks, fetchWorkLogs, logWork, updateWorkLog, fetchBoards } from '../utils/api';
 import { timeHelper } from '../helpers/timeHelper';
 
 const saveWorkLog = (state, workLog) => {
@@ -41,10 +41,18 @@ export default {
   effects: {
     *fetchTimeSheetTasks({ payload }, { call, put, select }) {
       const { id: memberId } = yield select(({ passport: { profile } }) => profile);
+
+      // fetch projects that user involved in
+      const { data: projects } = yield call(fetchBoards, memberId);
+      yield put({ type: 'projects/fetchProjectsSuccess', payload: projects });
+
+      // then fetch tasks that user is assigned or logged work
       const { data } = yield call(fetchTasks, '', memberId);
+      const involvedProjects = _.keyBy(projects, 'id');
       const tasks = data.map(value => ({
         ...value,
         key: value.id,
+        boardKey: involvedProjects[value.boardId].key,
         workLogs: _.keyBy(Array.from({ length: moment().daysInMonth() }).map((foo, index) => ({
           id: null,
           day: index + 1,

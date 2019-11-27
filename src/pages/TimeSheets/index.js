@@ -7,54 +7,9 @@ import styles from './index.less';
 import ColHeader from './ColHeader';
 import Cell from './Cell';
 
-const columns = [
-  {
-    key: 'taskKey',
-    dataIndex: 'taskKey',
-    title: 'Key',
-    className: styles.fix,
-    align: 'center',
-    width: 75,
-    render: (text) => (
-      <Button type="link" style={{ height: 0 }}>#{text}</Button>
-    ),
-    fixed: 'left',
-  },
-  {
-    key: 'title',
-    dataIndex: 'title',
-    title: 'Title',
-    className: styles.fix,
-    render: (text) => (
-      <div className={styles.title}>
-        {text}
-      </div>
-    ),
-    fixed: 'left',
-  },
-  ...Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
-    key: `workLogs[${index + 1}].amount`,
-    title: (<ColHeader index={index + 1} />),
-    align: 'center',
-    className: moment({ day: index + 1 }).day() % 6 < 1 ? styles.weekEndCol : styles.col,
-    width: 75,
-    render: (text, record) => (<Cell row={record.key} workLog={record.workLogs[index + 1]} />),
-  })),
-  {
-    key: 'sum',
-    dataIndex: 'sum',
-    title: 'Σ',
-    align: 'center',
-    width: 75,
-    className: styles.fix,
-    fixed: 'right',
-    render: (text, record) => (<Cell row="total" workLog={{ amount: _.values(record.workLogs).reduce((a, b) => a + parseInt(b.amount), 0) }} />),
-  },
-];
-
 class TimeSheets extends Component {
   render() {
-    const { timesheets } = this.props;
+    const { timesheets, showTaskFromTimeSheets } = this.props;
     const data = _.values(timesheets);
     const total = {
       key: 'total',
@@ -64,6 +19,51 @@ class TimeSheets extends Component {
         amount: data.reduce((a, b) => a + parseInt(b.workLogs[index + 1].amount), 0)
       })), 'day')
     };
+
+    const columns = [
+      {
+        key: 'taskKey',
+        dataIndex: 'taskKey',
+        title: 'Key',
+        className: styles.fix,
+        align: 'center',
+        width: 75,
+        render: (text, record) => (
+          <Button type="link" style={{ height: 0 }} onClick={() => showTaskFromTimeSheets(record)}>{record.boardKey}#{text}</Button>
+        ),
+        fixed: 'left',
+      },
+      {
+        key: 'title',
+        dataIndex: 'title',
+        title: 'Title',
+        className: styles.fix,
+        render: (text) => (
+          <div className={styles.title}>
+            {text}
+          </div>
+        ),
+        fixed: 'left',
+      },
+      ...Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
+        key: `workLogs[${index + 1}].amount`,
+        title: (<ColHeader index={index + 1} />),
+        align: 'center',
+        className: moment({ day: index + 1 }).day() % 6 < 1 ? styles.weekEndCol : styles.col,
+        width: 75,
+        render: (text, record) => (<Cell row={record.key} workLog={record.workLogs[index + 1]} />),
+      })),
+      {
+        key: 'sum',
+        dataIndex: 'sum',
+        title: 'Σ',
+        align: 'center',
+        width: 75,
+        className: styles.fix,
+        fixed: 'right',
+        render: (text, record) => (<Cell row="total" workLog={{ amount: _.values(record.workLogs).reduce((a, b) => a + parseInt(b.amount), 0) }} />),
+      },
+    ];
 
     return (
       <div className={styles.container}>
@@ -88,8 +88,12 @@ const mapStateToProps = ({
   timesheets
 });
 
-const mapDispatchToProps = {
+const mapDispatchToProps = dispatch => ({
+  showTaskFromTimeSheets: (task) => dispatch({
+    type: 'modals/showTaskFromTimeSheets',
+    payload: task
+  })
+});
 
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeSheets);

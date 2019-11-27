@@ -150,13 +150,12 @@ class TaskModal extends Component {
 }
 
 const mapStateToProps = ({
-  modals: { taskModalVisible, taskId },
-  tasks,
+  modals: { taskModalVisible, task },
   people: { employees },
   passport: { profile }
 }) => ({
   visible: taskModalVisible,
-  task: tasks[taskId],
+  task,
   employees,
   profile
 });

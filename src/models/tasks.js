@@ -1,9 +1,12 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { fetchTasks, createTask, updateTask, assignTask, unAssignTask, addTaskLabel, removeTaskLabel } from '../utils/api';
 
 export default {
   namespace: 'tasks',
   state: {},
+  subscriptions: {
+  },
   effects: {
     *createTask({ payload }, { call, put }) {
       const { task, phase } = payload;
@@ -15,10 +18,6 @@ export default {
         taskOrder: [...phase.taskOrder, data.id]
       };
       yield put({ type: 'phases/updatePhase', payload: newPhase });
-    },
-    *fetchTasks({ payload: boardId }, { call, put, select }) {
-      const { data } = yield call(fetchTasks, boardId);
-      yield put({ type: 'fetchTasksSuccess', payload: data });
     },
     *updateTask({ payload: task }, { call, put }) {
       yield put({ type: 'saveTask', payload: task });

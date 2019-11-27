@@ -1,4 +1,4 @@
-export const toTimeSpan = (estimation) => {
+const toTimeSpan = (estimation) => {
   const weeks = estimation.match(/(\d+)[w]/g) && estimation.match(/(\d+)[w]/g)[0].replace('w', '');
   const days = estimation.match(/(\d+)[d]/g) && estimation.match(/(\d+)[d]/g)[0].replace('d', '');
   const hours = estimation.match(/(\d+)[h]/g) && estimation.match(/(\d+)[h]/g)[0].replace('h', '');
@@ -7,7 +7,7 @@ export const toTimeSpan = (estimation) => {
   return `${(weeks * 40 + days * 8 + hours).toString().padStart(2, '0')}:${(minutes * 1).toString().padStart(2, '0')}:${(seconds * 1).toString().padStart(2, '0')}`;
 };
 
-export const toString = (timeSpan) => {
+const toString = (timeSpan) => {
   if (!timeSpan) {
     return '0h';
   }
@@ -25,3 +25,19 @@ export const toString = (timeSpan) => {
   }
   return result;
 };
+
+const totalHours = (timeSpan) => {
+  if (!timeSpan) {
+    return '0';
+  }
+
+  const arr = timeSpan.split(':');
+  return parseInt(arr[0]) + parseInt(arr[1]) / 60 + parseInt(arr[2]) / 3600;
+};
+
+const getTimeSpanFromHours = (hours) => {
+  const totalSeconds = parseInt(parseFloat(hours) * 60);
+  return `${(Math.floor(hours)).toString().padStart(2, '0')}:${(totalSeconds % 60).toString().padStart(2, '0')}:00`;
+};
+
+export const timeHelper = { toString, toTimeSpan, totalHours, getTimeSpanFromHours };

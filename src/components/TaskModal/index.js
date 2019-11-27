@@ -5,7 +5,7 @@ import faker from 'faker';
 import moment from 'moment';
 import { MODAL_TYPE } from '../../utils/constants';
 import styles from './index.less';
-import { toTimeSpan, toString } from '../../helpers/timeHelper';
+import { timeHelper } from '../../helpers/timeHelper';
 import { parseImage } from '../../utils/images';
 import TaskLabels from '../TaskLabels';
 import TaskMembers from '../TaskMembers';
@@ -30,8 +30,8 @@ class TaskModal extends Component {
         }
         break;
       case 'estimation':
-        if (task[name] !== toTimeSpan(value)) {
-          updateTask({ ...task, [name]: toTimeSpan(value) });
+        if (task[name] !== timeHelper.toTimeSpan(value)) {
+          updateTask({ ...task, [name]: timeHelper.toTimeSpan(value) });
         }
         break;
       case 'comment':
@@ -97,7 +97,7 @@ class TaskModal extends Component {
                 name="estimation"
                 onBlur={this.handleOnBlur}
                 className={styles.estimation}
-                defaultValue={toString(task.estimation)}
+                defaultValue={timeHelper.toString(task.estimation)}
               />
             </div>
             <div style={{ marginLeft: 5, display: 'flex', flex: 1, alignItems: 'baseline', marginTop: 2 }}>
@@ -106,7 +106,7 @@ class TaskModal extends Component {
             </div>
             <div style={{ marginLeft: 5, display: 'flex', flex: 1, alignItems: 'baseline', marginTop: 2 }}>
               <h3 style={{ margin: 0 }}>Remaining:</h3>
-              <div className={styles.estimation}>{toString(task.estimation)}</div>
+              <div className={styles.estimation}>{timeHelper.toString(task.estimation)}</div>
             </div>
           </div>
         </div>
@@ -150,13 +150,12 @@ class TaskModal extends Component {
 }
 
 const mapStateToProps = ({
-  modals: { taskModalVisible, taskId },
-  tasks,
+  modals: { taskModalVisible, task },
   people: { employees },
   passport: { profile }
 }) => ({
   visible: taskModalVisible,
-  task: tasks[taskId],
+  task,
   employees,
   profile
 });

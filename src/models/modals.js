@@ -1,4 +1,5 @@
 import { MODAL_TYPE } from '../utils/constants';
+import { fetchBoard, fetchLabels, fetchTask } from '../utils/api';
 
 export default {
   namespace: 'modals',
@@ -7,14 +8,25 @@ export default {
     taskModalVisible: false,
     labelModalVisible: false,
     modalType: MODAL_TYPE.CLOSED,
-    taskId: null,
+    task: null,
   },
   subscriptions: {
 
   },
   effects: {
-    *showTask({ payload: taskId }, { call, put, select }) {
-      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, taskId } });
+    *showTask({ payload: task }, { call, put, select }) {
+      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, task } });
+    },
+    *showTaskFromTimeSheets({ payload: task }, { call, put, select }) {
+      // fetch sufficient data to display the task modal
+      const { data: board } = yield call(fetchBoard, task.boardId);
+      const { data: labels } = yield call(fetchLabels, task.boardId);
+      yield put({ type: 'projects/fetchProjectSuccess', payload: board });
+      yield put({ type: 'labels/fetchLabelsSuccess', payload: labels });
+
+      // display the task modal
+      const { data } = yield call(fetchTask, task.id);
+      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, task: data } });
     },
   },
   reducers: {
@@ -25,12 +37,12 @@ export default {
         projectModalVisible: modalType !== MODAL_TYPE.CLOSED
       };
     },
-    changeTaskModalState(state, { payload: { modalType, taskId } }) {
+    changeTaskModalState(state, { payload: { modalType, task } }) {
       return {
         ...state,
         modalType,
         taskModalVisible: modalType !== MODAL_TYPE.CLOSED,
-        taskId
+        task
       };
     },
     changeLabelModalState(state, { payload: visible }) {

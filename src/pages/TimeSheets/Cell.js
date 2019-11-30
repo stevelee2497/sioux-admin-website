@@ -115,11 +115,11 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
   logWork: (workLog) => dispatch({
-    type: 'timesheets/logWork',
+    type: 'tasks/logWork',
     payload: workLog
   }),
   updateWorkLog: (workLog) => dispatch({
-    type: 'timesheets/updateWorkLog',
+    type: 'tasks/updateWorkLog',
     payload: workLog
   }),
 });

@@ -7,7 +7,6 @@ import initialData from './data';
 import Column from '../../components/Column';
 import ProjectMenu from '../../components/ProjectMenu';
 import BoardHeader from '../../components/BoardHeader';
-import TaskModal from '../../components/TaskModal';
 import ProjectForm from '../../components/ProjectForm';
 import CreateColumnButton from '../../components/CreateColumnButton';
 import LabelModal from '../../components/LabelModal';
@@ -19,7 +18,7 @@ class ColumnContainer extends PureComponent {
       return null;
     }
 
-    const colTasks = column.taskOrder.map(taskId => tasks[taskId]);
+    const colTasks = column.taskOrder.filter(taskId => tasks[taskId]).map(taskId => tasks[taskId]);
     return (<Column column={column} tasks={colTasks} index={index} />);
   }
 }

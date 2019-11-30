@@ -9,8 +9,12 @@ import Cell from './Cell';
 
 class TimeSheets extends Component {
   render() {
-    const { timesheets, showTaskFromTimeSheets } = this.props;
-    const data = _.values(timesheets);
+    const { tasks, showTaskFromTimeSheets, loading } = this.props;
+    let data = _.values(tasks);
+    if (Array.isArray(data) && data.length && !data[0].workLogs) {
+      data = [];
+    }
+
     const total = {
       key: 'total',
       title: 'Total',
@@ -76,6 +80,7 @@ class TimeSheets extends Component {
           pagination={false}
           className={styles.table}
           rowClassName={(record) => (record.key === 'total' ? styles.total : null)}
+          loading={loading}
         />
       </div>
     );
@@ -83,9 +88,11 @@ class TimeSheets extends Component {
 }
 
 const mapStateToProps = ({
-  timesheets
+  tasks,
+  loading: { global }
 }) => ({
-  timesheets
+  tasks,
+  loading: global
 });
 
 const mapDispatchToProps = dispatch => ({

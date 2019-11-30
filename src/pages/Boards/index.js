@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React, { Component, PureComponent } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Spin, Empty } from 'antd';
 import initialData from './data';

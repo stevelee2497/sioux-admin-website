@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Tag, Input, Button, Dropdown } from 'antd';
 import { TwitterPicker } from 'react-color';
 
@@ -11,11 +11,11 @@ class LabelRow extends Component {
       color: props.color
     };
   }
- 
+
   handleInputChanged = (e) => {
     this.setState({ name: e.target.value });
   }
-  
+
   handleChangeComplete = (color) => {
     this.setState({ color: color.hex });
   };
@@ -61,7 +61,7 @@ class LabelRow extends Component {
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
         Color:
         <div style={{ width: 100, marginLeft: 20 }}>
-          <Dropdown 
+          <Dropdown
             overlay={(<TwitterPicker triangle="hide" onChangeComplete={this.handleChangeComplete} />)}
             trigger={['click']}
             onVisibleChange={this.handleOnVisibleChange}

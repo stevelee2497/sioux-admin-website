@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Timeline, Input, Button } from 'antd';
 import { PROFILE_MODAL_TYPE } from '../../utils/constants';
 

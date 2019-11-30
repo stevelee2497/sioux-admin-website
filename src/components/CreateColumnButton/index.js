@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Button, Input, Spin } from 'antd';
 import styles from './index.less';
 

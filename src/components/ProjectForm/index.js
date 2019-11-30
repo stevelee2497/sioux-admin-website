@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Modal, Form, Input, Spin } from 'antd';
 import { MODAL_TYPE } from '../../utils/constants';
 import UploadImage from '../UploadImage';

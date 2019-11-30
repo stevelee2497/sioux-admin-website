@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Tag, Input, Icon, Popover, Button } from 'antd';
 import { ROLE } from '../../utils/constants';
 

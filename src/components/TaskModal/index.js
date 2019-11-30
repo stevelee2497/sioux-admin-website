@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Modal, Input, Button, Tag, Icon, Avatar } from 'antd';
 import faker from 'faker';
 import moment from 'moment';

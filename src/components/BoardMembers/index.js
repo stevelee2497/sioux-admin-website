@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Spin, AutoComplete, Button, Menu, Dropdown, Avatar } from 'antd';
 import _ from 'lodash';
 import { parseImage } from '../../utils/images';

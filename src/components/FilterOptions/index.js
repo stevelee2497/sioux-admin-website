@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Card, Divider } from 'antd';
 import styles from './index.less';
 import PositionTags from '../PositionTags';

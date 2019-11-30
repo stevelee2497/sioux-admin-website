@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Menu, Dropdown, Button, Avatar, Icon } from 'antd';
 import _ from 'lodash';
 import { parseImage } from '../../utils/images';

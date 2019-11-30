@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Modal } from 'antd';
 import EmployeeInformation from './EmployeeInformation';
 import { PROFILE_MODAL_TYPE } from '../../utils/constants';

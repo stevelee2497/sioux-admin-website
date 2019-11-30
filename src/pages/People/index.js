@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Input, Affix, Button } from 'antd';
 import styles from './index.less';
 import EmployeeList from '../../components/EmployeeList';

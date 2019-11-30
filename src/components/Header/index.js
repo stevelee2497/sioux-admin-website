@@ -19,13 +19,13 @@ class Header extends Component {
     } = this.props;
 
     return navItems.map(item => (
-      <Link
-        to={item.link}
+      <a
+        href={item.link}
         className={pathname === item.link ? styles.navItemSelected : styles.navItem}
         key={item.link}
       >
         {item.title}
-      </Link>
+      </a>
     ));
   };
 
@@ -34,14 +34,14 @@ class Header extends Component {
     return (
       <div className={styles.container}>
         <div>
-          <Link to="/People" className={styles.navItem}>
+          <a href="/People" className={styles.navItem}>
             <img alt="sioux logo" src={images.logo} className={styles.logo} />
-          </Link>
+          </a>
           {this.renderNavItems()}
         </div>
         <div>
           Hello,
-          <Link to="/People">{profile.fullName}</Link>
+          <a href="/People">{profile.fullName}</a>
           <Popover
             placement="bottomRight"
             trigger="hover"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Button, TimePicker, Input, Popover, Icon } from 'antd';
 import moment from 'moment';
 import styles from './index.less';

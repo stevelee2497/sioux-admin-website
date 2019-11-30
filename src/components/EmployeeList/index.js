@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { List, Card } from 'antd';
 import styles from './index.less';
 import { parseImage } from '../../utils/images';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Tag, Popover, Button } from 'antd';
 import { ROLE } from '../../utils/constants';
 

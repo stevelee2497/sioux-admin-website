@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'dva';
 import { Tag, Button, Dropdown, Menu, Icon } from 'antd';
 import _ from 'lodash';
 

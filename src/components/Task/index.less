@@ -1,0 +1,18 @@
+.taskCard {
+  margin-bottom: 5px;
+  position: relative;
+
+  .taskConfig {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+  }
+}
+
+.taskCard:hover {
+  .taskConfig {
+    display: block;
+    transition: .5s ease;
+  }
+}

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
 import moment from 'moment';
-import { createTask, updateTask, assignTask, unAssignTask, addTaskLabel, removeTaskLabel, fetchBoards, fetchTasks, fetchWorkLogs, logWork, updateWorkLog } from '../utils/api';
+import { createTask, updateTask, assignTask, unAssignTask, addTaskLabel, removeTaskLabel, fetchBoards, fetchTasks, fetchWorkLogs, logWork, updateWorkLog, deleteTask } from '../utils/api';
 import { timeHelper } from '../helpers/timeHelper';
 
 const saveWorkLog = (state, workLog) => {
@@ -111,6 +111,13 @@ export default {
       const { data } = yield call(removeTaskLabel, id);
       yield put({ type: 'removeTaskLabelSuccess', payload: data });
     },
+    *deleteTask({ payload: taskId }, { call, put }) {
+      const { data } = yield call(deleteTask, taskId);
+      console.log(data);
+      if (data) {
+        yield put({ type: 'deleteTaskSuccess', payload: taskId });
+      }
+    },
   },
   reducers: {
     saveTasks(state, { payload }) {
@@ -175,5 +182,8 @@ export default {
         }
       };
     },
+    deleteTaskSuccess(state, { payload: taskId }) {
+      return _.omit(state, taskId);
+    }
   },
 };

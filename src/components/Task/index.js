@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Card, Avatar, Tag } from 'antd';
+import { Card, Avatar, Tag, Button, Icon, Dropdown, Menu } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from 'dva';
 import { parseImage } from '../../utils/images';
+import styles from './index.less';
 
 class Task extends Component {
   renderLabels = () => {
@@ -33,8 +34,28 @@ class Task extends Component {
     });
   }
 
+  handleMenuClicked = ({ key }) => {
+    const { deleteTask, task } = this.props;
+    switch (key) {
+      case 'Delete':
+        deleteTask(task.id);
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     const { task, index, showTask } = this.props;
+
+    const menu = (
+      <Menu onClick={this.handleMenuClicked}>
+        <Menu.Item key="Delete">
+          Delete
+        </Menu.Item>
+      </Menu>
+    );
+
     return (
       <Draggable draggableId={task.id} index={index}>
         {(provided) => (
@@ -42,9 +63,9 @@ class Task extends Component {
             {...provided.dragHandleProps}
             {...provided.draggableProps}
             ref={provided.innerRef}
+            className={styles.taskCard}
           >
             <Card
-              style={{ marginBottom: 5 }}
               hoverable
               size="small"
               onClick={() => showTask(task.id)}
@@ -55,6 +76,12 @@ class Task extends Component {
                 {this.renderMembers()}
               </div>
             </Card>
+            <Dropdown overlay={menu} trigger={['click']} className={styles.taskConfig}>
+              <Button
+                icon="more"
+                size="small"
+              />
+            </Dropdown>
           </div>
         )}
       </Draggable>
@@ -73,6 +100,10 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   showTask: (taskId) => dispatch({
     type: 'modals/showTask',
+    payload: taskId
+  }),
+  deleteTask: (taskId) => dispatch({
+    type: 'tasks/deleteTask',
     payload: taskId
   })
 });

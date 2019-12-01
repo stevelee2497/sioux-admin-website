@@ -86,7 +86,7 @@ class TaskModal extends Component {
             <Tag color="#448aff" style={{ marginLeft: 10 }}>To do</Tag>
             <TaskLabels task={task} />
           </div>
-          <TaskMembers />
+          <TaskMembers task={task} />
         </div>
         <div className={styles.block} style={{ marginTop: 30 }}>
           <Icon className={styles.icon} type="clock-circle" />
@@ -150,12 +150,13 @@ class TaskModal extends Component {
 }
 
 const mapStateToProps = ({
-  modals: { taskModalVisible, task },
+  modals: { taskModalVisible, taskId },
+  tasks,
   people: { employees },
   passport: { profile }
 }) => ({
   visible: taskModalVisible,
-  task,
+  task: tasks[taskId],
   employees,
   profile
 });

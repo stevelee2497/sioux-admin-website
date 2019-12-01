@@ -37,10 +37,8 @@ class TaskMembers extends Component {
 }
 
 const mapStateToProps = ({
-  modals: { task },
   projects: { selectedProject: { users: employees } },
 }) => ({
-  task,
   employees,
 });
 

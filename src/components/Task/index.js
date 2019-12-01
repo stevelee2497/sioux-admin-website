@@ -47,7 +47,7 @@ class Task extends Component {
               style={{ marginBottom: 5 }}
               hoverable
               size="small"
-              onClick={() => showTask(task)}
+              onClick={() => showTask(task.id)}
             >
               {this.renderLabels()}
               <h4 style={{ margin: 0 }}>{task.title}</h4>
@@ -71,9 +71,9 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  showTask: (task) => dispatch({
+  showTask: (taskId) => dispatch({
     type: 'modals/showTask',
-    payload: task
+    payload: taskId
   })
 });
 

@@ -8,14 +8,14 @@ export default {
     taskModalVisible: false,
     labelModalVisible: false,
     modalType: MODAL_TYPE.CLOSED,
-    task: null,
+    taskId: null,
   },
   subscriptions: {
 
   },
   effects: {
-    *showTask({ payload: task }, { call, put, select }) {
-      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, task } });
+    *showTask({ payload: taskId }, { call, put, select }) {
+      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, taskId } });
     },
     *showTaskFromTimeSheets({ payload: task }, { call, put, select }) {
       // fetch sufficient data to display the task modal
@@ -24,9 +24,12 @@ export default {
       yield put({ type: 'projects/fetchProjectSuccess', payload: board });
       yield put({ type: 'labels/fetchLabelsSuccess', payload: labels });
 
-      // display the task modal
+      // update task information
       const { data } = yield call(fetchTask, task.id);
-      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, task: data } });
+      yield put({ type: 'tasks/saveTask', payload: { ...task, ...data } });
+
+      // display the task modal
+      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, taskId: task.id } });
     },
   },
   reducers: {
@@ -37,12 +40,12 @@ export default {
         projectModalVisible: modalType !== MODAL_TYPE.CLOSED
       };
     },
-    changeTaskModalState(state, { payload: { modalType, task } }) {
+    changeTaskModalState(state, { payload: { modalType, taskId } }) {
       return {
         ...state,
         modalType,
         taskModalVisible: modalType !== MODAL_TYPE.CLOSED,
-        task
+        taskId
       };
     },
     changeLabelModalState(state, { payload: visible }) {

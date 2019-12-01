@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
 import moment from 'moment';
-import { createTask, updateTask, assignTask, unAssignTask, addTaskLabel, removeTaskLabel, fetchBoards, fetchTasks, fetchWorkLogs, logWork, updateWorkLog, deleteTask } from '../utils/api';
+import { createTask, updateTask, assignTask, unAssignTask, addTaskLabel, removeTaskLabel, fetchBoards, fetchTasks, fetchWorkLogs, logWork, updateWorkLog, deleteTask, getTaskActions, createTaskAction } from '../utils/api';
 import { timeHelper } from '../helpers/timeHelper';
 
 const saveWorkLog = (state, workLog) => {
@@ -118,6 +118,20 @@ export default {
         yield put({ type: 'deleteTaskSuccess', payload: taskId });
       }
     },
+    *getTaskActions({ payload: taskId }, { call, put, select }) {
+      const { data } = yield call(getTaskActions, taskId);
+      yield put({ type: 'saveTaskActions', payload: data });
+    },
+    *createTaskAction({ payload: { action, taskId } }, { call, put, select }) {
+      const { id: userId, fullName } = yield select(({ passport: { profile } }) => profile);
+      const taskAction = {
+        taskId,
+        userId,
+        actionsDescription: `${fullName} ${action}`
+      };
+      const { data } = yield call(createTaskAction, taskAction);
+      yield put({ type: 'saveTaskAction', payload: data });
+    }
   },
   reducers: {
     saveTasks(state, { payload }) {
@@ -184,6 +198,40 @@ export default {
     },
     deleteTaskSuccess(state, { payload: taskId }) {
       return _.omit(state, taskId);
-    }
+    },
+    saveTaskActions(state, { payload: { taskActions, taskId } }) {
+      const task = state[taskId];
+      return {
+        ...state,
+        [taskId]: {
+          ...task,
+          taskActions: _.keyBy(taskActions, 'id')
+        }
+      };
+    },
+    saveTaskAction(state, { payload: { taskAction } }) {
+      const task = {
+        ...state[taskAction.taskId],
+        taskActions: {
+          ...state[taskAction.taskId].taskActions,
+          [taskAction.id]: taskAction
+        }
+      };
+
+      return {
+        ...state,
+        [task.taskId]: task
+      };
+    },
+    deleteTaskActionSuccess(state, { payload: taskId }) {
+      const task = state[taskId];
+      return {
+        ...state,
+        [taskId]: {
+          ...task,
+          taskActions: _.omit(task.taskActions, taskId)
+        }
+      };
+    },
   },
 };

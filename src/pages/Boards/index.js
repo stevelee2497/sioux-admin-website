@@ -30,7 +30,7 @@ class Boards extends Component {
   }
 
   onDragEnd = result => {
-    const { columns, selectedProject, updateProject, updatePhase } = this.props;
+    const { columns, selectedProject, updateProject, updatePhase, createTaskAction } = this.props;
     const { draggableId, source, destination, type } = result;
 
     // users drag the task outside the columns
@@ -70,9 +70,18 @@ class Boards extends Component {
       taskOrder: newDestinationColTaskIds
     };
 
-    // update phase
+    // update tasks order of the 2 column
+    // if user drag and drop the task in the same column, newSourceCol and newDestinationCol are the same
+    // we can ignore the source column and only update the destination column
     if (newSourceCol.id !== newDestinationCol.id) {
       updatePhase(newSourceCol);
+
+      // attach a new action to this task only when users drag the task from one column to another column
+      const taskAction = {
+        action: `moved this task from \`${newSourceCol.name}\` to \`${newDestinationCol.name}\``,
+        taskId: draggableId
+      };
+      createTaskAction(taskAction);
     }
     updatePhase(newDestinationCol);
   }
@@ -159,6 +168,11 @@ const mapDispatchToProps = dispatch => ({
     type: 'phases/updatePhase',
     payload: phase
   }),
+  createTaskAction: (taskAction) => dispatch({
+    type: 'tasks/createTaskAction',
+    payload: taskAction
+  }),
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Boards);

@@ -343,13 +343,13 @@ export const updateWorkLog = async (workLog) => {
 // #region TaskAction
 
 export const getTaskActions = async (taskId) => {
-  const response = await api.get(`/taskAction?taskId=${taskId}`);
+  const response = await api.get(`/taskActions?taskId=${taskId}`);
   const { data } = response;
   return data;
 };
 
 export const createTaskAction = async (action) => {
-  const response = await api.post('/workLogs', action);
+  const response = await api.post('/taskActions', action);
   const { data } = response;
   return data;
 };

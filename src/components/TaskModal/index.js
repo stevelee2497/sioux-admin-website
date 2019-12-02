@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Modal, Input, Button, Tag, Icon, Avatar } from 'antd';
-import faker from 'faker';
 import moment from 'moment';
 import _ from 'lodash';
 import { MODAL_TYPE } from '../../utils/constants';
@@ -47,7 +46,7 @@ class TaskModal extends Component {
     return _.map(taskActions, action => {
       const member = employees[action.userId];
       return (
-        <div key={faker.random.uuid()} style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
+        <div key={action.id} style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
           <Avatar style={{ marginTop: 10 }} src={parseImage(member.avatarUrl)} />
           <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5, fontSize: 13 }}>
             <div>

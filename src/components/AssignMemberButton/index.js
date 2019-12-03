@@ -13,14 +13,28 @@ class AssignMemberButton extends Component {
   }
 
   handleMenuClick = ({ key }) => {
-    const { task: { id, taskAssignees }, assignTask, unAssignTask } = this.props;
+    const { task: { id, taskAssignees }, employees, assignTask, unAssignTask, createTaskAction } = this.props;
     const taskAssignee = taskAssignees.find(item => item.userId === key);
     if (taskAssignee) {
       // remove member from task
       unAssignTask(taskAssignee.id);
+
+      // attach an unassign action to this task
+      const taskAction = {
+        action: `removed \`${employees[key].fullName}\` from this task`,
+        taskId: id
+      };
+      createTaskAction(taskAction);
     } else {
       // add member to task
       assignTask({ taskId: id, userId: key });
+
+      // attach an assign action to this task
+      const taskAction = {
+        action: `assigned this task to \`${employees[key].fullName}\``,
+        taskId: id
+      };
+      createTaskAction(taskAction);
     }
   }
 
@@ -60,9 +74,11 @@ class AssignMemberButton extends Component {
 }
 
 const mapStateToProps = ({
-  projects: { selectedProject: { users } }
+  projects: { selectedProject: { users } },
+  people: { employees }
 }) => ({
-  members: users
+  members: users,
+  employees
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -73,6 +89,10 @@ const mapDispatchToProps = dispatch => ({
   unAssignTask: (id) => dispatch({
     type: 'tasks/unAssignTask',
     payload: id
+  }),
+  createTaskAction: (taskAction) => dispatch({
+    type: 'tasks/createTaskAction',
+    payload: taskAction
   }),
 });
 

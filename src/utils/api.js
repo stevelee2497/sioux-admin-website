@@ -339,3 +339,25 @@ export const updateWorkLog = async (workLog) => {
 };
 
 // #endregion
+
+// #region TaskAction
+
+export const getTaskActions = async (taskId) => {
+  const response = await api.get(`/taskActions?taskId=${taskId}`);
+  const { data } = response;
+  return data;
+};
+
+export const createTaskAction = async (action) => {
+  const response = await api.post('/taskActions', action);
+  const { data } = response;
+  return data;
+};
+
+export const deleteTaskAction = async (id) => {
+  const response = await api.delete(`/taskActions/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion

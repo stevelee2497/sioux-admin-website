@@ -16,6 +16,7 @@ export default {
   effects: {
     *showTask({ payload: taskId }, { call, put, select }) {
       yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, taskId } });
+      yield put({ type: 'tasks/getTaskActions', payload: taskId });
     },
     *showTaskFromTimeSheets({ payload: task }, { call, put, select }) {
       // fetch sufficient data to display the task modal

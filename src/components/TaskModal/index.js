@@ -63,7 +63,7 @@ class TaskModal extends Component {
   }
 
   render() {
-    const { visible, task, profile: { avatarUrl } } = this.props;
+    const { visible, task, profile: { avatarUrl }, phase } = this.props;
     if (!task) {
       return null;
     }
@@ -89,7 +89,7 @@ class TaskModal extends Component {
         <div style={{ marginLeft: 36, marginTop: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             status:
-            <Tag color="#448aff" style={{ marginLeft: 10 }}>To do</Tag>
+            <Tag color="#448aff" style={{ marginLeft: 10 }}>{phase.name}</Tag>
             <TaskLabels task={task} />
           </div>
           <TaskMembers task={task} />
@@ -159,12 +159,14 @@ const mapStateToProps = ({
   modals: { taskModalVisible, taskId },
   tasks,
   people: { employees },
-  passport: { profile }
+  passport: { profile },
+  phases
 }) => ({
   visible: taskModalVisible,
   task: tasks[taskId],
   employees,
-  profile
+  profile,
+  phase: _.find(phases, item => item.taskOrder.some(id => id === taskId))
 });
 
 const mapDispatchToProps = dispatch => ({

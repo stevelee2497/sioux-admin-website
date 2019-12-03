@@ -9,6 +9,7 @@ import { timeHelper } from '../../helpers/timeHelper';
 import { parseImage } from '../../utils/images';
 import TaskLabels from '../TaskLabels';
 import TaskMembers from '../TaskMembers';
+import Comments from '../Comments';
 
 class TaskModal extends Component {
   handleSubmit = () => {
@@ -21,7 +22,7 @@ class TaskModal extends Component {
 
   handleOnBlur = e => {
     const { name, value } = e.target;
-    const { task, updateTask } = this.props;
+    const { task, updateTask, createComment } = this.props;
     switch (name) {
       case 'title':
       case 'description':
@@ -63,7 +64,7 @@ class TaskModal extends Component {
   }
 
   render() {
-    const { visible, task, profile: { avatarUrl }, phase } = this.props;
+    const { visible, task, profile, phase } = this.props;
     if (!task) {
       return null;
     }
@@ -134,17 +135,7 @@ class TaskModal extends Component {
           <Icon className={styles.icon} type="message" />
           <h3 style={{ margin: 0, marginLeft: 5 }}>Comments</h3>
         </div>
-        <div style={{ display: 'flex', marginRight: 25, marginTop: 10 }}>
-          <Avatar src={parseImage(avatarUrl)} />
-          <Input.TextArea
-            name="comment"
-            onBlur={this.handleOnBlur}
-            autosize={{ minRows: 2 }}
-            defaultValue={task.description}
-            className={styles.comment}
-            placeholder="Add a comment ..."
-          />
-        </div>
+        <Comments task={task} profile={profile} />
         <div className={styles.block} style={{ marginTop: 30 }}>
           <Icon className={styles.icon} type="thunderbolt" />
           <h3 style={{ margin: 0, marginLeft: 5, marginTop: 3 }}>Activities</h3>

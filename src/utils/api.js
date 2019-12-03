@@ -361,3 +361,37 @@ export const deleteTaskAction = async (id) => {
 };
 
 // #endregion
+
+// #region Comment
+
+export const createComment = async (comment) => {
+  const response = await api.post('/comments', comment);
+  const { data } = response;
+  return data;
+};
+
+export const fetchComment = async (id) => {
+  const response = await api.get(`/comments/${id}`);
+  const { data } = response;
+  return data;
+};
+
+export const fetchComments = async (taskId) => {
+  const response = await api.get(`/comments?taskId=${taskId}`);
+  const { data } = response;
+  return data;
+};
+
+export const updateComment = async (comment) => {
+  const response = await api.put(`/comments/${comment.id}`, comment);
+  const { data } = response;
+  return data;
+};
+
+export const deleteComment = async (id) => {
+  const response = await api.delete(`/comments/${id}`);
+  const { data } = response;
+  return data;
+};
+
+// #endregion

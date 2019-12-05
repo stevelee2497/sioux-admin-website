@@ -54,6 +54,7 @@ class TaskModal extends Component {
         onCancel={this.handleCancel}
         bodyStyle={{ padding: 15, display: 'flex', flexDirection: 'column' }}
         width={720}
+        centered
       >
         <div className={styles.block}>
           <Icon className={styles.icon} style={{ marginTop: 12 }} type="book" />

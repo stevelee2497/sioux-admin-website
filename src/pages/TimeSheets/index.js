@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button } from 'antd';
+import { Table, Button, DatePicker, Divider } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import styles from './index.less';
 import ColHeader from './ColHeader';
 import Cell from './Cell';
 import SelectEmployee from '../../components/SelectEmployee';
+import SelectMonth from '../../components/SelectMonth';
 
 class TimeSheets extends Component {
   render() {
@@ -72,7 +73,11 @@ class TimeSheets extends Component {
 
     return (
       <div className={styles.container}>
-        <SelectEmployee />
+        <div className={styles.header}>
+          <SelectMonth />
+          <Divider type="vertical" className={styles.divider} />
+          <SelectEmployee />
+        </div>
         <Table
           columns={columns}
           dataSource={[...data, total]}

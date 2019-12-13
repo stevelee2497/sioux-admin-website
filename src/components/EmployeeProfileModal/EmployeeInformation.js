@@ -15,7 +15,7 @@ const CRow = ({ title, value }) => (
       <h4>{title}:</h4>
     </Col>
     <Col span={18}>
-      <h4 style={{ whiteSpace: 'pre-wrap' }}>{value}</h4>
+      <h4 className={styles.rowValue}>{value}</h4>
     </Col>
   </Row>
 );

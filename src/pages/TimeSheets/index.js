@@ -6,6 +6,7 @@ import _ from 'lodash';
 import styles from './index.less';
 import ColHeader from './ColHeader';
 import Cell from './Cell';
+import SelectEmployee from '../../components/SelectEmployee';
 
 class TimeSheets extends Component {
   render() {
@@ -71,6 +72,7 @@ class TimeSheets extends Component {
 
     return (
       <div className={styles.container}>
+        <SelectEmployee />
         <Table
           columns={columns}
           dataSource={[...data, total]}

@@ -16,7 +16,7 @@ export default {
       localStorage.setItem('token', token);
       localStorage.setItem('profile', JSON.stringify(profile));
       yield put({ type: 'loginSuccess', payload: response.data });
-      router.push('/');
+      router.push('/people');
     },
     *logout({ payload }, { call, put }) {
       localStorage.removeItem('authenticated');

@@ -14,7 +14,7 @@ export default {
     selectedPosition: undefined,
     selectedSkills: [],
     profileModalType: PROFILE_MODAL_TYPE.EDIT,
-    employees: undefined,
+    employees: {},
     searchFilter: ''
   },
   subscriptions: {
@@ -22,11 +22,7 @@ export default {
       history.listen(({ pathname }) => {
         if (pathname.toLowerCase() === '/people') {
           dispatch({
-            type: 'fetch',
-            payload: {
-              page: 1,
-              pageSize: 20,
-            },
+            type: 'fetch'
           });
         }
       });

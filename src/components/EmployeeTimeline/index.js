@@ -35,7 +35,7 @@ class EmployeeTimeline extends Component {
         </Timeline.Item>
         )}
         {timeLineEvents && timeLineEvents.map(item => (
-          <Timeline.Item>
+          <Timeline.Item key={item.id}>
             <span style={{ marginLeft: 10 }}>{item.event}</span>
             {edit && <Button type="link" style={{ height: 0 }} onClick={() => removeTimeLineEvents(item.id)}>Delete</Button>}
           </Timeline.Item>

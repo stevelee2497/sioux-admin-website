@@ -17,6 +17,7 @@ export default {
     *showTask({ payload: taskId }, { call, put, select }) {
       yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, taskId } });
       yield put({ type: 'tasks/getTaskActions', payload: taskId });
+      yield put({ type: 'comments/fetchComments', payload: taskId });
     },
     *showTaskFromTimeSheets({ payload: task }, { call, put, select }) {
       // fetch board that the task located in, needed for assign members button
@@ -37,7 +38,7 @@ export default {
 
       // display the task modal
       // we need to ensure the other data was loaded before showing the task modal
-      yield put({ type: 'changeTaskModalState', payload: { modalType: MODAL_TYPE.VIEW, taskId: task.id } });
+      yield put({ type: 'showTask', payload: task.id });
     },
   },
   reducers: {

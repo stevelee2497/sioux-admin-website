@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Modal, Input, Button, Tag, Icon, Avatar } from 'antd';
-import moment from 'moment';
+import { Modal, Input, Tag, Icon } from 'antd';
 import _ from 'lodash';
 import { MODAL_TYPE } from '../../utils/constants';
 import styles from './index.less';
 import { timeHelper } from '../../helpers/timeHelper';
-import { parseImage } from '../../utils/images';
 import TaskLabels from '../TaskLabels';
 import TaskMembers from '../TaskMembers';
+import Comments from '../Comments';
+import Activities from '../Activities';
 
 class TaskModal extends Component {
   handleSubmit = () => {
@@ -41,29 +41,8 @@ class TaskModal extends Component {
     }
   }
 
-  renderActivities = ({ taskActions }) => {
-    const { employees } = this.props;
-    return _.map(taskActions, action => {
-      const member = employees[action.userId];
-      return (
-        <div key={action.id} style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
-          <Avatar style={{ marginTop: 10 }} src={parseImage(member.avatarUrl)} />
-          <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5, fontSize: 13 }}>
-            <div>
-              <Button type="link" style={{ padding: 0, marginRight: 5 }}>
-                <h4 style={{ margin: 0 }}>{member.fullName}</h4>
-              </Button>
-              {action.actionDescription}
-            </div>
-            <p style={{ marginTop: -3, marginBottom: 0 }}>{moment(action.createdTime).format('DD/MM/YYYY HH:mm')}</p>
-          </div>
-        </div>
-      );
-    });
-  }
-
   render() {
-    const { visible, task, profile: { avatarUrl }, phase } = this.props;
+    const { visible, task, profile, phase } = this.props;
     if (!task) {
       return null;
     }
@@ -75,6 +54,7 @@ class TaskModal extends Component {
         onCancel={this.handleCancel}
         bodyStyle={{ padding: 15, display: 'flex', flexDirection: 'column' }}
         width={720}
+        centered
       >
         <div className={styles.block}>
           <Icon className={styles.icon} style={{ marginTop: 12 }} type="book" />
@@ -134,22 +114,12 @@ class TaskModal extends Component {
           <Icon className={styles.icon} type="message" />
           <h3 style={{ margin: 0, marginLeft: 5 }}>Comments</h3>
         </div>
-        <div style={{ display: 'flex', marginRight: 25, marginTop: 10 }}>
-          <Avatar src={parseImage(avatarUrl)} />
-          <Input.TextArea
-            name="comment"
-            onBlur={this.handleOnBlur}
-            autosize={{ minRows: 2 }}
-            defaultValue={task.description}
-            className={styles.comment}
-            placeholder="Add a comment ..."
-          />
-        </div>
+        <Comments task={task} profile={profile} />
         <div className={styles.block} style={{ marginTop: 30 }}>
           <Icon className={styles.icon} type="thunderbolt" />
           <h3 style={{ margin: 0, marginLeft: 5, marginTop: 3 }}>Activities</h3>
         </div>
-        {this.renderActivities(task)}
+        <Activities task={task} />
       </Modal>
     );
   }
@@ -158,15 +128,13 @@ class TaskModal extends Component {
 const mapStateToProps = ({
   modals: { taskModalVisible, taskId },
   tasks,
-  people: { employees },
   passport: { profile },
-  phases
+  phases,
 }) => ({
   visible: taskModalVisible,
   task: tasks[taskId],
-  employees,
   profile,
-  phase: _.find(phases, item => item.taskOrder.some(id => id === taskId))
+  phase: _.find(phases, item => item.taskOrder.some(id => id === taskId)),
 });
 
 const mapDispatchToProps = dispatch => ({

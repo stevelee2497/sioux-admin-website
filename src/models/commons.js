@@ -1,22 +1,35 @@
+import moment from 'moment';
+
 export default {
   namespace: 'commons',
   state: {
-    timesheetSelectedEmployeeId: JSON.parse(localStorage.getItem('profile')).id
+    timesheetEmployeeId: JSON.parse(localStorage.getItem('profile')).id,
+    timeSheetMonth: moment(),
   },
   subscriptions: {
   },
   effects: {
     *selectEmployeeTimeSheet({ payload: id }, { call, put }) {
-      yield put({ type: 'saveTimesheetSelectedEmployeeId', payload: id });
+      yield put({ type: 'saveEmployeeId', payload: id });
+      yield put({ type: 'tasks/fetchTimeSheetTasks' });
+    },
+    *selectMonth({ payload: month }, { call, put }) {
+      yield put({ type: 'saveMonth', payload: month });
       yield put({ type: 'tasks/fetchTimeSheetTasks' });
     },
   },
   reducers: {
-    saveTimesheetSelectedEmployeeId(state, { payload: id }) {
+    saveEmployeeId(state, { payload: id }) {
       return {
         ...state,
-        timesheetSelectedEmployeeId: id
+        timesheetEmployeeId: id
       };
     },
+    saveMonth(state, { payload: month }) {
+      return {
+        ...state,
+        timeSheetMonth: month
+      };
+    }
   }
 };

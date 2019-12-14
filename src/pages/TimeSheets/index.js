@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Table, Button, DatePicker, Divider } from 'antd';
+import { Table, Button, Divider } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import styles from './index.less';
@@ -11,20 +11,12 @@ import SelectMonth from '../../components/SelectMonth';
 
 class TimeSheets extends Component {
   render() {
-    const { tasks, showTaskFromTimeSheets, loading } = this.props;
+    const { tasks, showTaskFromTimeSheets, loading, month } = this.props;
     let data = _.values(tasks);
     if (Array.isArray(data) && data.length && !data[0].workLogs) {
       data = [];
     }
-
-    const total = {
-      key: 'total',
-      title: 'Total',
-      workLogs: _.keyBy(Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
-        day: index + 1,
-        amount: data.reduce((a, b) => a + parseInt(b.workLogs[index + 1].amount), 0)
-      })), 'day')
-    };
+    console.log(data);
 
     const columns = [
       {
@@ -34,7 +26,7 @@ class TimeSheets extends Component {
         className: styles.fix,
         align: 'center',
         width: 75,
-        render: (text, record) => (
+        render: (text, record) => text && (
           <Button type="link" style={{ height: 0 }} onClick={() => showTaskFromTimeSheets(record)}>{record.boardKey}#{text}</Button>
         ),
         fixed: 'left',
@@ -51,11 +43,11 @@ class TimeSheets extends Component {
         ),
         fixed: 'left',
       },
-      ...Array.from({ length: moment().daysInMonth() }).map((value, index) => ({
+      ...Array.from({ length: month.daysInMonth() }).map((value, index) => ({
         key: `workLogs[${index + 1}].amount`,
-        title: (<ColHeader index={index + 1} />),
+        title: (<ColHeader index={index + 1} month={month} />),
         align: 'center',
-        className: moment({ day: index + 1 }).day() % 6 < 1 ? styles.weekEndCol : styles.col,
+        className: moment({ day: index + 1, month: month.month() }).day() % 6 < 1 ? styles.weekEndCol : styles.col,
         width: 75,
         render: (text, record) => (<Cell row={record.key} workLog={record.workLogs[index + 1]} />),
       })),
@@ -80,7 +72,7 @@ class TimeSheets extends Component {
         </div>
         <Table
           columns={columns}
-          dataSource={[...data, total]}
+          dataSource={data}
           scroll={{ x: 'max-content' }}
           size="small"
           bordered
@@ -96,10 +88,12 @@ class TimeSheets extends Component {
 
 const mapStateToProps = ({
   tasks,
-  loading: { global }
+  loading: { global },
+  commons: { timeSheetMonth }
 }) => ({
   tasks,
-  loading: global
+  loading: global,
+  month: timeSheetMonth
 });
 
 const mapDispatchToProps = dispatch => ({

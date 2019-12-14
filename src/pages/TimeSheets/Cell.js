@@ -18,6 +18,7 @@ class Cell extends Component {
 
   static getDerivedStateFromProps({ workLog }, prevState) {
     if (workLog.id !== prevState.id) {
+      console.log(workLog);
       return {
         description: workLog.description,
         amount: workLog.amount,

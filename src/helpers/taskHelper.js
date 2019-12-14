@@ -22,13 +22,13 @@ const saveWorkLog = (state, workLog) => {
   };
 };
 
-const saveTimeSheetTask = (tasks, projects) => {
+const saveTimeSheetTask = (tasks, projects, month) => {
   const involvedProjects = _.keyBy(projects, 'id');
-  return _.map(tasks, value => ({
+  const timeSheetTask = _.map(tasks, value => ({
     ...value,
     key: value.id,
     boardKey: involvedProjects[value.boardId].key,
-    workLogs: _.keyBy(Array.from({ length: moment().daysInMonth() }).map((foo, index) => ({
+    workLogs: _.keyBy(Array.from({ length: month.daysInMonth() }).map((foo, index) => ({
       id: null,
       day: index + 1,
       amount: 0,
@@ -36,6 +36,16 @@ const saveTimeSheetTask = (tasks, projects) => {
       description: ''
     })), 'day'),
   }));
+  const total = {
+    id: 'total',
+    title: 'Total',
+    workLogs: _.keyBy(Array.from({ length: month.daysInMonth() }).map((value, index) => ({
+      day: index + 1,
+      amount: timeSheetTask.reduce((a, b) => a + parseInt(b.workLogs[index + 1].amount), 0)
+    })), 'day')
+  };
+
+  return [...timeSheetTask, total];
 };
 
 export default {

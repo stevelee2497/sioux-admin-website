@@ -5,18 +5,18 @@ import { Divider } from 'antd';
 
 class ColHeader extends Component {
   render() {
-    const { index } = this.props;
+    const { index, month } = this.props;
     return (
       <div>
         <div>
-          {moment().format('MMM')}
+          {month.format('MMM')}
         </div>
         <div>
           {index}
         </div>
         <Divider type="horizontal" style={{ margin: 2 }} />
         <div>
-          {moment({ day: index }).format('ddd')}
+          {moment({ day: index, month: month.month() }).format('ddd')}
         </div>
       </div>
     );

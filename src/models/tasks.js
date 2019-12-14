@@ -24,7 +24,7 @@ export default {
   },
   effects: {
     *fetchTimeSheetTasks({ payload }, { call, put, select }) {
-      const { timesheetSelectedEmployeeId: employeeId } = yield select(state => state.commons);
+      const { timesheetEmployeeId: employeeId, timeSheetMonth: month } = yield select(state => state.commons);
 
       // fetch projects that user involved in
       const { data: projects } = yield call(fetchBoards, employeeId);
@@ -32,7 +32,7 @@ export default {
 
       // then fetch tasks that user is assigned or logged work
       const { data } = yield call(fetchTasks, '', employeeId);
-      const tasks = taskHelper.saveTimeSheetTask(data, projects);
+      const tasks = taskHelper.saveTimeSheetTask(data, projects, month);
       yield put({ type: 'saveTasks', payload: tasks });
 
       // ensure that all the tasks is loaded before put action fetchWorkLogs

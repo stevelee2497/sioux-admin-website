@@ -76,12 +76,12 @@ class SelectEmployee extends Component {
 
 const mapStateToProps = ({
   people: { employees },
-  commons: { timesheetSelectedEmployeeId },
+  commons: { timesheetEmployeeId },
   passport: { profile }
 }) => ({
   employees,
-  employeeId: timesheetSelectedEmployeeId,
-  selectedEmployee: employees[timesheetSelectedEmployeeId],
+  employeeId: timesheetEmployeeId,
+  selectedEmployee: employees[timesheetEmployeeId],
   profile
 });
 

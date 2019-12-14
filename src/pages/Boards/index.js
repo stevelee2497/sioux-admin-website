@@ -3,7 +3,6 @@ import React, { Component, PureComponent } from 'react';
 import { connect } from 'dva';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Spin, Empty } from 'antd';
-import initialData from './data';
 import Column from '../../components/Column';
 import ProjectMenu from '../../components/ProjectMenu';
 import BoardHeader from '../../components/BoardHeader';
@@ -24,11 +23,6 @@ class ColumnContainer extends PureComponent {
 }
 
 class Boards extends Component {
-  constructor(props) {
-    super(props);
-    this.state = initialData;
-  }
-
   onDragEnd = result => {
     const { columns, selectedProject, updateProject, updatePhase, createTaskAction } = this.props;
     const { draggableId, source, destination, type } = result;

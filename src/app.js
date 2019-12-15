@@ -22,7 +22,7 @@ export const dva = {
 
 export function render(oldRender) {
   if (localStorage.getItem('authenticated') !== 'true') {
-    router.push('/#/login');
+    router.push('/login');
     console.log('not authenticated');
   }
 

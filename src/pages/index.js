@@ -3,6 +3,6 @@ import { Redirect } from 'react-router';
 
 export default function() {
   return (
-    <Redirect to="/#/people" />
+    <Redirect to="/people" />
   );
 }

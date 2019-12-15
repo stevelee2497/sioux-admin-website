@@ -27,8 +27,6 @@ export default {
       },
     ],
   ],
-  exportStatic: true,
-  history: 'hash',
   theme: {
     'primary-color': '#FF5722',
   },

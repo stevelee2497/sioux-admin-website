@@ -7,4 +7,4 @@ services:
     volumes:
       - "./dist:/srv/http"
     ports:
-      - '2211'
+      - '8043'

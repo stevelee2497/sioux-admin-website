@@ -8,4 +8,4 @@ services:
     volumes:
       - "./dist:/srv/http"
     ports:
-      - '2211:8043'
+      - '8000:8043'

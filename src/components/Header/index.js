@@ -6,9 +6,9 @@ import images, { parseImage } from '../../utils/images';
 import AvatarPopoverContent from '../AvatarPopoverContent';
 
 const navItems = [
-  { link: '/People', title: 'PEOPLE' },
-  { link: '/Boards', title: 'BOARDS' },
-  { link: '/TimeSheets', title: 'TIME SHEETS' },
+  { link: '/#/People', title: 'PEOPLE' },
+  { link: '/#/Boards', title: 'BOARDS' },
+  { link: '/#/TimeSheets', title: 'TIME SHEETS' },
 ];
 
 class Header extends Component {
@@ -33,14 +33,14 @@ class Header extends Component {
     return (
       <div className={styles.container}>
         <div>
-          <a href="/People" className={styles.navItem}>
+          <a href="/#/People" className={styles.navItem}>
             <img alt="sioux logo" src={images.logo} className={styles.logo} />
           </a>
           {this.renderNavItems()}
         </div>
         <div>
           Hello,
-          <a href="/People">{profile.fullName}</a>
+          <a href="/#/People">{profile.fullName}</a>
           <Popover
             placement="bottomRight"
             trigger="hover"

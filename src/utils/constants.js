@@ -34,9 +34,9 @@ export const ROLE = {
 // #region COMMON
 
 export const APP_CONSTANTS = {
-  API_BASE_URL: 'http://192.168.236.128:5001/api/',
+  API_BASE_URL: 'http://52.187.169.33:5001/api/',
   // API_BASE_URL: 'https://localhost:5001/api/',
-  API_UPLOAD_URL: 'http://192.168.236.128:5001/api/',
+  API_UPLOAD_URL: 'http://52.187.169.33:5001/api/',
   // API_UPLOAD_URL: 'https://localhost:5001/api/',
 };
 

@@ -9,3 +9,10 @@ services:
       - "./dist:/srv/http"
     ports:
       - '8000:8043'
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external:
+      name: traefik_proxy

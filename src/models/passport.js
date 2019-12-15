@@ -23,7 +23,7 @@ export default {
       localStorage.removeItem('token');
       localStorage.removeItem('profile');
       yield put({ type: 'logoutSuccess' });
-      router.push('/login');
+      router.push('/#/login');
     },
     *updateProfile({ payload: id }, { call, put }) {
       const { data } = yield call(fetchEmployee, id);

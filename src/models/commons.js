@@ -1,7 +1,7 @@
 export default {
   namespace: 'commons',
   state: {
-    timesheetSelectedEmployeeId: localStorage.getItem('profile') ? JSON.parse(localStorage.getItem('profile')) : null
+    timesheetSelectedEmployeeId: localStorage.getItem('profile') ? JSON.parse(localStorage.getItem('profile')).id : null
   },
   subscriptions: {
   },

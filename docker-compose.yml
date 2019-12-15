@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  sioux-admin-website:
+    image: pierrezemb/gostatic
+    container_name: sioux-admin-website
+    volumes:
+      - "./dist:/srv/http"
+    ports:
+      - '2211'

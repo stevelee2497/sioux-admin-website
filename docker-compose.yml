@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  sioux-admin-website:
+    restart: always
+    image: pierrezemb/gostatic
+    container_name: sioux-admin-website
+    volumes:
+      - "./dist:/srv/http"
+    ports:
+      - '80:8043'
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external:
+      name: traefik_proxy

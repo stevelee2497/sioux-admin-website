@@ -30,4 +30,5 @@ export default {
   theme: {
     'primary-color': '#FF5722',
   },
+  history: 'hash',
 };

@@ -8,8 +8,10 @@ import { parseImage } from '../../utils/images';
 class Activities extends Component {
   render() {
     const { employees, task: { taskActions } } = this.props;
+    console.log(employees, taskActions);
     return _.map(taskActions, action => {
       const member = employees[action.userId];
+      console.log(member);
       return (
         <div key={action.id} style={{ display: 'flex', marginRight: 25, marginTop: 10, alignItems: 'center' }}>
           <Avatar style={{ marginTop: 10 }} src={parseImage(member.avatarUrl)} />
@@ -29,7 +31,7 @@ class Activities extends Component {
 }
 
 const mapStateToProps = ({
-  projects: { selectedProject: { users: employees } },
+  people: { employees },
 }) => ({
   employees,
 });
@@ -37,4 +39,5 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
 
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Activities);

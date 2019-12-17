@@ -3,12 +3,13 @@ version: '3'
 services:
   sioux-admin-website:
     restart: always
-    image: pierrezemb/gostatic
+    image: sioux-admin-website
     container_name: sioux-admin-website
+    build: .
     volumes:
-      - "./dist:/srv/http"
+      - "./dist:/usr/share/nginx/html"
     ports:
-      - '80:8043'
+      - '80:80'
     networks:
       - proxy
 

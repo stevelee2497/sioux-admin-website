@@ -33,7 +33,7 @@ class UploadImage extends Component {
     const uploadEnabled = modalType !== MODAL_TYPE.VIEW;
 
     return (
-      <ImgCrop>
+      <ImgCrop contain width={400} height={400}>
         <Upload
           name="file"
           action={`${APP_CONSTANTS.API_UPLOAD_URL}files/${category}`}

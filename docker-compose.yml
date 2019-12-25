@@ -36,14 +36,14 @@ services:
       - "./volumes/proxy/certs:/etc/nginx/certs:rw"
     environment:
       - NGINX_DOCKER_GEN_CONTAINER=nginx-gen
-  
+
   sioux-admin-api:
     restart: always
     image: sioux-admin-api
-    build: 
+    build:
       context: ~/sioux-admin-api
       dockerfile: Dockerfile
-  
+
     container_name: sioux-admin-api
     volumes:
       - "~/sioux-admin-api/build-api:/app"
@@ -56,12 +56,28 @@ services:
       - LETSENCRYPT_HOST=api.siouxadmin.tk
       - LETSENCRYPT_EMAIL=quoc.tran@sioux.asia
 
+  # sioux-admin-website:
+  #   restart: always
+  #   image: pierrezemb/gostatic
+  #   container_name: sioux-admin-website
+  #   volumes:
+  #     - "./dist:/srv/http"
+  #   ports:
+  #     - '8043:8043'
+  #   environment:
+  #     - VIRTUAL_HOST=siouxadmin.tk
+  #     - VIRTUAL_NETWORK=nginx-proxy
+  #     - VIRTUAL_PORT=8043
+  #     - LETSENCRYPT_HOST=siouxadmin.tk
+  #     - LETSENCRYPT_EMAIL=quoc.tran@sioux.asia
+
   sioux-admin-website:
     restart: always
-    image: pierrezemb/gostatic
+    image: sioux-admin-website
     container_name: sioux-admin-website
+    build: .
     volumes:
-      - "./dist:/srv/http"
+      - "./dist:/usr/share/nginx/html"
     ports:
       - '8043:8043'
     environment:
@@ -70,18 +86,8 @@ services:
       - VIRTUAL_PORT=8043
       - LETSENCRYPT_HOST=siouxadmin.tk
       - LETSENCRYPT_EMAIL=quoc.tran@sioux.asia
-
-  # sioux-admin-website:
-  #   restart: always
-  #   image: sioux-admin-website
-  #   container_name: sioux-admin-website
-  #   build: .
-  #   volumes:
-  #     - "./dist:/usr/share/nginx/html"
-  #   ports:
-  #     - '80:80'
-  #   networks:
-  #     - proxy
+    networks:
+      - proxy
 
 networks:
   proxy:

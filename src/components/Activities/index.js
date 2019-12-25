@@ -29,7 +29,7 @@ class Activities extends Component {
 }
 
 const mapStateToProps = ({
-  projects: { selectedProject: { users: employees } },
+  people: { employees },
 }) => ({
   employees,
 });
@@ -37,4 +37,5 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
 
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Activities);

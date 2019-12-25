@@ -9,4 +9,7 @@ module.exports = {
       '@': require('path').resolve(__dirname, 'src'),
     },
   },
+  devServer: {
+    historyApiFallback: true
+  }
 };
